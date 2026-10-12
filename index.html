@@ -134,7 +134,7 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Đã tối ưu mượt mà 60FPS & Full màn hình ngang!</p>
+                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Đã tích hợp nhạc nền thực tế từ file của bạn!</p>
                 <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 13px; padding: 6px 16px; margin: 3px;">MÀN 1: DỄ (10 Zombie)</button>
                 <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 13px; padding: 6px 16px; margin: 3px;">MÀN 2: KHÓ (Zombie giáp)</button>
             </div>
@@ -158,9 +158,25 @@
     </div>
 
     <script>
+        // Khởi tạo nhạc nền từ file Plantsvszombie.mp3
+        let bgm = new Audio('Plantsvszombie.mp3');
+        bgm.loop = true;
+        bgm.volume = 0.5;
+
+        function startBGM() {
+            bgm.currentTime = 0;
+            bgm.play().catch(e => {
+                console.log("Trình duyệt chặn autoplay:", e);
+            });
+        }
+
+        function stopBGM() {
+            bgm.pause();
+            bgm.currentTime = 0;
+        }
+
         let audioCtx = null;
         let lastBiteSoundTime = 0;
-        let bgmTimer = null;
 
         function initAudio() {
             try {
@@ -171,29 +187,6 @@
                     audioCtx.resume();
                 }
             } catch(e) {}
-        }
-
-        function startBGM() {
-            if (bgmTimer) clearInterval(bgmTimer);
-            const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 523.25];
-            bgmTimer = setInterval(() => {
-                if (!gameStarted || gameOver || gameWon) return;
-                try {
-                    initAudio();
-                    if(!audioCtx) return;
-                    let osc = audioCtx.createOscillator();
-                    let gain = audioCtx.createGain();
-                    osc.type = 'triangle';
-                    let note = notes[Math.floor(Math.random() * notes.length)];
-                    osc.frequency.setValueAtTime(note, audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.3);
-                } catch(e) {}
-            }, 800);
         }
 
         function playSound(type) {
@@ -286,7 +279,6 @@
         const gameoverScreen = document.getElementById('gameover-screen');
         const winScreen = document.getElementById('win-screen');
 
-        // Khởi tạo các ô lưới dựa trên % CSS để mượt mà không giật lag
         function createGridCells() {
             container.querySelectorAll('.grid-cell').forEach(el => el.remove());
             for(let r=0; r<gridRows; r++) {
@@ -302,6 +294,7 @@
         createGridCells();
 
         function showMenu() {
+            stopBGM();
             gameoverScreen.classList.add('hidden');
             winScreen.classList.add('hidden');
             menuScreen.classList.remove('hidden');
@@ -311,6 +304,7 @@
 
         function startGame(level) {
             initAudio(); 
+            startBGM(); // Phát file nhạc nền Plantsvszombie.mp3
             currentLevel = level;
             targetScore = (level === 1) ? 10 : 15;
             document.getElementById('level-display').innerText = currentLevel;
@@ -361,12 +355,12 @@
                 document.getElementById('sun-count').innerText = suns;
             }, 8000);
 
-            startBGM();
             lastTime = performance.now();
             animationFrameId = requestAnimationFrame(gameLoop);
         }
 
         function triggerGameOver() {
+            stopBGM();
             gameOver = true;
             gameStarted = false;
             cancelAnimationFrame(animationFrameId);
@@ -376,6 +370,7 @@
         }
 
         function triggerWin() {
+            stopBGM();
             gameWon = true;
             gameStarted = false;
             cancelAnimationFrame(animationFrameId);
