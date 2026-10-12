@@ -72,25 +72,33 @@
             width: 100%;
             border: 1px solid #333; 
             text-align: center; 
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
         }
 
-        button { 
-            padding: 4px 8px; 
-            font-size: 11px; 
-            background: linear-gradient(to bottom, #ffea61, #f1a80a); 
-            border: none; 
+        .seed-card { 
+            padding: 4px 6px; 
+            font-size: 10px; 
+            background: linear-gradient(to bottom, #fff385, #e0a800); 
+            border: 2px solid #553300; 
             cursor: pointer; 
-            border-radius: 4px; 
+            border-radius: 5px; 
             font-weight: bold; 
             color: #222; 
-            margin: 2px; 
-            box-shadow: 0 2px #c68505; 
+            box-shadow: 0 2px #442200; 
             touch-action: manipulation;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 55px;
         }
-        button:active { transform: translateY(2px); box-shadow: 0 0 #c68505; }
-        button.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; }
-        button.fullscreen-btn { background: linear-gradient(to bottom, #42a5f5, #1565c0); color: white; }
-        
+        .seed-card:active { transform: translateY(2px); box-shadow: 0 0 #442200; }
+        .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
+        .fullscreen-btn { background: linear-gradient(to bottom, #42a5f5, #1565c0); color: white; border: 2px solid #0d47a1; padding: 6px 10px; border-radius: 5px; font-weight: bold; }
+
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bullet { width: 7px; height: 7px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 5px #ffcc00; pointer-events: none; }
         .sun-drop { position: absolute; font-size: 22px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
@@ -124,19 +132,31 @@
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui">
-            ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Mục tiêu: <span id="score-count" style="color: #00e676;">0</span>/<span id="target-count">10</span><br>
-            <button onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">🌿 Đậu (50)</button>
-            <button onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">🌻 Hoa (40)</button>
-            <button onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">🥔 Khoai (30)</button>
-            <button onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">💣 Bom (125)</button>
-            <button onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel">⛏️ Xẻng</button>
+            <div style="width: 100%; margin-bottom: 2px; font-size: 12px;">
+                ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Mục tiêu: <span id="score-count" style="color: #00e676;">0</span>/<span id="target-count">10</span>
+            </div>
+            <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
+                <span>🌿 Đậu</span><span style="font-size:9px; color:#ffeb3b;">50☀️</span>
+            </div>
+            <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
+                <span>🌻 Hoa</span><span style="font-size:9px; color:#ffeb3b;">40☀️</span>
+            </div>
+            <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
+                <span>🥔 Khoai</span><span style="font-size:9px; color:#ffeb3b;">30☀️</span>
+            </div>
+            <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
+                <span>💣 Bom</span><span style="font-size:9px; color:#ffeb3b;">125☀️</span>
+            </div>
+            <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
+                <span>⛏️ Xẻng</span><span>Bỏ cây</span>
+            </div>
             <button class="fullscreen-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
         </div>
         <div id="game-container" onclick="handleGridClick(event)" ontouchend="handleTouchGrid(event)">
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Đã sửa lỗi xoay màn hình & chuẩn Full màn hình!</p>
+                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Xe cắt cỏ chạy tức thì & Giao diện thẻ bài cổ điển!</p>
                 <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 1: DỄ (10 Zombie)</button>
                 <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 2: KHÓ (Zombie giáp)</button>
             </div>
@@ -349,7 +369,6 @@
                 if(!gameStarted || gameOver || gameWon) return;
                 let row = Math.floor(Math.random() * gridRows);
                 let isConehead = (currentLevel === 2 && Math.random() < 0.4);
-                // Dùng hệ thống col (cột lưới) để chống lỗi khi xoay màn hình
                 zombies.push({
                     row: row, 
                     col: 10.0, 
@@ -386,7 +405,7 @@
             cancelAnimationFrame(animationFrameId);
             clearInterval(zombieSpawner);
             clearInterval(sunSpawner);
-            winScreen.classList.add('hidden');
+            winScreen.classList.remove('hidden');
             startFireworks();
         }
 
@@ -519,7 +538,7 @@
             let cellH = cHeight / gridRows;
 
             activeMowers.forEach(m => {
-                m.col += 0.12 * dt;
+                m.col += 0.2 * dt;
                 zombies = zombies.filter(z => {
                     let hit = (z.row === m.row && Math.abs(z.col - m.col) < 0.8);
                     if(hit) {
@@ -592,8 +611,9 @@
                 });
             });
 
+            // Kích hoạt xe cắt cỏ ngay khi zombie chạm vào cột đầu tiên (col <= 0.1)
             zombies.forEach((z, zi) => {
-                if(z.col < -0.5) {
+                if(z.col <= 0.1) {
                     if(lawnmowers[z.row]) {
                         lawnmowers[z.row] = false;
                         activeMowers.push({row: z.row, col: 0});
