@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Plants vs Zombies</title>
+    <style>
+        body { background: #1a1a1a; color: white; text-align: center; font-family: sans-serif; margin: 0; padding: 10px; }
+        #game-container { position: relative; width: 480px; height: 300px; background: #4a7c36; margin: 10px auto; border: 4px solid #222; overflow: hidden; touch-action: manipulation; border-radius: 8px; }
+        .grid-cell { position: absolute; width: 60px; height: 60px; border: 1px dashed rgba(255,255,255,0.25); box-sizing: border-box; }
+        .ui { margin: 10px 0; font-size: 15px; font-weight: bold; }
+        button { padding: 6px 12px; font-size: 14px; background: #ffcc00; border: none; cursor: pointer; border-radius: 5px; font-weight: bold; color: #333; margin: 2px; }
+        button:active { background: #e6b800; }
+        .entity { position: absolute; display: flex; align-items: center; justify-content: center; }
+        .plant { width: 50px; height: 50px; font-size: 28px; z-index: 2; }
+        .zombie { width: 40px; height: 50px; font-size: 26px; z-index: 2; }
+        .bullet { width: 8px; height: 8px; background: #ffe600; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 4px #ff9900; }
+    </style>
+</head>
+<body>
+    <h2>Mini Plants vs Zombies</h2>
+    <div class="ui">
+        ☀️ Mặt trời: <span id="sun-count">100</span><br>
+        <button onclick="selectPlant('peashooter')">🌿 Cây Đậu (50☀️)</button>
+        <button onclick="selectPlant('sunflower')">🌻 Hướng Dương (40☀️)</button>
+    </div>
+    <div id="game-container" onclick="handleGridClick(event)"></div>
+    <p style="font-size: 12px; color: #ccc; max-width: 480px; margin: 0 auto;">Đã sửa lỗi đạn bắn, mở rộng map 8 cột và thêm Hoa Hướng Dương!</p>
+
+    <script>
+        let suns = 100;
+        let selectedType = null; 
+        const gridRows = 5;
+        const gridCols = 8;
+        const cellWidth = 60;
+        const cellHeight = 60;
+
+        let plants = []; 
+        let zombies = []; 
+        let bullets = []; 
+
+        const container = document.getElementById('game-container');
+
+        // Tạo lưới sân chơi 5 hàng x 8 cột
+        for(let r=0; r<gridRows; r++) {
+            for(let c=0; c<gridCols; c++) {
+                let div = document.createElement('div');
+                div.className = 'grid-cell';
+                div.style.left = (c * cellWidth) + 'px';
+                div.style.top = (r * cellHeight) + 'px';
+                container.appendChild(div);
+            }
+        }
+
+        function selectPlant(type) {
+            if(type === 'peashooter') {
+                if(suns >= 50) {
+                    selectedType = 'peashooter';
+                    alert("Đã chọn Cây Đậu (🌿)! Chạm vào ô trống trên sân.");
+                } else {
+                    alert("Không đủ mặt trời! Cần 50☀️.");
+                }
+            } else if(type === 'sunflower') {
+                if(suns >= 40) {
+                    selectedType = 'sunflower';
+                    alert("Đã chọn Hoa Hướng Dương (🌻)! Chạm vào ô trống trên sân.");
+                } else {
+                    alert("Không đủ mặt trời! Cần 40☀️.");
+                }
+            }
+        }
+
+        function handleGridClick(e) {
+            if(!selectedType) return;
+            let rect = container.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+            
+            let col = Math.floor(x / cellWidth);
+            let row = Math.floor(y / cellHeight);
+
+            if(row >= 0 && row < gridRows && col >= 0 && col < gridCols) {
+                let exists = plants.some(p => p.row === row && p.col === col);
+                if(!exists) {
+                    if(selectedType === 'peashooter') {
+                        plants.push({type: 'peashooter', row: row, col: col, hp: 100, shootTimer: 0});
+                        suns -= 50;
+                    } else if(selectedType === 'sunflower') {
+                        plants.push({type: 'sunflower', row: row, col: col, hp: 80, sunTimer: 0});
+                        suns -= 40;
+                    }
+                    document.getElementById('sun-count').innerText = suns;
+                    selectedType = null;
+                }
+            }
+        }
+
+        // Zombie xuất hiện ngẫu nhiên theo 5 hàng
+        setInterval(() => {
+            let row = Math.floor(Math.random() * gridRows);
+            zombies.push({row: row, x: 480, hp: 60});
+        }, 5000);
+
+        // Tự động sinh mặt trời từ hệ thống
+        setInterval(() => {
+            suns += 25;
+            document.getElementById('sun-count').innerText = suns;
+        }, 7000);
+
+        // Vòng lặp game chính (~33ms)
+        setInterval(() => {
+            // Đạn bay
+            bullets.forEach(b => b.x += 6);
+            bullets = bullets.filter(b => b.x < 480);
+
+            // Zombie di chuyển và tấn công cây
+            zombies.forEach(z => {
+                let hitPlant = plants.find(p => p.row === z.row && Math.abs(p.col * cellWidth - z.x) < 25);
+                if(hitPlant) {
+                    hitPlant.hp -= 1.5;
+                    if(hitPlant.hp <= 0) {
+                        plants = plants.filter(p => p !== hitPlant);
+                    }
+                } else {
+                    z.x -= 0.8;
+                }
+            });
+
+            // Cây hoạt động (Đậu bắn đạn, Hướng dương sinh mặt trời)
+            plants.forEach(p => {
+                if(p.type === 'peashooter') {
+                    let hasZombie = zombies.some(z => z.row === p.row && z.x > p.col * cellWidth);
+                    if(hasZombie) {
+                        p.shootTimer++;
+                        if(p.shootTimer > 35) {
+                            bullets.push({row: p.row, x: (p.col + 1) * cellWidth});
+                            p.shootTimer = 0;
+                        }
+                    }
+                } else if(p.type === 'sunflower') {
+                    p.sunTimer++;
+                    if(p.sunTimer > 150) { // Khoảng 5 giây sinh 15 mặt trời
+                        suns += 15;
+                        document.getElementById('sun-count').innerText = suns;
+                        p.sunTimer = 0;
+                    }
+                }
+            });
+
+            // Va chạm đạn và zombie
+            bullets.forEach((b, bi) => {
+                zombies.forEach((z, zi) => {
+                    if(b.row === z.row && Math.abs(b.x - z.x) < 20) {
+                        z.hp -= 20;
+                        bullets.splice(bi, 1);
+                        if(z.hp <= 0) {
+                            zombies.splice(zi, 1);
+                        }
+                    }
+                });
+            });
+
+            // Kiểm tra thua cuộc
+            zombies.forEach(z => {
+                if(z.x < 0) {
+                    alert("Game Over! Zombie đã tiến vào nhà bạn!");
+                    location.reload();
+                }
+            });
+
+            render();
+        }, 33);
+
+        function render() {
+            // Xóa toàn bộ thực thể và đạn cũ để làm sạch màn hình
+            container.querySelectorAll('.entity, .bullet').forEach(el => el.remove());
+
+            plants.forEach(p => {
+                let div = document.createElement('div');
+                div.className = 'entity plant';
+                div.style.left = (p.col * cellWidth + 5) + 'px';
+                div.style.top = (p.row * cellHeight + 5) + 'px';
+                div.innerText = (p.type === 'peashooter') ? '🌿' : '🌻';
+                container.appendChild(div);
+            });
+
+            zombies.forEach(z => {
+                let div = document.createElement('div');
+                div.className = 'entity zombie';
+                div.style.left = z.x + 'px';
+                div.style.top = (z.row * cellHeight + 5) + 'px';
+                div.innerText = '🧟';
+                container.appendChild(div);
+            });
+
+            bullets.forEach(b => {
+                let div = document.createElement('div');
+                div.className = 'bullet';
+                div.style.left = b.x + 'px';
+                div.style.top = (b.row * cellHeight + 26) + 'px';
+                container.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
