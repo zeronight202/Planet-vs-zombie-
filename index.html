@@ -3,26 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Plants vs Zombies Pro</title>
+    <title>Plants vs Zombies 2</title>
     <style>
-        body { background: #121212; color: white; text-align: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; }
+        body { 
+            background: #121212; 
+            color: white; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            box-sizing: border-box;
+        }
         
         .game-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 900;
             background: linear-gradient(45deg, #00ff87, #60efff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 10px rgba(0, 255, 135, 0.3);
-            margin: 4px 0;
+            margin: 6px 0;
             letter-spacing: 1px;
+            text-align: center;
         }
 
-        #game-wrapper { position: relative; width: 480px; margin: 0 auto; }
+        #game-wrapper { position: relative; width: 480px; text-align: center; }
         #game-container { position: relative; width: 480px; height: 300px; background: linear-gradient(to bottom, #4a7c36, #3b6329); margin: 6px auto; border: 4px solid #333; overflow: hidden; touch-action: manipulation; border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); }
         .grid-cell { position: absolute; width: 60px; height: 60px; border: 1px dashed rgba(255,255,255,0.15); box-sizing: border-box; }
-        .ui { margin: 6px 0; font-size: 13px; font-weight: bold; background: #1e1e1e; padding: 6px; border-radius: 6px; display: inline-block; border: 1px solid #333; }
-        button { padding: 5px 10px; font-size: 12px; background: linear-gradient(to bottom, #ffea61, #f1a80a); border: none; cursor: pointer; border-radius: 5px; font-weight: bold; color: #222; margin: 2px; box-shadow: 0 3px #c68505; }
+        .ui { margin: 6px 0; font-size: 13px; font-weight: bold; background: #1e1e1e; padding: 6px 12px; border-radius: 6px; display: inline-block; border: 1px solid #333; text-align: center; }
+        button { padding: 6px 12px; font-size: 12px; background: linear-gradient(to bottom, #ffea61, #f1a80a); border: none; cursor: pointer; border-radius: 5px; font-weight: bold; color: #222; margin: 2px; box-shadow: 0 3px #c68505; }
         button:active { transform: translateY(2px); box-shadow: 0 1px #c68505; }
         
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; will-change: transform, left; }
@@ -30,13 +43,13 @@
         .zombie { width: 40px; height: 50px; font-size: 26px; z-index: 2; }
         .bullet { width: 8px; height: 8px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; }
         
-        .screen-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 6px; }
+        .screen-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 6px; text-align: center; }
         .screen-overlay h1 { margin-bottom: 8px; font-size: 22px; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <div class="game-title">🌱 PLANTS VS ZOMBIES PRO 🧟</div>
+    <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui">
             ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Mục tiêu: <span id="score-count" style="color: #00e676;">0</span>/<span id="target-count">10</span><br>
@@ -48,7 +61,7 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Đã thêm Khoai Tây chắn đường và Zombie đội nón!</p>
+                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Bảo vệ khu vườn và tiêu diệt zombie!</p>
                 <button onclick="startGame(1)" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 15px; padding: 8px 20px; margin: 5px;">MÀN 1: DỄ (10 Zombie)</button>
                 <button onclick="startGame(2)" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 15px; padding: 8px 20px; margin: 5px;">MÀN 2: KHÓ (Zombie giáp)</button>
             </div>
@@ -68,16 +81,24 @@
                 <button onclick="showMenu()" style="z-index: 12; position: relative;">VỀ MENU</button>
             </div>
         </div>
-        <div style="font-size: 11px; color: #888; margin-top: 3px;">Có âm thanh & hiệu ứng 60FPS mượt mà trên Mobile</div>
+        <div style="font-size: 11px; color: #888; margin-top: 5px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
     </div>
 
     <script>
-        // Khởi tạo âm thanh Web Audio API không cần file ngoài
         let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
         function playSound(type) {
             try {
-                if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                if(audioCtx.state === 'suspended') audioCtx.resume();
+                initAudio();
+                if(!audioCtx) return;
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 osc.connect(gain);
@@ -151,6 +172,7 @@
         }
 
         function startGame(level) {
+            initAudio(); // Kích hoạt âm thanh khi bấm nút bắt đầu
             currentLevel = level;
             targetScore = (level === 1) ? 10 : 15;
             document.getElementById('level-display').innerText = currentLevel;
@@ -177,7 +199,6 @@
             zombieSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon) return;
                 let row = Math.floor(Math.random() * gridRows);
-                // Màn 2 có xác suất xuất hiện Zombie đội nón giáp
                 let isConehead = (currentLevel === 2 && Math.random() < 0.4);
                 zombies.push({
                     row: row, 
