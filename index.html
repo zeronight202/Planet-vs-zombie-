@@ -3,78 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Plants vs Zombies</title>
+    <title>Mini Plants vs Zombies Pro</title>
     <style>
         body { background: #121212; color: white; text-align: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 10px; }
         
-        /* Tiêu đề game đẹp mắt */
         .game-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 900;
             background: linear-gradient(45deg, #00ff87, #60efff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 10px rgba(0, 255, 135, 0.3);
-            margin: 5px 0;
+            margin: 4px 0;
             letter-spacing: 1px;
         }
 
         #game-wrapper { position: relative; width: 480px; margin: 0 auto; }
-        #game-container { position: relative; width: 480px; height: 300px; background: linear-gradient(to bottom, #4a7c36, #3b6329); margin: 8px auto; border: 4px solid #333; overflow: hidden; touch-action: manipulation; border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); }
+        #game-container { position: relative; width: 480px; height: 300px; background: linear-gradient(to bottom, #4a7c36, #3b6329); margin: 6px auto; border: 4px solid #333; overflow: hidden; touch-action: manipulation; border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); }
         .grid-cell { position: absolute; width: 60px; height: 60px; border: 1px dashed rgba(255,255,255,0.15); box-sizing: border-box; }
-        .ui { margin: 8px 0; font-size: 14px; font-weight: bold; background: #1e1e1e; padding: 8px; border-radius: 6px; display: inline-block; border: 1px solid #333; }
-        button { padding: 6px 12px; font-size: 13px; background: linear-gradient(to bottom, #ffea61, #f1a80a); border: none; cursor: pointer; border-radius: 5px; font-weight: bold; color: #222; margin: 2px; box-shadow: 0 3px #c68505; }
+        .ui { margin: 6px 0; font-size: 13px; font-weight: bold; background: #1e1e1e; padding: 6px; border-radius: 6px; display: inline-block; border: 1px solid #333; }
+        button { padding: 5px 10px; font-size: 12px; background: linear-gradient(to bottom, #ffea61, #f1a80a); border: none; cursor: pointer; border-radius: 5px; font-weight: bold; color: #222; margin: 2px; box-shadow: 0 3px #c68505; }
         button:active { transform: translateY(2px); box-shadow: 0 1px #c68505; }
         
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; will-change: transform, left; }
-        .plant { width: 50px; height: 50px; font-size: 28px; z-index: 2; }
+        .plant { width: 50px; height: 50px; font-size: 26px; z-index: 2; }
         .zombie { width: 40px; height: 50px; font-size: 26px; z-index: 2; }
         .bullet { width: 8px; height: 8px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; }
         
-        /* Các màn hình đè (Overlay) */
-        .screen-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 6px; }
-        .screen-overlay h1 { margin-bottom: 10px; font-size: 22px; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .screen-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 6px; }
+        .screen-overlay h1 { margin-bottom: 8px; font-size: 22px; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
-    <div class="game-title">🌱 PLANTS VS ZOMBIES 🧟</div>
+    <div class="game-title">🌱 PLANTS VS ZOMBIES PRO 🧟</div>
     <div id="game-wrapper">
         <div class="ui">
-            ☀️ Mặt trời: <span id="sun-count" style="color: #ffeb3b;">100</span> | Tiêu diệt: <span id="score-count" style="color: #00e676;">0</span>/10<br style="margin-bottom: 4px;">
-            <button onclick="selectPlant('peashooter')">🌿 Cây Đậu (50☀️)</button>
+            ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Mục tiêu: <span id="score-count" style="color: #00e676;">0</span>/<span id="target-count">10</span><br>
+            <button onclick="selectPlant('peashooter')">🌿 Đậu (50☀️)</button>
             <button onclick="selectPlant('sunflower')">🌻 Hướng Dương (40☀️)</button>
+            <button onclick="selectPlant('wallnut')">🥔 Khoai Tây (30☀️)</button>
         </div>
         <div id="game-container" onclick="handleGridClick(event)">
-            <!-- Màn hình Menu -->
+            <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
-                <h1 style="color: #4CAF50;">BẢO VỆ KHU VƯỜN</h1>
-                <p style="font-size: 12px; color: #ccc; margin-bottom: 15px; padding: 0 20px; text-align: center;">Tiêu diệt 10 zombie để giành chiến thắng!</p>
-                <button onclick="startGame()" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 16px; padding: 10px 22px;">BẮT ĐẦU CHƠI</button>
+                <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
+                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Đã thêm Khoai Tây chắn đường và Zombie đội nón!</p>
+                <button onclick="startGame(1)" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 15px; padding: 8px 20px; margin: 5px;">MÀN 1: DỄ (10 Zombie)</button>
+                <button onclick="startGame(2)" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 15px; padding: 8px 20px; margin: 5px;">MÀN 2: KHÓ (Zombie giáp)</button>
             </div>
 
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <h1 style="color: #ff5252;">GAME OVER</h1>
-                <p style="font-size: 13px; color: #ccc; margin-bottom: 12px;">Zombie đã tiến vào nhà bạn!</p>
-                <button onclick="restartGame()" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white;">CHƠI LẠI</button>
+                <p style="font-size: 13px; color: #ccc; margin-bottom: 12px;">Zombie đã phá vỡ hàng phòng thủ!</p>
+                <button onclick="showMenu()" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white;">VỀ MENU</button>
             </div>
 
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <h1 style="color: #00e676;">CHIẾN THẮNG! 🎉</h1>
-                <p style="font-size: 13px; color: #ccc; margin-bottom: 12px;">Bạn đã cứu thành công khu vườn!</p>
+                <p style="font-size: 13px; color: #ccc; margin-bottom: 12px;">Bảo vệ thành công khu vườn xuất sắc!</p>
                 <canvas id="fireworks-canvas" width="480" height="300" style="position: absolute; top:0; left:0; pointer-events:none; z-index:11;"></canvas>
-                <button onclick="restartGame()" style="z-index: 12; position: relative;">CHƠI LẠI</button>
+                <button onclick="showMenu()" style="z-index: 12; position: relative;">VỀ MENU</button>
             </div>
         </div>
-        <div style="font-size: 11px; color: #888; margin-top: 4px;">Mượt mà 60FPS trên Mobile | Nộp bài GitHub Pages</div>
+        <div style="font-size: 11px; color: #888; margin-top: 3px;">Có âm thanh & hiệu ứng 60FPS mượt mà trên Mobile</div>
     </div>
 
     <script>
+        // Khởi tạo âm thanh Web Audio API không cần file ngoài
+        let audioCtx = null;
+        function playSound(type) {
+            try {
+                if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                if(type === 'plant') {
+                    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+                } else if(type === 'shoot') {
+                    osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+                } else if(type === 'hit') {
+                    osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+                }
+            } catch(e) {}
+        }
+
         let gameStarted = false;
         let gameOver = false;
         let gameWon = false;
+        let currentLevel = 1;
+        let targetScore = 10;
         let suns = 100;
         let score = 0;
         let selectedType = null; 
@@ -97,7 +132,6 @@
         const gameoverScreen = document.getElementById('gameover-screen');
         const winScreen = document.getElementById('win-screen');
 
-        // Tạo lưới sân chơi 5 hàng x 8 cột
         for(let r=0; r<gridRows; r++) {
             for(let c=0; c<gridCols; c++) {
                 let div = document.createElement('div');
@@ -108,7 +142,20 @@
             }
         }
 
-        function startGame() {
+        function showMenu() {
+            gameoverScreen.classList.add('hidden');
+            winScreen.classList.add('hidden');
+            menuScreen.classList.remove('hidden');
+            gameStarted = false;
+            stopFireworks();
+        }
+
+        function startGame(level) {
+            currentLevel = level;
+            targetScore = (level === 1) ? 10 : 15;
+            document.getElementById('level-display').innerText = currentLevel;
+            document.getElementById('target-count').innerText = targetScore;
+
             menuScreen.classList.add('hidden');
             gameStarted = true;
             gameOver = false;
@@ -126,11 +173,20 @@
             if(zombieSpawner) clearInterval(zombieSpawner);
             if(sunSpawner) clearInterval(sunSpawner);
 
+            let spawnRate = (currentLevel === 1) ? 4000 : 3000;
             zombieSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon) return;
                 let row = Math.floor(Math.random() * gridRows);
-                zombies.push({row: row, x: 480, hp: 60});
-            }, 4000);
+                // Màn 2 có xác suất xuất hiện Zombie đội nón giáp
+                let isConehead = (currentLevel === 2 && Math.random() < 0.4);
+                zombies.push({
+                    row: row, 
+                    x: 480, 
+                    hp: isConehead ? 140 : 60, 
+                    maxHp: isConehead ? 140 : 60,
+                    isConehead: isConehead
+                });
+            }, spawnRate);
 
             sunSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon) return;
@@ -140,13 +196,6 @@
 
             lastTime = performance.now();
             animationFrameId = requestAnimationFrame(gameLoop);
-        }
-
-        function restartGame() {
-            gameoverScreen.classList.add('hidden');
-            winScreen.classList.add('hidden');
-            stopFireworks();
-            startGame();
         }
 
         function triggerGameOver() {
@@ -170,21 +219,10 @@
 
         function selectPlant(type) {
             if(!gameStarted || gameOver || gameWon) return;
-            if(type === 'peashooter') {
-                if(suns >= 50) {
-                    selectedType = 'peashooter';
-                    alert("Đã chọn Cây Đậu (🌿)! Chạm vào ô trống trên sân.");
-                } else {
-                    alert("Không đủ mặt trời! Cần 50☀️.");
-                }
-            } else if(type === 'sunflower') {
-                if(suns >= 40) {
-                    selectedType = 'sunflower';
-                    alert("Đã chọn Hoa Hướng Dương (🌻)! Chạm vào ô trống trên sân.");
-                } else {
-                    alert("Không đủ mặt trời! Cần 40☀️.");
-                }
-            }
+            if(type === 'peashooter' && suns >= 50) { selectedType = 'peashooter'; alert("Đã chọn Đậu (🌿)"); }
+            else if(type === 'sunflower' && suns >= 40) { selectedType = 'sunflower'; alert("Đã chọn Hướng Dương (🌻)"); }
+            else if(type === 'wallnut' && suns >= 30) { selectedType = 'wallnut'; alert("Đã chọn Khoai Tây (🥔)"); }
+            else { alert("Không đủ mặt trời hoặc chọn sai!"); }
         }
 
         function handleGridClick(e) {
@@ -192,19 +230,22 @@
             let rect = container.getBoundingClientRect();
             let x = e.clientX - rect.left;
             let y = e.clientY - rect.top;
-            
             let col = Math.floor(x / cellWidth);
             let row = Math.floor(y / cellHeight);
 
             if(row >= 0 && row < gridRows && col >= 0 && col < gridCols) {
                 let exists = plants.some(p => p.row === row && p.col === col);
                 if(!exists) {
+                    playSound('plant');
                     if(selectedType === 'peashooter') {
                         plants.push({type: 'peashooter', row: row, col: col, hp: 100, shootTimer: 0});
                         suns -= 50;
                     } else if(selectedType === 'sunflower') {
                         plants.push({type: 'sunflower', row: row, col: col, hp: 80, sunTimer: 0});
                         suns -= 40;
+                    } else if(selectedType === 'wallnut') {
+                        plants.push({type: 'wallnut', row: row, col: col, hp: 300});
+                        suns -= 30;
                     }
                     document.getElementById('sun-count').innerText = suns;
                     selectedType = null;
@@ -214,16 +255,13 @@
 
         function gameLoop(timestamp) {
             if(!gameStarted || gameOver || gameWon) return;
-
-            let dt = (timestamp - lastTime) / 16.67; // Tỷ lệ khung hình so với chuẩn 60FPS
+            let dt = (timestamp - lastTime) / 16.67;
             if(dt > 3) dt = 3;
             lastTime = timestamp;
 
-            // Cập nhật vị trí đạn (mượt theo 60FPS)
             bullets.forEach(b => b.x += 4.5 * dt);
             bullets = bullets.filter(b => b.x < 480);
 
-            // Zombie di chuyển và tấn công
             zombies.forEach(z => {
                 let hitPlant = plants.find(p => p.row === z.row && Math.abs(p.col * cellWidth - z.x) < 25);
                 if(hitPlant) {
@@ -232,11 +270,11 @@
                         plants = plants.filter(p => p !== hitPlant);
                     }
                 } else {
-                    z.x -= 0.6 * dt;
+                    let speed = z.isConehead ? 0.45 : 0.6;
+                    z.x -= speed * dt;
                 }
             });
 
-            // Hoạt động của cây
             plants.forEach(p => {
                 if(p.type === 'peashooter') {
                     let hasZombie = zombies.some(z => z.row === p.row && z.x > p.col * cellWidth);
@@ -244,6 +282,7 @@
                         p.shootTimer += dt;
                         if(p.shootTimer > 45) {
                             bullets.push({row: p.row, x: (p.col + 1) * cellWidth});
+                            playSound('shoot');
                             p.shootTimer = 0;
                         }
                     }
@@ -257,17 +296,17 @@
                 }
             });
 
-            // Va chạm đạn & zombie
             bullets.forEach((b, bi) => {
                 zombies.forEach((z, zi) => {
                     if(b.row === z.row && Math.abs(b.x - z.x) < 20) {
                         z.hp -= 20;
+                        playSound('hit');
                         bullets.splice(bi, 1);
                         if(z.hp <= 0) {
                             zombies.splice(zi, 1);
                             score++;
                             document.getElementById('score-count').innerText = score;
-                            if(score >= 10) {
+                            if(score >= targetScore) {
                                 triggerWin();
                             }
                         }
@@ -275,7 +314,6 @@
                 });
             });
 
-            // Kiểm tra thua cuộc
             zombies.forEach(z => {
                 if(z.x < 0) {
                     triggerGameOver();
@@ -294,7 +332,9 @@
                 div.className = 'entity plant';
                 div.style.left = (p.col * cellWidth + 5) + 'px';
                 div.style.top = (p.row * cellHeight + 5) + 'px';
-                div.innerText = (p.type === 'peashooter') ? '🌿' : '🌻';
+                if(p.type === 'peashooter') div.innerText = '🌿';
+                else if(p.type === 'sunflower') div.innerText = '🌻';
+                else if(p.type === 'wallnut') div.innerText = '🥔';
                 container.appendChild(div);
             });
 
@@ -303,7 +343,7 @@
                 div.className = 'entity zombie';
                 div.style.left = z.x + 'px';
                 div.style.top = (z.row * cellHeight + 5) + 'px';
-                div.innerText = '🧟';
+                div.innerText = z.isConehead ? '🧟‍♂️' : '🧟';
                 container.appendChild(div);
             });
 
@@ -316,7 +356,6 @@
             });
         }
 
-        // Pháo hoa chiến thắng
         let fwInterval = null;
         function startFireworks() {
             const canvas = document.getElementById('fireworks-canvas');
@@ -325,7 +364,6 @@
 
             fwInterval = setInterval(() => {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
                 if(Math.random() < 0.3) {
                     let fx = Math.random() * canvas.width;
                     let fy = Math.random() * (canvas.height / 2);
@@ -333,33 +371,17 @@
                     for(let i=0; i<30; i++) {
                         let angle = Math.random() * Math.PI * 2;
                         let speed = Math.random() * 4 + 1;
-                        particles.push({
-                            x: fx, y: fy,
-                            vx: Math.cos(angle) * speed,
-                            vy: Math.sin(angle) * speed,
-                            alpha: 1,
-                            color: color
-                        });
+                        particles.push({ x: fx, y: fy, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, alpha: 1, color: color });
                     }
                 }
-
                 particles.forEach((p, index) => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vy += 0.05;
-                    p.alpha -= 0.02;
-
+                    p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.alpha -= 0.02;
                     ctx.save();
                     ctx.globalAlpha = Math.max(p.alpha, 0);
                     ctx.fillStyle = p.color;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2); ctx.fill();
                     ctx.restore();
-
-                    if(p.alpha <= 0) {
-                        particles.splice(index, 1);
-                    }
+                    if(p.alpha <= 0) particles.splice(index, 1);
                 });
             }, 30);
         }
