@@ -133,7 +133,7 @@
     <div id="game-wrapper">
         <div class="ui">
             <div style="width: 100%; margin-bottom: 2px; font-size: 12px;">
-                ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Mục tiêu: <span id="score-count" style="color: #00e676;">0</span>/<span id="target-count">10</span>
+                ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Sống sót: <span id="timer-display" style="color: #00e676;">03:00</span>
             </div>
             <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
                 <span>🌿 Đậu</span><span style="font-size:9px; color:#ffeb3b;">50☀️</span>
@@ -156,9 +156,9 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Đã phóng to màn hình & sửa lỗi đạn đậu chuẩn xác!</p>
-                <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 1: DỄ (10 Zombie)</button>
-                <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 2: KHÓ (Zombie giáp)</button>
+                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Mục tiêu mới: Sống sót qua các màn chơi khắc nghiệt!</p>
+                <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 1: DỄ (Sống sót 3 phút)</button>
+                <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 2: KHÓ (Sống sót 5 phút - Zombie Đông & Trâu)</button>
             </div>
 
             <!-- Màn hình Game Over -->
@@ -171,7 +171,7 @@
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <h1 style="color: #00e676;">CHIẾN THẮNG! 🎉</h1>
-                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Bảo vệ thành công khu vườn xuất sắc!</p>
+                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Bạn đã bảo vệ khu vườn thành công xuất sắc!</p>
                 <canvas id="fireworks-canvas" width="600" height="260" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
                 <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="z-index: 22; position: relative; padding: 4px 10px;">VỀ MENU</button>
             </div>
@@ -284,9 +284,8 @@
         let gameOver = false;
         let gameWon = false;
         let currentLevel = 1;
-        let targetScore = 10;
         let suns = 100;
-        let score = 0;
+        let timeLeft = 180; // Thời gian sinh tồn (giây)
         let selectedType = null; 
         const gridRows = 5;
         const gridCols = 10;
@@ -302,6 +301,7 @@
         let animationFrameId = null;
         let zombieSpawner = null;
         let sunSpawner = null;
+        let timerInterval = null;
 
         const container = document.getElementById('game-container');
         const menuScreen = document.getElementById('menu-screen');
@@ -329,15 +329,23 @@
             menuScreen.classList.remove('hidden');
             gameStarted = false;
             stopFireworks();
+            if(timerInterval) clearInterval(timerInterval);
+        }
+
+        function formatTime(seconds) {
+            let m = Math.floor(seconds / 60);
+            let s = seconds % 60;
+            return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
         }
 
         function startGame(level) {
             initAudio(); 
             startBGM(); 
             currentLevel = level;
-            targetScore = (level === 1) ? 10 : 15;
+            // Màn 1: 3 phút (180s), Màn 2: 5 phút (300s)
+            timeLeft = (currentLevel === 1) ? 180 : 300;
             document.getElementById('level-display').innerText = currentLevel;
-            document.getElementById('target-count').innerText = targetScore;
+            document.getElementById('timer-display').innerText = formatTime(timeLeft);
 
             menuScreen.classList.add('hidden');
             gameoverScreen.classList.add('hidden');
@@ -347,7 +355,6 @@
             gameOver = false;
             gameWon = false;
             suns = 100;
-            score = 0;
             plants = [];
             zombies = [];
             bullets = [];
@@ -358,22 +365,33 @@
             updateButtonStyles();
 
             document.getElementById('sun-count').innerText = suns;
-            document.getElementById('score-count').innerText = score;
 
             if(animationFrameId) cancelAnimationFrame(animationFrameId);
             if(zombieSpawner) clearInterval(zombieSpawner);
             if(sunSpawner) clearInterval(sunSpawner);
+            if(timerInterval) clearInterval(timerInterval);
 
-            let spawnRate = (currentLevel === 1) ? 4500 : 3500;
+            // Đồng hồ đếm ngược thời gian sinh tồn mỗi giây
+            timerInterval = setInterval(() => {
+                if(!gameStarted || gameOver || gameWon) return;
+                timeLeft--;
+                document.getElementById('timer-display').innerText = formatTime(timeLeft);
+                if(timeLeft <= 0) {
+                    triggerWin();
+                }
+            }, 1000);
+
+            // Màn 2 tăng độ khó: xuất hiện nhanh hơn và có tỷ lệ cao gặp zombie giáp
+            let spawnRate = (currentLevel === 1) ? 4000 : 2500;
             zombieSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon) return;
                 let row = Math.floor(Math.random() * gridRows);
-                let isConehead = (currentLevel === 2 && Math.random() < 0.4);
+                let isConehead = (currentLevel === 2 && Math.random() < 0.5);
                 zombies.push({
                     row: row, 
                     col: 10.0, 
-                    hp: isConehead ? 140 : 60, 
-                    maxHp: isConehead ? 140 : 60,
+                    hp: isConehead ? 150 : 60, 
+                    maxHp: isConehead ? 150 : 60,
                     isConehead: isConehead
                 });
             }, spawnRate);
@@ -395,6 +413,7 @@
             cancelAnimationFrame(animationFrameId);
             clearInterval(zombieSpawner);
             clearInterval(sunSpawner);
+            clearInterval(timerInterval);
             gameoverScreen.classList.remove('hidden');
         }
 
@@ -405,6 +424,7 @@
             cancelAnimationFrame(animationFrameId);
             clearInterval(zombieSpawner);
             clearInterval(sunSpawner);
+            clearInterval(timerInterval);
             winScreen.classList.remove('hidden');
             startFireworks();
         }
@@ -469,13 +489,8 @@
                             playSound('boom');
                             zombies = zombies.filter(z => {
                                 let inRange = (z.row >= row - 1 && z.row <= row + 1 && z.col >= col - 1 && z.col <= col + 1);
-                                if(inRange) {
-                                    score++;
-                                    document.getElementById('score-count').innerText = score;
-                                }
                                 return !inRange;
                             });
-                            if(score >= targetScore) triggerWin();
                             document.getElementById('sun-count').innerText = suns;
                             selectedType = null;
                             updateButtonStyles();
@@ -539,19 +554,10 @@
 
             activeMowers.forEach(m => {
                 m.col += 0.2 * dt;
-                zombies = zombies.filter(z => {
-                    let hit = (z.row === m.row && Math.abs(z.col - m.col) < 0.8);
-                    if(hit) {
-                        score++;
-                        document.getElementById('score-count').innerText = score;
-                    }
-                    return !hit;
-                });
-                if(score >= targetScore) triggerWin();
+                zombies = zombies.filter(z => !(z.row === m.row && Math.abs(z.col - m.col) < 0.8));
             });
             activeMowers = activeMowers.filter(m => m.col < gridCols);
 
-            // Cập nhật vị trí đạn bay mượt mà
             bullets.forEach(b => b.col += 0.12 * dt);
 
             zombies.forEach(z => {
@@ -563,7 +569,7 @@
                         plants = plants.filter(p => p !== hitPlant);
                     }
                 } else {
-                    let speed = z.isConehead ? 0.005 : 0.007;
+                    let speed = z.isConehead ? 0.0055 : 0.0075;
                     z.col -= speed * dt;
                 }
             });
@@ -593,10 +599,8 @@
                 }
             });
 
-            // Xử lý va chạm đạn và zombie chuẩn xác, không bị biến mất sớm
             let survivingBullets = [];
             let destroyedZombies = new Set();
-            let destroyedBullets = new Set();
 
             bullets.forEach((b, bi) => {
                 let hit = false;
@@ -605,14 +609,8 @@
                         z.hp -= 12;
                         playSound('hit');
                         hit = true;
-                        destroyedBullets.add(bi);
                         if(z.hp <= 0) {
                             destroyedZombies.add(zi);
-                            score++;
-                            document.getElementById('score-count').innerText = score;
-                            if(score >= targetScore) {
-                                triggerWin();
-                            }
                         }
                     }
                 });
@@ -624,7 +622,6 @@
             bullets = survivingBullets;
             zombies = zombies.filter((z, zi) => !destroyedZombies.has(zi));
 
-            // Kích hoạt xe cắt cỏ khi zombie chạm cột đầu tiên
             zombies.forEach((z, zi) => {
                 if(z.col <= 0.1) {
                     if(lawnmowers[z.row]) {
