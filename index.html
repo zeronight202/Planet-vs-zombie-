@@ -134,7 +134,7 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Đã tích hợp nhạc nền thực tế từ file của bạn!</p>
+                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Đã kết nối thành công file âm thanh mới!</p>
                 <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 13px; padding: 6px 16px; margin: 3px;">MÀN 1: DỄ (10 Zombie)</button>
                 <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 13px; padding: 6px 16px; margin: 3px;">MÀN 2: KHÓ (Zombie giáp)</button>
             </div>
@@ -158,8 +158,8 @@
     </div>
 
     <script>
-        // Khởi tạo nhạc nền từ file Plantsvszombie.mp3
-        let bgm = new Audio('Plantsvszombie.mp3');
+        // Liên kết file âm thanh mới của bạn (nhớ đổi tên chính xác nếu tên file trên GitHub khác)[span_2](start_span)[span_2](end_span)
+        let bgm = new Audio('themesoundplntsv.mp3');
         bgm.loop = true;
         bgm.volume = 0.5;
 
@@ -304,7 +304,7 @@
 
         function startGame(level) {
             initAudio(); 
-            startBGM(); // Phát file nhạc nền Plantsvszombie.mp3
+            startBGM(); 
             currentLevel = level;
             targetScore = (level === 1) ? 10 : 15;
             document.getElementById('level-display').innerText = currentLevel;
