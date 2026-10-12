@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plants vs Zombies 2</title>
     <style>
+        * { box-sizing: border-box; }
         body { 
             background: #121212; 
             color: white; 
@@ -16,35 +17,94 @@
             align-items: center; 
             justify-content: center; 
             min-height: 100vh; 
-            box-sizing: border-box;
         }
         
         .game-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 900;
             background: linear-gradient(45deg, #00ff87, #60efff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 10px rgba(0, 255, 135, 0.3);
-            margin: 6px 0;
+            margin: 8px 0;
             letter-spacing: 1px;
             text-align: center;
         }
 
-        #game-wrapper { position: relative; width: 480px; text-align: center; }
-        #game-container { position: relative; width: 480px; height: 300px; background: linear-gradient(to bottom, #4a7c36, #3b6329); margin: 6px auto; border: 4px solid #333; overflow: hidden; touch-action: manipulation; border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); }
-        .grid-cell { position: absolute; width: 60px; height: 60px; border: 1px dashed rgba(255,255,255,0.15); box-sizing: border-box; }
-        .ui { margin: 6px 0; font-size: 13px; font-weight: bold; background: #1e1e1e; padding: 6px 12px; border-radius: 6px; display: inline-block; border: 1px solid #333; text-align: center; }
-        button { padding: 6px 12px; font-size: 12px; background: linear-gradient(to bottom, #ffea61, #f1a80a); border: none; cursor: pointer; border-radius: 5px; font-weight: bold; color: #222; margin: 2px; box-shadow: 0 3px #c68505; }
+        #game-wrapper { 
+            position: relative; 
+            width: 100%; 
+            max-width: 420px; 
+            text-align: center; 
+        }
+
+        #game-container { 
+            position: relative; 
+            width: 100%; 
+            height: 280px; 
+            background: linear-gradient(to bottom, #4a7c36, #3b6329); 
+            margin: 6px auto; 
+            border: 4px solid #333; 
+            overflow: hidden; 
+            touch-action: manipulation; 
+            border-radius: 10px; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5); 
+        }
+
+        .grid-cell { 
+            position: absolute; 
+            width: 12.5%; 
+            height: 20%; 
+            border: 1px dashed rgba(255,255,255,0.15); 
+            box-sizing: border-box; 
+        }
+
+        .ui { 
+            margin: 6px 0; 
+            font-size: 12px; 
+            font-weight: bold; 
+            background: #1e1e1e; 
+            padding: 8px; 
+            border-radius: 6px; 
+            width: 100%;
+            border: 1px solid #333; 
+            text-align: center; 
+        }
+
+        button { 
+            padding: 6px 10px; 
+            font-size: 11px; 
+            background: linear-gradient(to bottom, #ffea61, #f1a80a); 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            color: #222; 
+            margin: 2px; 
+            box-shadow: 0 3px #c68505; 
+        }
         button:active { transform: translateY(2px); box-shadow: 0 1px #c68505; }
         
-        .entity { position: absolute; display: flex; align-items: center; justify-content: center; will-change: transform, left; }
-        .plant { width: 50px; height: 50px; font-size: 26px; z-index: 2; }
-        .zombie { width: 40px; height: 50px; font-size: 26px; z-index: 2; }
-        .bullet { width: 8px; height: 8px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; }
+        .entity { position: absolute; display: flex; align-items: center; justify-content: center; }
+        .bullet { width: 7px; height: 7px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; }
         
-        .screen-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 6px; text-align: center; }
-        .screen-overlay h1 { margin-bottom: 8px; font-size: 22px; }
+        .screen-overlay { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.92); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 20; 
+            border-radius: 6px; 
+            text-align: center; 
+            padding: 15px;
+        }
+        .screen-overlay h1 { margin-bottom: 8px; font-size: 20px; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -62,23 +122,23 @@
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
                 <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Bảo vệ khu vườn và tiêu diệt zombie!</p>
-                <button onclick="startGame(1)" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 15px; padding: 8px 20px; margin: 5px;">MÀN 1: DỄ (10 Zombie)</button>
-                <button onclick="startGame(2)" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 15px; padding: 8px 20px; margin: 5px;">MÀN 2: KHÓ (Zombie giáp)</button>
+                <button onclick="startGame(1)" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 14px; padding: 8px 18px; margin: 4px;">MÀN 1: DỄ (10 Zombie)</button>
+                <button onclick="startGame(2)" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 14px; padding: 8px 18px; margin: 4px;">MÀN 2: KHÓ (Zombie giáp)</button>
             </div>
 
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <h1 style="color: #ff5252;">GAME OVER</h1>
-                <p style="font-size: 13px; color: #ccc; margin-bottom: 12px;">Zombie đã phá vỡ hàng phòng thủ!</p>
+                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Zombie đã phá vỡ hàng phòng thủ!</p>
                 <button onclick="showMenu()" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white;">VỀ MENU</button>
             </div>
 
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <h1 style="color: #00e676;">CHIẾN THẮNG! 🎉</h1>
-                <p style="font-size: 13px; color: #ccc; margin-bottom: 12px;">Bảo vệ thành công khu vườn xuất sắc!</p>
-                <canvas id="fireworks-canvas" width="480" height="300" style="position: absolute; top:0; left:0; pointer-events:none; z-index:11;"></canvas>
-                <button onclick="showMenu()" style="z-index: 12; position: relative;">VỀ MENU</button>
+                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Bảo vệ thành công khu vườn xuất sắc!</p>
+                <canvas id="fireworks-canvas" width="420" height="280" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
+                <button onclick="showMenu()" style="z-index: 22; position: relative;">VỀ MENU</button>
             </div>
         </div>
         <div style="font-size: 11px; color: #888; margin-top: 5px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
@@ -87,12 +147,14 @@
     <script>
         let audioCtx = null;
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+            } catch(e) {}
         }
 
         function playSound(type) {
@@ -107,19 +169,19 @@
                 if(type === 'plant') {
                     osc.frequency.setValueAtTime(300, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.1);
                 } else if(type === 'shoot') {
                     osc.frequency.setValueAtTime(500, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.08);
-                    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.08);
                 } else if(type === 'hit') {
                     osc.frequency.setValueAtTime(120, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.08);
-                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.08);
                 }
@@ -136,8 +198,6 @@
         let selectedType = null; 
         const gridRows = 5;
         const gridCols = 8;
-        const cellWidth = 60;
-        const cellHeight = 60;
 
         let plants = []; 
         let zombies = []; 
@@ -157,8 +217,8 @@
             for(let c=0; c<gridCols; c++) {
                 let div = document.createElement('div');
                 div.className = 'grid-cell';
-                div.style.left = (c * cellWidth) + 'px';
-                div.style.top = (r * cellHeight) + 'px';
+                div.style.left = (c * 12.5) + '%';
+                div.style.top = (r * 20) + '%';
                 container.appendChild(div);
             }
         }
@@ -172,13 +232,16 @@
         }
 
         function startGame(level) {
-            initAudio(); // Kích hoạt âm thanh khi bấm nút bắt đầu
+            initAudio(); 
             currentLevel = level;
             targetScore = (level === 1) ? 10 : 15;
             document.getElementById('level-display').innerText = currentLevel;
             document.getElementById('target-count').innerText = targetScore;
 
             menuScreen.classList.add('hidden');
+            gameoverScreen.classList.add('hidden');
+            winScreen.classList.add('hidden');
+            
             gameStarted = true;
             gameOver = false;
             gameWon = false;
@@ -202,7 +265,7 @@
                 let isConehead = (currentLevel === 2 && Math.random() < 0.4);
                 zombies.push({
                     row: row, 
-                    x: 480, 
+                    x: container.clientWidth, 
                     hp: isConehead ? 140 : 60, 
                     maxHp: isConehead ? 140 : 60,
                     isConehead: isConehead
@@ -251,8 +314,9 @@
             let rect = container.getBoundingClientRect();
             let x = e.clientX - rect.left;
             let y = e.clientY - rect.top;
-            let col = Math.floor(x / cellWidth);
-            let row = Math.floor(y / cellHeight);
+            
+            let col = Math.floor((x / rect.width) * gridCols);
+            let row = Math.floor((y / rect.height) * gridRows);
 
             if(row >= 0 && row < gridRows && col >= 0 && col < gridCols) {
                 let exists = plants.some(p => p.row === row && p.col === col);
@@ -280,29 +344,33 @@
             if(dt > 3) dt = 3;
             lastTime = timestamp;
 
-            bullets.forEach(b => b.x += 4.5 * dt);
-            bullets = bullets.filter(b => b.x < 480);
+            let cWidth = container.clientWidth;
+            let cellW = cWidth / gridCols;
+
+            bullets.forEach(b => b.x += 3.5 * dt);
+            bullets = bullets.filter(b => b.x < cWidth);
 
             zombies.forEach(z => {
-                let hitPlant = plants.find(p => p.row === z.row && Math.abs(p.col * cellWidth - z.x) < 25);
+                let hitPlant = plants.find(p => p.row === z.row && Math.abs((p.col * cellW) - z.x) < cellW * 0.5);
                 if(hitPlant) {
                     hitPlant.hp -= 1.0 * dt;
                     if(hitPlant.hp <= 0) {
                         plants = plants.filter(p => p !== hitPlant);
                     }
                 } else {
-                    let speed = z.isConehead ? 0.45 : 0.6;
+                    let speed = z.isConehead ? 0.35 : 0.5;
                     z.x -= speed * dt;
                 }
             });
 
             plants.forEach(p => {
+                let pX = p.col * cellW;
                 if(p.type === 'peashooter') {
-                    let hasZombie = zombies.some(z => z.row === p.row && z.x > p.col * cellWidth);
+                    let hasZombie = zombies.some(z => z.row === p.row && z.x > pX);
                     if(hasZombie) {
                         p.shootTimer += dt;
                         if(p.shootTimer > 45) {
-                            bullets.push({row: p.row, x: (p.col + 1) * cellWidth});
+                            bullets.push({row: p.row, x: pX + cellW});
                             playSound('shoot');
                             p.shootTimer = 0;
                         }
@@ -319,7 +387,7 @@
 
             bullets.forEach((b, bi) => {
                 zombies.forEach((z, zi) => {
-                    if(b.row === z.row && Math.abs(b.x - z.x) < 20) {
+                    if(b.row === z.row && Math.abs(b.x - z.x) < cellW * 0.4) {
                         z.hp -= 20;
                         playSound('hit');
                         bullets.splice(bi, 1);
@@ -336,7 +404,7 @@
             });
 
             zombies.forEach(z => {
-                if(z.x < 0) {
+                if(z.x < -20) {
                     triggerGameOver();
                 }
             });
@@ -348,11 +416,24 @@
         function render() {
             container.querySelectorAll('.entity:not(.grid-cell), .bullet').forEach(el => el.remove());
 
+            let cWidth = container.clientWidth;
+            let cHeight = container.clientHeight;
+            let cellW = cWidth / gridCols;
+            let cellH = cHeight / gridRows;
+
             plants.forEach(p => {
                 let div = document.createElement('div');
-                div.className = 'entity plant';
-                div.style.left = (p.col * cellWidth + 5) + 'px';
-                div.style.top = (p.row * cellHeight + 5) + 'px';
+                div.className = 'entity';
+                div.style.position = 'absolute';
+                div.style.display = 'flex';
+                div.style.alignItems = 'center';
+                div.style.justifyContent = 'center';
+                div.style.left = (p.col * cellW) + 'px';
+                div.style.top = (p.row * cellH) + 'px';
+                div.style.width = cellW + 'px';
+                div.style.height = cellH + 'px';
+                div.style.fontSize = '24px';
+                div.style.zIndex = '2';
                 if(p.type === 'peashooter') div.innerText = '🌿';
                 else if(p.type === 'sunflower') div.innerText = '🌻';
                 else if(p.type === 'wallnut') div.innerText = '🥔';
@@ -361,9 +442,17 @@
 
             zombies.forEach(z => {
                 let div = document.createElement('div');
-                div.className = 'entity zombie';
+                div.className = 'entity';
+                div.style.position = 'absolute';
+                div.style.display = 'flex';
+                div.style.alignItems = 'center';
+                div.style.justifyContent = 'center';
                 div.style.left = z.x + 'px';
-                div.style.top = (z.row * cellHeight + 5) + 'px';
+                div.style.top = (z.row * cellH) + 'px';
+                div.style.width = cellW + 'px';
+                div.style.height = cellH + 'px';
+                div.style.fontSize = '24px';
+                div.style.zIndex = '2';
                 div.innerText = z.isConehead ? '🧟‍♂️' : '🧟';
                 container.appendChild(div);
             });
@@ -372,7 +461,7 @@
                 let div = document.createElement('div');
                 div.className = 'bullet';
                 div.style.left = b.x + 'px';
-                div.style.top = (b.row * cellHeight + 26) + 'px';
+                div.style.top = (b.row * cellH + cellH * 0.4) + 'px';
                 container.appendChild(div);
             });
         }
