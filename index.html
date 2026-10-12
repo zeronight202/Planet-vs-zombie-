@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Plants vs Zombies 2</title>
     <style>
-        * { box-sizing: border-box; user-select: none; }
+        * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
         body { 
             background: #121212; 
             color: white; 
@@ -71,7 +71,7 @@
         }
 
         button { 
-            padding: 4px 8px; 
+            padding: 6px 10px; 
             font-size: 11px; 
             background: linear-gradient(to bottom, #ffea61, #f1a80a); 
             border: none; 
@@ -81,15 +81,16 @@
             color: #222; 
             margin: 2px; 
             box-shadow: 0 3px #c68505; 
+            touch-action: manipulation;
         }
         button:active { transform: translateY(2px); box-shadow: 0 1px #c68505; }
         button.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; }
         
-        .entity { position: absolute; display: flex; align-items: center; justify-content: center; }
-        .bullet { width: 7px; height: 7px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; }
+        .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+        .bullet { width: 7px; height: 7px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
         .sun-drop { position: absolute; font-size: 22px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
-        .lawnmower { position: absolute; font-size: 20px; z-index: 4; left: 2px; }
-        .active-mower { position: absolute; font-size: 22px; z-index: 6; }
+        .lawnmower { position: absolute; font-size: 20px; z-index: 4; left: 2px; pointer-events: none; }
+        .active-mower { position: absolute; font-size: 22px; z-index: 6; pointer-events: none; }
         
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-5px); } }
         
@@ -118,26 +119,26 @@
     <div id="game-wrapper">
         <div class="ui">
             ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Mục tiêu: <span id="score-count" style="color: #00e676;">0</span>/<span id="target-count">10</span><br>
-            <button onclick="selectPlant('peashooter')" id="btn-peashooter">🌿 Đậu (50)</button>
-            <button onclick="selectPlant('sunflower')" id="btn-sunflower">🌻 Hoa (40)</button>
-            <button onclick="selectPlant('wallnut')" id="btn-wallnut">🥔 Khoai (30)</button>
-            <button onclick="selectPlant('cherry')" id="btn-cherry">💣 Bom (125)</button>
-            <button onclick="selectPlant('shovel')" id="btn-shovel">⛏️ Xẻng</button>
+            <button onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">🌿 Đậu (50)</button>
+            <button onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">🌻 Hoa (40)</button>
+            <button onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">🥔 Khoai (30)</button>
+            <button onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">💣 Bom (125)</button>
+            <button onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel">⛏️ Xẻng</button>
         </div>
-        <div id="game-container" onclick="handleGridClick(event)">
+        <div id="game-container" onclick="handleGridClick(event)" ontouchend="handleTouchGrid(event)">
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Đã sửa lỗi hiển thị & căn chỉnh giao diện chuẩn xác!</p>
-                <button onclick="startGame(1)" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 13px; padding: 6px 16px; margin: 3px;">MÀN 1: DỄ (10 Zombie)</button>
-                <button onclick="startGame(2)" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 13px; padding: 6px 16px; margin: 3px;">MÀN 2: KHÓ (Zombie giáp)</button>
+                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Đã tối ưu cảm ứng bấm nhạy trên điện thoại!</p>
+                <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 13px; padding: 8px 18px; margin: 4px;">MÀN 1: DỄ (10 Zombie)</button>
+                <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 13px; padding: 8px 18px; margin: 4px;">MÀN 2: KHÓ (Zombie giáp)</button>
             </div>
 
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <h1 style="color: #ff5252;">GAME OVER</h1>
                 <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
-                <button onclick="showMenu()" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white;">VỀ MENU</button>
+                <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white; padding: 6px 14px;">VỀ MENU</button>
             </div>
 
             <!-- Màn hình Chiến Thắng -->
@@ -145,7 +146,7 @@
                 <h1 style="color: #00e676;">CHIẾN THẮNG! 🎉</h1>
                 <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Bảo vệ thành công khu vườn xuất sắc!</p>
                 <canvas id="fireworks-canvas" width="450" height="260" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
-                <button onclick="showMenu()" style="z-index: 22; position: relative;">VỀ MENU</button>
+                <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="z-index: 22; position: relative; padding: 6px 14px;">VỀ MENU</button>
             </div>
         </div>
         <div style="font-size: 10px; color: #888; margin-top: 4px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
@@ -335,4 +336,135 @@
             let spawnRate = (currentLevel === 1) ? 4500 : 3500;
             zombieSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon) return;
-                let row = Math.floor(Math.random
+                let row = Math.floor(Math.random() * gridRows);
+                let isConehead = (currentLevel === 2 && Math.random() < 0.4);
+                zombies.push({
+                    row: row, 
+                    x: 450, 
+                    hp: isConehead ? 140 : 60, 
+                    maxHp: isConehead ? 140 : 60,
+                    isConehead: isConehead
+                });
+            }, spawnRate);
+
+            sunSpawner = setInterval(() => {
+                if(!gameStarted || gameOver || gameWon) return;
+                suns += 25;
+                document.getElementById('sun-count').innerText = suns;
+            }, 8000);
+
+            startBGM();
+            lastTime = performance.now();
+            animationFrameId = requestAnimationFrame(gameLoop);
+        }
+
+        function triggerGameOver() {
+            gameOver = true;
+            gameStarted = false;
+            cancelAnimationFrame(animationFrameId);
+            clearInterval(zombieSpawner);
+            clearInterval(sunSpawner);
+            gameoverScreen.classList.remove('hidden');
+        }
+
+        function triggerWin() {
+            gameWon = true;
+            gameStarted = false;
+            cancelAnimationFrame(animationFrameId);
+            clearInterval(zombieSpawner);
+            clearInterval(sunSpawner);
+            winScreen.classList.remove('hidden');
+            startFireworks();
+        }
+
+        function selectPlant(type) {
+            initAudio();
+            if(!gameStarted || gameOver || gameWon) return;
+            selectedType = type;
+            updateButtonStyles();
+        }
+
+        function updateButtonStyles() {
+            ['peashooter', 'sunflower', 'wallnut', 'cherry', 'shovel'].forEach(t => {
+                let btn = document.getElementById('btn-' + t);
+                if(btn) {
+                    if(selectedType === t) btn.classList.add('active-btn');
+                    else btn.classList.remove('active-btn');
+                }
+            });
+        }
+
+        function processInteraction(clientX, clientY) {
+            initAudio();
+            if(!gameStarted || gameOver || gameWon) return;
+            let rect = container.getBoundingClientRect();
+            let x = clientX - rect.left;
+            let y = clientY - rect.top;
+
+            let clickedSunIndex = sunDrops.findIndex(s => Math.abs(s.x - x) < 30 && Math.abs(s.y - y) < 30);
+            if(clickedSunIndex !== -1) {
+                sunDrops.splice(clickedSunIndex, 1);
+                suns += 25;
+                document.getElementById('sun-count').innerText = suns;
+                playSound('collect');
+                return;
+            }
+
+            if(!selectedType) return;
+            
+            let col = Math.floor(x / cellW);
+            let row = Math.floor(y / cellH);
+
+            if(row >= 0 && row < gridRows && col >= 0 && col < gridCols) {
+                if(selectedType === 'shovel') {
+                    let idx = plants.findIndex(p => p.row === row && p.col === col);
+                    if(idx !== -1) {
+                        plants.splice(idx, 1);
+                        playSound('plant');
+                    }
+                    selectedType = null;
+                    updateButtonStyles();
+                    return;
+                }
+
+                let exists = plants.some(p => p.row === row && p.col === col);
+                if(!exists) {
+                    if(selectedType === 'cherry') {
+                        if(suns >= 125) {
+                            suns -= 125;
+                            playSound('boom');
+                            zombies = zombies.filter(z => {
+                                let zCol = Math.floor(z.x / cellW);
+                                let inRange = (z.row >= row - 1 && z.row <= row + 1 && zCol >= col - 1 && zCol <= col + 1);
+                                if(inRange) {
+                                    score++;
+                                    document.getElementById('score-count').innerText = score;
+                                }
+                                return !inRange;
+                            });
+                            if(score >= targetScore) triggerWin();
+                            document.getElementById('sun-count').innerText = suns;
+                            selectedType = null;
+                            updateButtonStyles();
+                        } else {
+                            alert("Không đủ mặt trời (Cần 125☀️)!");
+                        }
+                    } else if(selectedType === 'peashooter') {
+                        if(suns >= 50) {
+                            plants.push({type: 'peashooter', row: row, col: col, hp: 100, shootTimer: 0});
+                            suns -= 50;
+                            playSound('plant');
+                            document.getElementById('sun-count').innerText = suns;
+                            selectedType = null;
+                            updateButtonStyles();
+                        } else { alert("Không đủ mặt trời (Cần 50☀️)!"); }
+                    } else if(selectedType === 'sunflower') {
+                        if(suns >= 40) {
+                            plants.push({type: 'sunflower', row: row, col: col, hp: 80, sunTimer: 0});
+                            suns -= 40;
+                            playSound('plant');
+                            document.getElementById('sun-count').innerText = suns;
+                            selectedType = null;
+                            updateButtonStyles();
+                        } else { alert("Không đủ mặt trời (Cần 40☀️)!"); }
+                    } else if
