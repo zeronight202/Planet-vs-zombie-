@@ -21,12 +21,12 @@
         }
         
         .game-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 900;
             background: linear-gradient(45deg, #00ff87, #60efff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 255, 135, 0.3);
+            text-shadow: 0 2px 8px rgba(0, 255, 135, 0.3);
             margin: 2px 0;
             letter-spacing: 1px;
             text-align: center;
@@ -35,7 +35,7 @@
         #game-wrapper { 
             position: relative; 
             width: 100vw; 
-            max-width: 750px; 
+            max-width: 680px; 
             text-align: center; 
             padding: 0 4px;
         }
@@ -43,15 +43,15 @@
         #game-container { 
             position: relative; 
             width: 100%; 
-            height: 52vw; 
-            max-height: 380px; 
+            height: 48vw; 
+            max-height: 260px; 
             background: linear-gradient(to bottom, #4a7c36, #3b6329); 
-            margin: 4px auto; 
+            margin: 2px auto; 
             border: 3px solid #333; 
             overflow: hidden; 
             touch-action: manipulation; 
             border-radius: 8px; 
-            box-shadow: 0 6px 14px rgba(0,0,0,0.6); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6); 
         }
 
         .grid-cell { 
@@ -63,11 +63,11 @@
         }
 
         .ui { 
-            margin: 3px 0; 
+            margin: 2px 0; 
             font-size: 11px; 
             font-weight: bold; 
             background: #1e1e1e; 
-            padding: 5px; 
+            padding: 4px; 
             border-radius: 6px; 
             width: 100%;
             border: 1px solid #333; 
@@ -75,7 +75,7 @@
         }
 
         button { 
-            padding: 5px 8px; 
+            padding: 4px 8px; 
             font-size: 11px; 
             background: linear-gradient(to bottom, #ffea61, #f1a80a); 
             border: none; 
@@ -91,13 +91,13 @@
         button.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; }
         
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        .bullet { width: 7px; height: 7px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
-        .sun-drop { position: absolute; font-size: 22px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
+        .bullet { width: 6px; height: 6px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 5px #ffcc00; pointer-events: none; }
+        .sun-drop { position: absolute; font-size: 20px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
         
-        .lawnmower { position: absolute; font-size: 22px; z-index: 4; left: 2px; transform: scaleX(-1); pointer-events: none; }
-        .active-mower { position: absolute; font-size: 24px; z-index: 6; transform: scaleX(-1); pointer-events: none; }
+        .lawnmower { position: absolute; font-size: 20px; z-index: 4; left: 2px; transform: scaleX(-1); pointer-events: none; }
+        .active-mower { position: absolute; font-size: 22px; z-index: 6; transform: scaleX(-1); pointer-events: none; }
         
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
         
         .screen-overlay { 
             position: absolute; 
@@ -113,9 +113,9 @@
             z-index: 20; 
             border-radius: 6px; 
             text-align: center; 
-            padding: 15px;
+            padding: 10px;
         }
-        .screen-overlay h1 { margin-bottom: 6px; font-size: 18px; }
+        .screen-overlay h1 { margin-bottom: 4px; font-size: 16px; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -134,40 +134,37 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Đã kết nối thành công file âm thanh mới!</p>
-                <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 13px; padding: 6px 16px; margin: 3px;">MÀN 1: DỄ (10 Zombie)</button>
-                <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 13px; padding: 6px 16px; margin: 3px;">MÀN 2: KHÓ (Zombie giáp)</button>
+                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Đã tinh chỉnh hiển thị hoàn hảo cho màn hình ngang!</p>
+                <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 1: DỄ (10 Zombie)</button>
+                <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 2: KHÓ (Zombie giáp)</button>
             </div>
 
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <h1 style="color: #ff5252;">GAME OVER</h1>
-                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
-                <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white; padding: 5px 12px;">VỀ MENU</button>
+                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
+                <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white; padding: 4px 10px;">VỀ MENU</button>
             </div>
 
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <h1 style="color: #00e676;">CHIẾN THẮNG! 🎉</h1>
-                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Bảo vệ thành công khu vườn xuất sắc!</p>
-                <canvas id="fireworks-canvas" width="600" height="320" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
-                <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="z-index: 22; position: relative; padding: 5px 12px;">VỀ MENU</button>
+                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Bảo vệ thành công khu vườn xuất sắc!</p>
+                <canvas id="fireworks-canvas" width="600" height="260" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
+                <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="z-index: 22; position: relative; padding: 4px 10px;">VỀ MENU</button>
             </div>
         </div>
-        <div style="font-size: 10px; color: #888; margin-top: 3px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
+        <div style="font-size: 9px; color: #888; margin-top: 2px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
     </div>
 
     <script>
-        // Liên kết file âm thanh mới của bạn (nhớ đổi tên chính xác nếu tên file trên GitHub khác)[span_2](start_span)[span_2](end_span)
         let bgm = new Audio('themesoundplntsv.mp3');
         bgm.loop = true;
         bgm.volume = 0.5;
 
         function startBGM() {
             bgm.currentTime = 0;
-            bgm.play().catch(e => {
-                console.log("Trình duyệt chặn autoplay:", e);
-            });
+            bgm.play().catch(e => {});
         }
 
         function stopBGM() {
@@ -639,7 +636,7 @@
                 div.style.top = (p.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
                 div.style.height = cellH + 'px';
-                div.style.fontSize = '24px';
+                div.style.fontSize = '22px';
                 div.style.zIndex = '2';
                 if(p.type === 'peashooter') div.innerText = '🌿';
                 else if(p.type === 'sunflower') div.innerText = '🌻';
@@ -654,7 +651,7 @@
                 div.style.top = (z.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
                 div.style.height = cellH + 'px';
-                div.style.fontSize = '24px';
+                div.style.fontSize = '22px';
                 div.style.zIndex = '2';
                 div.innerText = z.isConehead ? '🧟‍♂️' : '🧟';
                 container.appendChild(div);
