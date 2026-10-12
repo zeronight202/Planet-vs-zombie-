@@ -26,7 +26,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 10px rgba(0, 255, 135, 0.3);
-            margin: 8px 0;
+            margin: 6px 0;
             letter-spacing: 1px;
             text-align: center;
         }
@@ -34,7 +34,7 @@
         #game-wrapper { 
             position: relative; 
             width: 100%; 
-            max-width: 480px; 
+            max-width: 500px; 
             text-align: center; 
         }
 
@@ -61,10 +61,10 @@
 
         .ui { 
             margin: 6px 0; 
-            font-size: 12px; 
+            font-size: 11px; 
             font-weight: bold; 
             background: #1e1e1e; 
-            padding: 8px; 
+            padding: 6px; 
             border-radius: 6px; 
             width: 100%;
             border: 1px solid #333; 
@@ -72,7 +72,7 @@
         }
 
         button { 
-            padding: 6px 10px; 
+            padding: 5px 8px; 
             font-size: 11px; 
             background: linear-gradient(to bottom, #ffea61, #f1a80a); 
             border: none; 
@@ -84,10 +84,14 @@
             box-shadow: 0 3px #c68505; 
         }
         button:active { transform: translateY(2px); box-shadow: 0 1px #c68505; }
+        button.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; }
         
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; }
         .bullet { width: 7px; height: 7px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; }
         .sun-drop { position: absolute; font-size: 24px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
+        .lawnmower { position: absolute; font-size: 22px; z-index: 4; left: 2px; }
+        .active-mower { position: absolute; font-size: 24px; z-index: 6; }
+        
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-5px); } }
         
         .screen-overlay { 
@@ -115,15 +119,17 @@
     <div id="game-wrapper">
         <div class="ui">
             ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Mục tiêu: <span id="score-count" style="color: #00e676;">0</span>/<span id="target-count">10</span><br>
-            <button onclick="selectPlant('peashooter')">🌿 Đậu (50☀️)</button>
-            <button onclick="selectPlant('sunflower')">🌻 Hướng Dương (40☀️)</button>
-            <button onclick="selectPlant('wallnut')">🥔 Khoai Tây (30☀️)</button>
+            <button onclick="selectPlant('peashooter')" id="btn-peashooter">🌿 Đậu (50)</button>
+            <button onclick="selectPlant('sunflower')" id="btn-sunflower">🌻 Hoa (40)</button>
+            <button onclick="selectPlant('wallnut')" id="btn-wallnut">🥔 Khoai (30)</button>
+            <button onclick="selectPlant('cherry')" id="btn-cherry">💣 Bom (125)</button>
+            <button onclick="selectPlant('shovel')" id="btn-shovel" class="active-shovel">⛏️ Xẻng</button>
         </div>
         <div id="game-container" onclick="handleGridClick(event)">
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Đã mở rộng sân cỏ 10 cột & thêm tiếng Zombie cắn cây!</p>
+                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Đã có Xe cắt cỏ, Bom nổ, Xẻng & Nhạc nền!</p>
                 <button onclick="startGame(1)" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 14px; padding: 8px 18px; margin: 4px;">MÀN 1: DỄ (10 Zombie)</button>
                 <button onclick="startGame(2)" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 14px; padding: 8px 18px; margin: 4px;">MÀN 2: KHÓ (Zombie giáp)</button>
             </div>
@@ -131,7 +137,7 @@
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <h1 style="color: #ff5252;">GAME OVER</h1>
-                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Zombie đã phá vỡ hàng phòng thủ!</p>
+                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
                 <button onclick="showMenu()" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white;">VỀ MENU</button>
             </div>
 
@@ -139,7 +145,7 @@
             <div id="win-screen" class="screen-overlay hidden">
                 <h1 style="color: #00e676;">CHIẾN THẮNG! 🎉</h1>
                 <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Bảo vệ thành công khu vườn xuất sắc!</p>
-                <canvas id="fireworks-canvas" width="480" height="280" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
+                <canvas id="fireworks-canvas" width="500" height="280" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
                 <button onclick="showMenu()" style="z-index: 22; position: relative;">VỀ MENU</button>
             </div>
         </div>
@@ -149,6 +155,7 @@
     <script>
         let audioCtx = null;
         let lastBiteSoundTime = 0;
+        let bgmTimer = null;
 
         function initAudio() {
             try {
@@ -159,6 +166,30 @@
                     audioCtx.resume();
                 }
             } catch(e) {}
+        }
+
+        // Nhạc nền vui nhộn tự phát
+        function startBGM() {
+            if (bgmTimer) clearInterval(bgmTimer);
+            const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 523.25];
+            bgmTimer = setInterval(() => {
+                if (!gameStarted || gameOver || gameWon) return;
+                try {
+                    initAudio();
+                    if(!audioCtx) return;
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    let note = notes[Math.floor(Math.random() * notes.length)];
+                    osc.frequency.setValueAtTime(note, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } catch(e) {}
+            }, 800);
         }
 
         function playSound(type) {
@@ -194,10 +225,23 @@
                     gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.12);
+                } else if(type === 'boom') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.4);
+                    gain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+                } else if(type === 'mower') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(400, audioCtx.currentTime + 0.5);
+                    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
                 } else if(type === 'bite') {
-                    // Âm thanh Zombie cắn cây
                     let now = performance.now();
-                    if(now - lastBiteSoundTime > 300) { // Giới hạn tần suất phát tiếng cắn
+                    if(now - lastBiteSoundTime > 300) {
                         osc.type = 'sawtooth';
                         osc.frequency.setValueAtTime(180, audioCtx.currentTime);
                         osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.1);
@@ -219,12 +263,14 @@
         let score = 0;
         let selectedType = null; 
         const gridRows = 5;
-        const gridCols = 10; // Đã tăng độ dài map lên 10 cột
+        const gridCols = 10;
 
         let plants = []; 
         let zombies = []; 
         let bullets = []; 
         let sunDrops = []; 
+        let lawnmowers = [true, true, true, true, true]; // Xe cắt cỏ 5 hàng
+        let activeMowers = []; // Các xe đang chạy càn quét
         
         let lastTime = 0;
         let animationFrameId = null;
@@ -274,7 +320,11 @@
             zombies = [];
             bullets = [];
             sunDrops = [];
+            activeMowers = [];
+            lawnmowers = [true, true, true, true, true];
             selectedType = null;
+            updateButtonStyles();
+
             document.getElementById('sun-count').innerText = suns;
             document.getElementById('score-count').innerText = score;
 
@@ -302,6 +352,7 @@
                 document.getElementById('sun-count').innerText = suns;
             }, 8000);
 
+            startBGM();
             lastTime = performance.now();
             animationFrameId = requestAnimationFrame(gameLoop);
         }
@@ -327,10 +378,23 @@
 
         function selectPlant(type) {
             if(!gameStarted || gameOver || gameWon) return;
-            if(type === 'peashooter' && suns >= 50) { selectedType = 'peashooter'; alert("Đã chọn Đậu (🌿)"); }
-            else if(type === 'sunflower' && suns >= 40) { selectedType = 'sunflower'; alert("Đã chọn Hướng Dương (🌻)"); }
-            else if(type === 'wallnut' && suns >= 30) { selectedType = 'wallnut'; alert("Đã chọn Khoai Tây (🥔)"); }
-            else { alert("Không đủ mặt trời hoặc chọn sai!"); }
+            selectedType = type;
+            updateButtonStyles();
+            if(type === 'peashooter') alert("Đã chọn Đậu (🌿)");
+            else if(type === 'sunflower') alert("Đã chọn Hướng Dương (🌻)");
+            else if(type === 'wallnut') alert("Đã chọn Khoai Tây (🥔)");
+            else if(type === 'cherry') alert("Đã chọn Bom Nổ (💣)");
+            else if(type === 'shovel') alert("Đã chọn Xẻng (⛏️) - Nhấp vào cây để xóa");
+        }
+
+        function updateButtonStyles() {
+            ['peashooter', 'sunflower', 'wallnut', 'cherry', 'shovel'].forEach(t => {
+                let btn = document.getElementById('btn-' + t);
+                if(btn) {
+                    if(selectedType === t) btn.classList.add('active-btn');
+                    else btn.classList.remove('active-btn');
+                }
+            });
         }
 
         function handleGridClick(e) {
@@ -350,25 +414,78 @@
 
             if(!selectedType) return;
             
-            let col = Math.floor((x / rect.width) * gridCols);
-            let row = Math.floor((y / rect.height) * gridRows);
+            let cWidth = container.clientWidth;
+            let cHeight = container.clientHeight;
+            let cellW = cWidth / gridCols;
+            let cellH = cHeight / gridRows;
+
+            let col = Math.floor((x / cWidth) * gridCols);
+            let row = Math.floor((y / cHeight) * gridRows);
 
             if(row >= 0 && row < gridRows && col >= 0 && col < gridCols) {
+                if(selectedType === 'shovel') {
+                    // Xóa cây bằng xẻng
+                    let idx = plants.findIndex(p => p.row === row && p.col === col);
+                    if(idx !== -1) {
+                        plants.splice(idx, 1);
+                        playSound('plant');
+                    }
+                    selectedType = null;
+                    updateButtonStyles();
+                    return;
+                }
+
                 let exists = plants.some(p => p.row === row && p.col === col);
                 if(!exists) {
-                    playSound('plant');
-                    if(selectedType === 'peashooter') {
-                        plants.push({type: 'peashooter', row: row, col: col, hp: 100, shootTimer: 0});
-                        suns -= 50;
+                    if(selectedType === 'cherry') {
+                        if(suns >= 125) {
+                            suns -= 125;
+                            playSound('boom');
+                            // Bom nổ tức thì tiêu diệt zombie xung quanh ô này
+                            zombies = zombies.filter(z => {
+                                let zCol = Math.floor(z.x / cellW);
+                                let inRange = (z.row >= row - 1 && z.row <= row + 1 && zCol >= col - 1 && zCol <= col + 1);
+                                if(inRange) {
+                                    score++;
+                                    document.getElementById('score-count').innerText = score;
+                                }
+                                return !inRange;
+                            });
+                            if(score >= targetScore) triggerWin();
+                            document.getElementById('sun-count').innerText = suns;
+                            selectedType = null;
+                            updateButtonStyles();
+                        } else {
+                            alert("Không đủ mặt trời cho Bom (Cần 125☀️)!");
+                        }
+                    } else if(selectedType === 'peashooter') {
+                        if(suns >= 50) {
+                            plants.push({type: 'peashooter', row: row, col: col, hp: 100, shootTimer: 0});
+                            suns -= 50;
+                            playSound('plant');
+                            document.getElementById('sun-count').innerText = suns;
+                            selectedType = null;
+                            updateButtonStyles();
+                        } else { alert("Không đủ mặt trời (Cần 50☀️)!"); }
                     } else if(selectedType === 'sunflower') {
-                        plants.push({type: 'sunflower', row: row, col: col, hp: 80, sunTimer: 0});
-                        suns -= 40;
+                        if(suns >= 40) {
+                            plants.push({type: 'sunflower', row: row, col: col, hp: 80, sunTimer: 0});
+                            suns -= 40;
+                            playSound('plant');
+                            document.getElementById('sun-count').innerText = suns;
+                            selectedType = null;
+                            updateButtonStyles();
+                        } else { alert("Không đủ mặt trời (Cần 40☀️)!"); }
                     } else if(selectedType === 'wallnut') {
-                        plants.push({type: 'wallnut', row: row, col: col, hp: 300});
-                        suns -= 30;
+                        if(suns >= 30) {
+                            plants.push({type: 'wallnut', row: row, col: col, hp: 300});
+                            suns -= 30;
+                            playSound('plant');
+                            document.getElementById('sun-count').innerText = suns;
+                            selectedType = null;
+                            updateButtonStyles();
+                        } else { alert("Không đủ mặt trời (Cần 30☀️)!"); }
                     }
-                    document.getElementById('sun-count').innerText = suns;
-                    selectedType = null;
                 }
             }
         }
@@ -384,6 +501,22 @@
             let cellW = cWidth / gridCols;
             let cellH = cHeight / gridRows;
 
+            // Cập nhật xe cắt cỏ đang chạy càn quét
+            activeMowers.forEach(m => {
+                m.x += 6 * dt;
+                // Tiêu diệt zombie trên đường đi của xe cắt cỏ
+                zombies = zombies.filter(z => {
+                    let hit = (z.row === m.row && Math.abs(z.x - m.x) < cellW * 0.8);
+                    if(hit) {
+                        score++;
+                        document.getElementById('score-count').innerText = score;
+                    }
+                    return !hit;
+                });
+                if(score >= targetScore) triggerWin();
+            });
+            activeMowers = activeMowers.filter(m => m.x < cWidth);
+
             bullets.forEach(b => b.x += 3.5 * dt);
             bullets = bullets.filter(b => b.x < cWidth);
 
@@ -391,7 +524,7 @@
                 let hitPlant = plants.find(p => p.row === z.row && Math.abs((p.col * cellW) - z.x) < cellW * 0.5);
                 if(hitPlant) {
                     hitPlant.hp -= 0.8 * dt;
-                    playSound('bite'); // Phát tiếng cắn cây
+                    playSound('bite');
                     if(hitPlant.hp <= 0) {
                         plants = plants.filter(p => p !== hitPlant);
                     }
@@ -430,7 +563,7 @@
             bullets.forEach((b, bi) => {
                 zombies.forEach((z, zi) => {
                     if(b.row === z.row && Math.abs(b.x - z.x) < cellW * 0.4) {
-                        z.hp -= 12; // Giảm dame cây đậu từ 20 xuống 12
+                        z.hp -= 12;
                         playSound('hit');
                         bullets.splice(bi, 1);
                         if(z.hp <= 0) {
@@ -445,9 +578,18 @@
                 });
             });
 
-            zombies.forEach(z => {
-                if(z.x < -20) {
-                    triggerGameOver();
+            // Kiểm tra zombie chạm vạch nhà (x < 0)
+            zombies.forEach((z, zi) => {
+                if(z.x < -10) {
+                    if(lawnmowers[z.row]) {
+                        // Kích hoạt xe cắt cỏ cứu nguy hàng đó!
+                        lawnmowers[z.row] = false;
+                        activeMowers.push({row: z.row, x: 0});
+                        playSound('mower');
+                        zombies.splice(zi, 1);
+                    } else if(!activeMowers.some(m => m.row === z.row)) {
+                        triggerGameOver();
+                    }
                 }
             });
 
@@ -456,12 +598,34 @@
         }
 
         function render() {
-            container.querySelectorAll('.entity:not(.grid-cell), .bullet, .sun-drop').forEach(el => el.remove());
+            container.querySelectorAll('.entity:not(.grid-cell), .bullet, .sun-drop, .lawnmower, .active-mower').forEach(el => el.remove());
 
             let cWidth = container.clientWidth;
             let cHeight = container.clientHeight;
             let cellW = cWidth / gridCols;
             let cellH = cHeight / gridRows;
+
+            // Vẽ xe cắt cỏ ở đầu mỗi hàng nếu chưa kích hoạt
+            lawnmowers.forEach((hasMower, r) => {
+                if(hasMower) {
+                    let div = document.createElement('div');
+                    div.className = 'lawnmower';
+                    div.style.left = '2px';
+                    div.style.top = (r * cellH + cellH * 0.25) + 'px';
+                    div.innerText = '🚜';
+                    container.appendChild(div);
+                }
+            });
+
+            // Vẽ xe cắt cỏ đang chạy càn quét
+            activeMowers.forEach(m => {
+                let div = document.createElement('div');
+                div.className = 'active-mower';
+                div.style.left = m.x + 'px';
+                div.style.top = (m.row * cellH + cellH * 0.25) + 'px';
+                div.innerText = '🚜💨';
+                container.appendChild(div);
+            });
 
             plants.forEach(p => {
                 let div = document.createElement('div');
