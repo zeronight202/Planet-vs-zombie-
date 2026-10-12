@@ -2,10 +2,10 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Plants vs Zombies 2</title>
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; user-select: none; }
         body { 
             background: #121212; 
             color: white; 
@@ -20,28 +20,27 @@
         }
         
         .game-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 900;
             background: linear-gradient(45deg, #00ff87, #60efff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 10px rgba(0, 255, 135, 0.3);
-            margin: 6px 0;
+            margin: 4px 0;
             letter-spacing: 1px;
             text-align: center;
         }
 
         #game-wrapper { 
             position: relative; 
-            width: 100%; 
-            max-width: 500px; 
+            width: 450px; 
             text-align: center; 
         }
 
         #game-container { 
             position: relative; 
-            width: 100%; 
-            height: 280px; 
+            width: 450px; 
+            height: 260px; 
             background: linear-gradient(to bottom, #4a7c36, #3b6329); 
             margin: 6px auto; 
             border: 4px solid #333; 
@@ -53,26 +52,26 @@
 
         .grid-cell { 
             position: absolute; 
-            width: 10%; 
-            height: 20%; 
+            width: 45px; 
+            height: 52px; 
             border: 1px dashed rgba(255,255,255,0.15); 
             box-sizing: border-box; 
         }
 
         .ui { 
-            margin: 6px 0; 
+            margin: 4px 0; 
             font-size: 11px; 
             font-weight: bold; 
             background: #1e1e1e; 
             padding: 6px; 
             border-radius: 6px; 
-            width: 100%;
+            width: 450px;
             border: 1px solid #333; 
             text-align: center; 
         }
 
         button { 
-            padding: 5px 8px; 
+            padding: 4px 8px; 
             font-size: 11px; 
             background: linear-gradient(to bottom, #ffea61, #f1a80a); 
             border: none; 
@@ -88,9 +87,9 @@
         
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; }
         .bullet { width: 7px; height: 7px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; }
-        .sun-drop { position: absolute; font-size: 24px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
-        .lawnmower { position: absolute; font-size: 22px; z-index: 4; left: 2px; }
-        .active-mower { position: absolute; font-size: 24px; z-index: 6; }
+        .sun-drop { position: absolute; font-size: 22px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
+        .lawnmower { position: absolute; font-size: 20px; z-index: 4; left: 2px; }
+        .active-mower { position: absolute; font-size: 22px; z-index: 6; }
         
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-5px); } }
         
@@ -110,7 +109,7 @@
             text-align: center; 
             padding: 15px;
         }
-        .screen-overlay h1 { margin-bottom: 8px; font-size: 20px; }
+        .screen-overlay h1 { margin-bottom: 6px; font-size: 18px; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -123,33 +122,33 @@
             <button onclick="selectPlant('sunflower')" id="btn-sunflower">🌻 Hoa (40)</button>
             <button onclick="selectPlant('wallnut')" id="btn-wallnut">🥔 Khoai (30)</button>
             <button onclick="selectPlant('cherry')" id="btn-cherry">💣 Bom (125)</button>
-            <button onclick="selectPlant('shovel')" id="btn-shovel" class="active-shovel">⛏️ Xẻng</button>
+            <button onclick="selectPlant('shovel')" id="btn-shovel">⛏️ Xẻng</button>
         </div>
         <div id="game-container" onclick="handleGridClick(event)">
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Đã tăng âm lượng nhạc nền & âm thanh trong game!</p>
-                <button onclick="startGame(1)" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 14px; padding: 8px 18px; margin: 4px;">MÀN 1: DỄ (10 Zombie)</button>
-                <button onclick="startGame(2)" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 14px; padding: 8px 18px; margin: 4px;">MÀN 2: KHÓ (Zombie giáp)</button>
+                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Đã sửa lỗi hiển thị & căn chỉnh giao diện chuẩn xác!</p>
+                <button onclick="startGame(1)" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 13px; padding: 6px 16px; margin: 3px;">MÀN 1: DỄ (10 Zombie)</button>
+                <button onclick="startGame(2)" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 13px; padding: 6px 16px; margin: 3px;">MÀN 2: KHÓ (Zombie giáp)</button>
             </div>
 
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <h1 style="color: #ff5252;">GAME OVER</h1>
-                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
+                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
                 <button onclick="showMenu()" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white;">VỀ MENU</button>
             </div>
 
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <h1 style="color: #00e676;">CHIẾN THẮNG! 🎉</h1>
-                <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Bảo vệ thành công khu vườn xuất sắc!</p>
-                <canvas id="fireworks-canvas" width="500" height="280" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
+                <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Bảo vệ thành công khu vườn xuất sắc!</p>
+                <canvas id="fireworks-canvas" width="450" height="260" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
                 <button onclick="showMenu()" style="z-index: 22; position: relative;">VỀ MENU</button>
             </div>
         </div>
-        <div style="font-size: 11px; color: #888; margin-top: 5px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
+        <div style="font-size: 10px; color: #888; margin-top: 4px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
     </div>
 
     <script>
@@ -168,7 +167,6 @@
             } catch(e) {}
         }
 
-        // Nhạc nền vui nhộn (đã tăng âm lượng)
         function startBGM() {
             if (bgmTimer) clearInterval(bgmTimer);
             const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 523.25];
@@ -182,7 +180,7 @@
                     osc.type = 'triangle';
                     let note = notes[Math.floor(Math.random() * notes.length)];
                     osc.frequency.setValueAtTime(note, audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.06, audioCtx.currentTime); // Tăng âm lượng nhạc nền rõ hơn
+                    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
@@ -264,6 +262,8 @@
         let selectedType = null; 
         const gridRows = 5;
         const gridCols = 10;
+        const cellW = 45;
+        const cellH = 52;
 
         let plants = []; 
         let zombies = []; 
@@ -286,8 +286,8 @@
             for(let c=0; c<gridCols; c++) {
                 let div = document.createElement('div');
                 div.className = 'grid-cell';
-                div.style.left = (c * 10) + '%';
-                div.style.top = (r * 20) + '%';
+                div.style.left = (c * cellW) + 'px';
+                div.style.top = (r * cellH) + 'px';
                 container.appendChild(div);
             }
         }
@@ -335,109 +335,4 @@
             let spawnRate = (currentLevel === 1) ? 4500 : 3500;
             zombieSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon) return;
-                let row = Math.floor(Math.random() * gridRows);
-                let isConehead = (currentLevel === 2 && Math.random() < 0.4);
-                zombies.push({
-                    row: row, 
-                    x: container.clientWidth, 
-                    hp: isConehead ? 140 : 60, 
-                    maxHp: isConehead ? 140 : 60,
-                    isConehead: isConehead
-                });
-            }, spawnRate);
-
-            sunSpawner = setInterval(() => {
-                if(!gameStarted || gameOver || gameWon) return;
-                suns += 25;
-                document.getElementById('sun-count').innerText = suns;
-            }, 8000);
-
-            startBGM();
-            lastTime = performance.now();
-            animationFrameId = requestAnimationFrame(gameLoop);
-        }
-
-        function triggerGameOver() {
-            gameOver = true;
-            gameStarted = false;
-            cancelAnimationFrame(animationFrameId);
-            clearInterval(zombieSpawner);
-            clearInterval(sunSpawner);
-            gameoverScreen.classList.remove('hidden');
-        }
-
-        function triggerWin() {
-            gameWon = true;
-            gameStarted = false;
-            cancelAnimationFrame(animationFrameId);
-            clearInterval(zombieSpawner);
-            clearInterval(sunSpawner);
-            winScreen.classList.remove('hidden');
-            startFireworks();
-        }
-
-        function selectPlant(type) {
-            initAudio();
-            if(!gameStarted || gameOver || gameWon) return;
-            selectedType = type;
-            updateButtonStyles();
-        }
-
-        function updateButtonStyles() {
-            ['peashooter', 'sunflower', 'wallnut', 'cherry', 'shovel'].forEach(t => {
-                let btn = document.getElementById('btn-' + t);
-                if(btn) {
-                    if(selectedType === t) btn.classList.add('active-btn');
-                    else btn.classList.remove('active-btn');
-                }
-            });
-        }
-
-        function handleGridClick(e) {
-            initAudio();
-            if(!gameStarted || gameOver || gameWon) return;
-            let rect = container.getBoundingClientRect();
-            let x = e.clientX - rect.left;
-            let y = e.clientY - rect.top;
-
-            let clickedSunIndex = sunDrops.findIndex(s => Math.abs(s.x - x) < 30 && Math.abs(s.y - y) < 30);
-            if(clickedSunIndex !== -1) {
-                sunDrops.splice(clickedSunIndex, 1);
-                suns += 25;
-                document.getElementById('sun-count').innerText = suns;
-                playSound('collect');
-                return;
-            }
-
-            if(!selectedType) return;
-            
-            let cWidth = container.clientWidth;
-            let cHeight = container.clientHeight;
-            let cellW = cWidth / gridCols;
-            let cellH = cHeight / gridRows;
-
-            let col = Math.floor((x / cWidth) * gridCols);
-            let row = Math.floor((y / cHeight) * gridRows);
-
-            if(row >= 0 && row < gridRows && col >= 0 && col < gridCols) {
-                if(selectedType === 'shovel') {
-                    let idx = plants.findIndex(p => p.row === row && p.col === col);
-                    if(idx !== -1) {
-                        plants.splice(idx, 1);
-                        playSound('plant');
-                    }
-                    selectedType = null;
-                    updateButtonStyles();
-                    return;
-                }
-
-                let exists = plants.some(p => p.row === row && p.col === col);
-                if(!exists) {
-                    if(selectedType === 'cherry') {
-                        if(suns >= 125) {
-                            suns -= 125;
-                            playSound('boom');
-                            zombies = zombies.filter(z => {
-                                let zCol = Math.floor(z.x / cellW);
-                                let inRange = (z.row >= row - 1 && z.row <= row + 1 && zCol >= col - 1 && zCol <= col + 1);
-                                if(
+                let row = Math.floor(Math.random
