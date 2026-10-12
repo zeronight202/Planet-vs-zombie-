@@ -6,29 +6,63 @@
     <title>Mini Plants vs Zombies</title>
     <style>
         body { background: #1a1a1a; color: white; text-align: center; font-family: sans-serif; margin: 0; padding: 10px; }
+        #game-wrapper { position: relative; width: 480px; margin: 0 auto; }
         #game-container { position: relative; width: 480px; height: 300px; background: #4a7c36; margin: 10px auto; border: 4px solid #222; overflow: hidden; touch-action: manipulation; border-radius: 8px; }
         .grid-cell { position: absolute; width: 60px; height: 60px; border: 1px dashed rgba(255,255,255,0.25); box-sizing: border-box; }
         .ui { margin: 10px 0; font-size: 15px; font-weight: bold; }
-        button { padding: 6px 12px; font-size: 14px; background: #ffcc00; border: none; cursor: pointer; border-radius: 5px; font-weight: bold; color: #333; margin: 2px; }
+        button { padding: 8px 16px; font-size: 15px; background: #ffcc00; border: none; cursor: pointer; border-radius: 5px; font-weight: bold; color: #333; margin: 3px; }
         button:active { background: #e6b800; }
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; }
         .plant { width: 50px; height: 50px; font-size: 28px; z-index: 2; }
         .zombie { width: 40px; height: 50px; font-size: 26px; z-index: 2; }
         .bullet { width: 8px; height: 8px; background: #ffe600; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 4px #ff9900; }
+        
+        /* Các màn hình đè (Overlay) */
+        .screen-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; border-radius: 4px; }
+        .screen-overlay h1 { margin-bottom: 15px; font-size: 24px; text-shadow: 0 0 10px #ffcc00; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
     <h2>Mini Plants vs Zombies</h2>
-    <div class="ui">
-        ☀️ Mặt trời: <span id="sun-count">100</span><br>
-        <button onclick="selectPlant('peashooter')">🌿 Cây Đậu (50☀️)</button>
-        <button onclick="selectPlant('sunflower')">🌻 Hướng Dương (40☀️)</button>
+    <div id="game-wrapper">
+        <div class="ui">
+            ☀️ Mặt trời: <span id="sun-count">100</span> | Tiêu diệt: <span id="score-count">0</span>/10<br>
+            <button onclick="selectPlant('peashooter')">🌿 Cây Đậu (50☀️)</button>
+            <button onclick="selectPlant('sunflower')">🌻 Hướng Dương (40☀️)</button>
+        </div>
+        <div id="game-container" onclick="handleGridClick(event)">
+            <!-- Màn hình Menu -->
+            <div id="menu-screen" class="screen-overlay">
+                <h1>PLANTS VS ZOMBIES</h1>
+                <p style="font-size: 13px; color: #ccc; margin-bottom: 20px; padding: 0 20px;">Bảo vệ khu vườn và tiêu diệt 10 zombie để thắng!</p>
+                <button onclick="startGame()" style="background: #4CAF50; color: white; font-size: 18px; padding: 10px 25px;">BẮT ĐẦU CHƠI</button>
+            </div>
+
+            <!-- Màn hình Game Over -->
+            <div id="gameover-screen" class="screen-overlay hidden">
+                <h1 style="color: #ff4444;">GAME OVER</h1>
+                <p style="font-size: 14px; margin-bottom: 15px;">Zombie đã xâm chiếm ngôi nhà của bạn!</p>
+                <button onclick="restartGame()" style="background: #ff4444; color: white;">CHƠI LẠI</button>
+            </div>
+
+            <!-- Màn hình Chiến Thắng (có pháo hoa) -->
+            <div id="win-screen" class="screen-overlay hidden">
+                <h1 style="color: #4CAF50;">CHIẾN THẮNG! 🎉</h1>
+                <p style="font-size: 14px; margin-bottom: 15px;">Bạn đã bảo vệ thành công khu vườn!</p>
+                <canvas id="fireworks-canvas" width="480" height="300" style="position: absolute; top:0; left:0; pointer-events:none; z-index:11;"></canvas>
+                <button onclick="restartGame()" style="background: #ffcc00; z-index: 12; position: relative;">CHƠI LẠI</button>
+            </div>
+        </div>
+        <p style="font-size: 12px; color: #ccc; max-width: 480px; margin: 5px auto;">Mẹo: Trồng Hướng Dương để kiếm thêm mặt trời!</p>
     </div>
-    <div id="game-container" onclick="handleGridClick(event)"></div>
-    <p style="font-size: 12px; color: #ccc; max-width: 480px; margin: 0 auto;">Đã sửa lỗi đạn bắn, mở rộng map 8 cột và thêm Hoa Hướng Dương!</p>
 
     <script>
+        let gameStarted = false;
+        let gameOver = false;
+        let gameWon = false;
         let suns = 100;
+        let score = 0;
         let selectedType = null; 
         const gridRows = 5;
         const gridCols = 8;
@@ -38,8 +72,14 @@
         let plants = []; 
         let zombies = []; 
         let bullets = []; 
+        let gameInterval = null;
+        let zombieSpawner = null;
+        let sunSpawner = null;
 
         const container = document.getElementById('game-container');
+        const menuScreen = document.getElementById('menu-screen');
+        const gameoverScreen = document.getElementById('gameover-screen');
+        const winScreen = document.getElementById('win-screen');
 
         // Tạo lưới sân chơi 5 hàng x 8 cột
         for(let r=0; r<gridRows; r++) {
@@ -52,7 +92,67 @@
             }
         }
 
+        function startGame() {
+            menuScreen.classList.add('hidden');
+            gameStarted = true;
+            gameOver = false;
+            gameWon = false;
+            suns = 100;
+            score = 0;
+            plants = [];
+            zombies = [];
+            bullets = [];
+            selectedType = null;
+            document.getElementById('sun-count').innerText = suns;
+            document.getElementById('score-count').innerText = score;
+
+            if(gameInterval) clearInterval(gameInterval);
+            if(zombieSpawner) clearInterval(zombieSpawner);
+            if(sunSpawner) clearInterval(sunSpawner);
+
+            zombieSpawner = setInterval(() => {
+                if(!gameStarted || gameOver || gameWon) return;
+                let row = Math.floor(Math.random() * gridRows);
+                zombies.push({row: row, x: 480, hp: 60});
+            }, 4500);
+
+            sunSpawner = setInterval(() => {
+                if(!gameStarted || gameOver || gameWon) return;
+                suns += 25;
+                document.getElementById('sun-count').innerText = suns;
+            }, 7000);
+
+            gameInterval = setInterval(updateGame, 33);
+        }
+
+        function restartGame() {
+            gameoverScreen.classList.add('hidden');
+            winScreen.classList.add('hidden');
+            stopFireworks();
+            startGame();
+        }
+
+        function triggerGameOver() {
+            gameOver = true;
+            gameStarted = false;
+            clearInterval(gameInterval);
+            clearInterval(zombieSpawner);
+            clearInterval(sunSpawner);
+            gameoverScreen.classList.remove('hidden');
+        }
+
+        function triggerWin() {
+            gameWon = true;
+            gameStarted = false;
+            clearInterval(gameInterval);
+            clearInterval(zombieSpawner);
+            clearInterval(sunSpawner);
+            winScreen.classList.remove('hidden');
+            startFireworks();
+        }
+
         function selectPlant(type) {
+            if(!gameStarted || gameOver || gameWon) return;
             if(type === 'peashooter') {
                 if(suns >= 50) {
                     selectedType = 'peashooter';
@@ -71,7 +171,7 @@
         }
 
         function handleGridClick(e) {
-            if(!selectedType) return;
+            if(!gameStarted || gameOver || gameWon || !selectedType) return;
             let rect = container.getBoundingClientRect();
             let x = e.clientX - rect.left;
             let y = e.clientY - rect.top;
@@ -95,25 +195,12 @@
             }
         }
 
-        // Zombie xuất hiện ngẫu nhiên theo 5 hàng
-        setInterval(() => {
-            let row = Math.floor(Math.random() * gridRows);
-            zombies.push({row: row, x: 480, hp: 60});
-        }, 5000);
+        function updateGame() {
+            if(!gameStarted || gameOver || gameWon) return;
 
-        // Tự động sinh mặt trời từ hệ thống
-        setInterval(() => {
-            suns += 25;
-            document.getElementById('sun-count').innerText = suns;
-        }, 7000);
-
-        // Vòng lặp game chính (~33ms)
-        setInterval(() => {
-            // Đạn bay
             bullets.forEach(b => b.x += 6);
             bullets = bullets.filter(b => b.x < 480);
 
-            // Zombie di chuyển và tấn công cây
             zombies.forEach(z => {
                 let hitPlant = plants.find(p => p.row === z.row && Math.abs(p.col * cellWidth - z.x) < 25);
                 if(hitPlant) {
@@ -126,7 +213,6 @@
                 }
             });
 
-            // Cây hoạt động (Đậu bắn đạn, Hướng dương sinh mặt trời)
             plants.forEach(p => {
                 if(p.type === 'peashooter') {
                     let hasZombie = zombies.some(z => z.row === p.row && z.x > p.col * cellWidth);
@@ -139,7 +225,7 @@
                     }
                 } else if(p.type === 'sunflower') {
                     p.sunTimer++;
-                    if(p.sunTimer > 150) { // Khoảng 5 giây sinh 15 mặt trời
+                    if(p.sunTimer > 150) {
                         suns += 15;
                         document.getElementById('sun-count').innerText = suns;
                         p.sunTimer = 0;
@@ -147,7 +233,6 @@
                 }
             });
 
-            // Va chạm đạn và zombie
             bullets.forEach((b, bi) => {
                 zombies.forEach((z, zi) => {
                     if(b.row === z.row && Math.abs(b.x - z.x) < 20) {
@@ -155,25 +240,27 @@
                         bullets.splice(bi, 1);
                         if(z.hp <= 0) {
                             zombies.splice(zi, 1);
+                            score++;
+                            document.getElementById('score-count').innerText = score;
+                            if(score >= 10) {
+                                triggerWin();
+                            }
                         }
                     }
                 });
             });
 
-            // Kiểm tra thua cuộc
             zombies.forEach(z => {
                 if(z.x < 0) {
-                    alert("Game Over! Zombie đã tiến vào nhà bạn!");
-                    location.reload();
+                    triggerGameOver();
                 }
             });
 
             render();
-        }, 33);
+        }
 
         function render() {
-            // Xóa toàn bộ thực thể và đạn cũ để làm sạch màn hình
-            container.querySelectorAll('.entity, .bullet').forEach(el => el.remove());
+            container.querySelectorAll('.entity:not(.grid-cell), .bullet').forEach(el => el.remove());
 
             plants.forEach(p => {
                 let div = document.createElement('div');
@@ -200,6 +287,63 @@
                 div.style.top = (b.row * cellHeight + 26) + 'px';
                 container.appendChild(div);
             });
+        }
+
+        // Hiệu ứng pháo hoa màn hình chiến thắng
+        let fwInterval = null;
+        function startFireworks() {
+            const canvas = document.getElementById('fireworks-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            fwInterval = setInterval(() => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                if(Math.random() < 0.3) {
+                    let fx = Math.random() * canvas.width;
+                    let fy = Math.random() * (canvas.height / 2);
+                    let color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    for(let i=0; i<30; i++) {
+                        let angle = Math.random() * Math.PI * 2;
+                        let speed = Math.random() * 4 + 1;
+                        particles.push({
+                            x: fx, y: fy,
+                            vx: Math.cos(angle) * speed,
+                            vy: Math.sin(angle) * speed,
+                            alpha: 1,
+                            color: color
+                        });
+                    }
+                }
+
+                particles.forEach((p, index) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.05;
+                    p.alpha -= 0.02;
+
+                    ctx.save();
+                    ctx.globalAlpha = Math.max(p.alpha, 0);
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+
+                    if(p.alpha <= 0) {
+                        particles.splice(index, 1);
+                    }
+                });
+            }, 30);
+        }
+
+        function stopFireworks() {
+            if(fwInterval) clearInterval(fwInterval);
+            const canvas = document.getElementById('fireworks-canvas');
+            if(canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
         }
     </script>
 </body>
