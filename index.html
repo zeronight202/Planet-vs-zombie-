@@ -11,7 +11,7 @@
             color: white; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
-            padding: 2px; 
+            padding: 4px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
@@ -21,21 +21,21 @@
         }
         
         .game-title {
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 900;
             background: linear-gradient(45deg, #00ff87, #60efff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 8px rgba(0, 255, 135, 0.3);
-            margin: 1px 0;
+            margin: 4px 0;
             letter-spacing: 1px;
             text-align: center;
         }
 
         #game-wrapper { 
             position: relative; 
-            width: 100vw; 
-            max-width: 900px; 
+            width: 95vw; 
+            max-width: 1150px; 
             text-align: center; 
             padding: 0 4px;
         }
@@ -43,10 +43,10 @@
         #game-container { 
             position: relative; 
             width: 100%; 
-            height: 54vw; 
-            max-height: 400px; 
+            height: 520px; 
+            max-height: 70vh; 
             background: linear-gradient(to bottom, #4a7c36, #3b6329); 
-            margin: 2px auto; 
+            margin: 4px auto; 
             border: 3px solid #333; 
             overflow: hidden; 
             touch-action: manipulation; 
@@ -54,45 +54,52 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.7); 
         }
 
-        @media (orientation: landscape) {
+        /* Tối ưu riêng cho màn hình dọc thiết bị di động */
+        @media (max-width: 768px) and (orientation: portrait) {
             #game-container {
-                height: 62vh;
-                max-height: 290px;
+                height: 48vw;
+                max-height: 340px;
             }
             .ui {
-                padding: 3px !important;
+                padding: 4px !important;
                 font-size: 10px !important;
             }
             .seed-card {
-                padding: 2px 6px !important;
+                padding: 3px 6px !important;
                 font-size: 9px !important;
-                min-width: 50px !important;
+                min-width: 52px !important;
             }
             .game-title {
-                font-size: 11px;
-                margin: 0;
+                font-size: 13px;
+            }
+        }
+
+        /* Tối ưu riêng cho màn hình ngang (landscape) thiết bị nhỏ */
+        @media (max-width: 900px) and (orientation: landscape) {
+            #game-container {
+                height: 58vh;
+                max-height: 280px;
             }
         }
 
         .grid-cell { 
             position: absolute; 
-            width: 9.09%; /* 100% / 11 cột */
+            width: 9.09%; 
             height: 20%; 
             border: 1px dashed rgba(255,255,255,0.12); 
             box-sizing: border-box; 
         }
-        /* Cột đầu tiên dành riêng cho xe cày */
         .grid-cell.mower-lane {
             background: rgba(0, 0, 0, 0.15);
             border-right: 2px solid rgba(255, 255, 255, 0.3);
         }
 
         .ui { 
-            margin: 2px 0; 
-            font-size: 11px; 
+            margin: 4px 0; 
+            font-size: 13px; 
             font-weight: bold; 
             background: #1e1e1e; 
-            padding: 5px; 
+            padding: 8px; 
             border-radius: 6px; 
             width: 100%;
             border: 1px solid #333; 
@@ -101,12 +108,12 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 4px;
+            gap: 8px;
         }
 
         .seed-card { 
-            padding: 4px 8px; 
-            font-size: 10px; 
+            padding: 6px 12px; 
+            font-size: 12px; 
             background: linear-gradient(to bottom, #fff385, #e0a800); 
             border: 2px solid #553300; 
             cursor: pointer; 
@@ -118,18 +125,18 @@
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            min-width: 58px;
+            min-width: 65px;
         }
         .seed-card:active { transform: translateY(2px); box-shadow: 0 0 #442200; }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
-        .fullscreen-btn { background: linear-gradient(to bottom, #42a5f5, #1565c0); color: white; border: 2px solid #0d47a1; padding: 5px 10px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 10px; }
+        .fullscreen-btn { background: linear-gradient(to bottom, #42a5f5, #1565c0); color: white; border: 2px solid #0d47a1; padding: 6px 14px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 12px; }
 
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        .bullet { width: 8px; height: 8px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
-        .sun-drop { position: absolute; font-size: 22px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
+        .bullet { width: 9px; height: 9px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
+        .sun-drop { position: absolute; font-size: 26px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
         
-        .lawnmower { position: absolute; font-size: 22px; z-index: 4; transform: scaleX(-1); pointer-events: none; }
-        .active-mower { position: absolute; font-size: 24px; z-index: 6; transform: scaleX(-1); pointer-events: none; }
+        .lawnmower { position: absolute; font-size: 26px; z-index: 4; transform: scaleX(-1); pointer-events: none; }
+        .active-mower { position: absolute; font-size: 28px; z-index: 6; transform: scaleX(-1); pointer-events: none; }
         
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
         
@@ -147,9 +154,9 @@
             z-index: 20; 
             border-radius: 6px; 
             text-align: center; 
-            padding: 10px;
+            padding: 15px;
         }
-        .screen-overlay h1 { margin-bottom: 4px; font-size: 16px; }
+        .screen-overlay h1 { margin-bottom: 6px; font-size: 22px; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -157,20 +164,20 @@
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui">
-            <div style="width: 100%; margin-bottom: 1px; font-size: 11px;">
+            <div style="width: 100%; margin-bottom: 2px; font-size: 13px;">
                 ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Sống sót: <span id="timer-display" style="color: #00e676;">03:00</span>
             </div>
             <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
-                <span>🌿 Đậu</span><span style="font-size:8px; color:#ffeb3b;">50☀️</span>
+                <span>🌿 Đậu</span><span style="font-size:9px; color:#ffeb3b;">50☀️</span>
             </div>
             <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
-                <span>🌻 Hoa</span><span style="font-size:8px; color:#ffeb3b;">40☀️</span>
+                <span>🌻 Hoa</span><span style="font-size:9px; color:#ffeb3b;">40☀️</span>
             </div>
             <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
-                <span>🥔 Khoai</span><span style="font-size:8px; color:#ffeb3b;">30☀️</span>
+                <span>🥔 Khoai</span><span style="font-size:9px; color:#ffeb3b;">30☀️</span>
             </div>
             <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
-                <span>💣 Bom</span><span style="font-size:8px; color:#ffeb3b;">125☀️</span>
+                <span>💣 Bom</span><span style="font-size:9px; color:#ffeb3b;">125☀️</span>
             </div>
             <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
                 <span>⛏️ Xẻng</span><span>Bỏ cây</span>
@@ -181,27 +188,27 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Bản đồ siêu rộng 10 cột + Làn xe cày riêng biệt!</p>
-                <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 1: DỄ (Sống sót 3 phút)</button>
-                <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 2: KHÓ (Sống sót 5 phút)</button>
+                <p style="font-size: 13px; color: #ccc; margin-bottom: 12px;">Giao diện đã phóng lớn rộng rãi tối ưu cho máy tính!</p>
+                <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 14px; padding: 8px 18px; margin: 4px; cursor: pointer;">MÀN 1: DỄ (Sống sót 3 phút)</button><br>
+                <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 14px; padding: 8px 18px; margin: 4px; cursor: pointer;">MÀN 2: KHÓ (Sống sót 5 phút)</button>
             </div>
 
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <h1 style="color: #ff5252;">GAME OVER</h1>
-                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
-                <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white; padding: 4px 10px;">VỀ MENU</button>
+                <p style="font-size: 12px; color: #ccc; margin-bottom: 10px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
+                <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #ff5252, #c62828); color: white; padding: 6px 14px; cursor: pointer;">VỀ MENU</button>
             </div>
 
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <h1 style="color: #00e676;">CHIẾN THẮNG! 🎉</h1>
-                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Bạn đã bảo vệ khu vườn thành công xuất sắc!</p>
-                <canvas id="fireworks-canvas" width="600" height="260" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
-                <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="z-index: 22; position: relative; padding: 4px 10px;">VỀ MENU</button>
+                <p style="font-size: 12px; color: #ccc; margin-bottom: 10px;">Bạn đã bảo vệ khu vườn thành công xuất sắc!</p>
+                <canvas id="fireworks-canvas" width="800" height="400" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
+                <button onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="z-index: 22; position: relative; padding: 6px 14px; cursor: pointer;">VỀ MENU</button>
             </div>
         </div>
-        <div style="font-size: 9px; color: #888; margin-top: 2px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
+        <div style="font-size: 10px; color: #888; margin-top: 4px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
     </div>
 
     <script>
@@ -313,7 +320,7 @@
         let timeLeft = 180;
         let selectedType = null; 
         const gridRows = 5;
-        const gridCols = 11; // Cột 0 là xe cày, Cột 1-10 là 10 ô trồng cây
+        const gridCols = 11;
 
         let plants = []; 
         let zombies = []; 
@@ -432,7 +439,7 @@
             let banner = document.createElement('div');
             banner.className = 'screen-overlay';
             banner.style.background = 'rgba(180, 0, 0, 0.4)';
-            banner.innerHTML = `<h1 style="color: #ffeb3b; font-size: 20px; text-shadow: 2px 2px #000;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 10px;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
+            banner.innerHTML = `<h1 style="color: #ffeb3b; font-size: 24px; text-shadow: 2px 2px #000;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 12px;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
             container.appendChild(banner);
 
             for (let r = 0; r < gridRows; r++) {
@@ -532,7 +539,7 @@
             let cellW = container.clientWidth / gridCols;
             let cellH = container.clientHeight / gridRows;
 
-            let clickedSunIndex = sunDrops.findIndex(s => Math.abs(s.x - x) < 30 && Math.abs(s.y - y) < 30);
+            let clickedSunIndex = sunDrops.findIndex(s => Math.abs(s.x - x) < 35 && Math.abs(s.y - y) < 35);
             if(clickedSunIndex !== -1) {
                 sunDrops.splice(clickedSunIndex, 1);
                 suns += 25;
@@ -546,11 +553,10 @@
             let col = Math.floor(x / cellW);
             let row = Math.floor(y / cellH);
 
-            // Không cho phép thao tác ở cột 0 (cột xe cày)
             if(col === 0) return;
 
             if(row >= 0 && row < gridRows && col > 0 && col < gridCols) {
-                let plantCol = col - 1; // Quy đổi sang cột trồng cây (0 đến 9)
+                let plantCol = col - 1;
                 if(selectedType === 'shovel') {
                     let idx = plants.findIndex(p => p.row === row && p.col === plantCol);
                     if(idx !== -1) {
@@ -644,6 +650,10 @@
             activeMowers = activeMowers.filter(m => m.col < gridCols);
 
             bullets.forEach(b => b.col += 0.12 * dt);
+            bullets = bullets.filter(b => b.col < gridCols);
+
+            sunDrops.forEach(s => s.life -= dt);
+            sunDrops = sunDrops.filter(s => s.life > 0);
 
             let plantsChanged = false;
             zombies.forEach(z => {
@@ -660,6 +670,8 @@
                     z.col -= speed * dt;
                 }
             });
+
+            zombies = zombies.filter(z => z.col > -1);
 
             if(plantsChanged) {
                 renderStaticElements();
@@ -683,7 +695,8 @@
                             row: p.row,
                             col: p.col,
                             x: ((p.col + 1) + 0.5) * cellW,
-                            y: (p.row + 0.5) * cellH
+                            y: (p.row + 0.5) * cellH,
+                            life: 400
                         });
                         p.sunTimer = 0;
                     }
@@ -713,7 +726,6 @@
             bullets = survivingBullets;
             zombies = zombies.filter((z, zi) => !destroyedZombies.has(zi));
 
-            // Kích hoạt xe cắt cỏ khi zombie chạm vào cột 0 (làn xe cày)
             zombies.forEach((z, zi) => {
                 if(z.col <= 0.6) {
                     if(lawnmowers[z.row]) {
@@ -754,12 +766,12 @@
             plants.forEach(p => {
                 let div = document.createElement('div');
                 div.className = 'entity static-entity';
-                let screenCol = p.col + 1; // Dịch sang phải 1 ô do cột 0 là xe cày
+                let screenCol = p.col + 1;
                 div.style.left = (screenCol * cellW) + 'px';
                 div.style.top = (p.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
                 div.style.height = cellH + 'px';
-                div.style.fontSize = '22px';
+                div.style.fontSize = '26px';
                 div.style.zIndex = '2';
                 if(p.type === 'peashooter') div.innerText = '🌿';
                 else if(p.type === 'sunflower') div.innerText = '🌻';
@@ -792,7 +804,7 @@
                 div.style.top = (z.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
                 div.style.height = cellH + 'px';
-                div.style.fontSize = '22px';
+                div.style.fontSize = '26px';
                 div.style.zIndex = '2';
                 div.innerText = z.isConehead ? '🧟‍♂️' : '🧟';
                 container.appendChild(div);
@@ -809,8 +821,8 @@
             sunDrops.forEach(s => {
                 let div = document.createElement('div');
                 div.className = 'sun-drop';
-                div.style.left = (s.x - 12) + 'px';
-                div.style.top = (s.y - 12) + 'px';
+                div.style.left = (s.x - 14) + 'px';
+                div.style.top = (s.y - 14) + 'px';
                 div.innerText = '☀️';
                 container.appendChild(div);
             });
