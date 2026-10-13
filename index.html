@@ -156,7 +156,7 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Đã tối ưu siêu mượt 60FPS khi trồng kín sân!</p>
+                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Đã cân bằng tốc độ sinh mặt trời & thêm đợt Final Wave!</p>
                 <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 1: DỄ (Sống sót 3 phút)</button>
                 <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 2: KHÓ (Sống sót 5 phút)</button>
             </div>
@@ -299,9 +299,10 @@
         
         let lastTime = 0;
         let animationFrameId = null;
-        let zombieSpawner = null;
+        let zombieTimeout = null;
         let sunSpawner = null;
         let timerInterval = null;
+        let finalWaveTriggered = false;
 
         const container = document.getElementById('game-container');
         const menuScreen = document.getElementById('menu-screen');
@@ -330,6 +331,7 @@
             gameStarted = false;
             stopFireworks();
             if(timerInterval) clearInterval(timerInterval);
+            if(zombieTimeout) clearTimeout(zombieTimeout);
         }
 
         function formatTime(seconds) {
@@ -343,6 +345,7 @@
             startBGM(); 
             currentLevel = level;
             timeLeft = (currentLevel === 1) ? 180 : 300;
+            finalWaveTriggered = false;
             document.getElementById('level-display').innerText = currentLevel;
             document.getElementById('timer-display').innerText = formatTime(timeLeft);
 
@@ -366,7 +369,7 @@
             document.getElementById('sun-count').innerText = suns;
 
             if(animationFrameId) cancelAnimationFrame(animationFrameId);
-            if(zombieSpawner) clearInterval(zombieSpawner);
+            if(zombieTimeout) clearTimeout(zombieTimeout);
             if(sunSpawner) clearInterval(sunSpawner);
             if(timerInterval) clearInterval(timerInterval);
 
@@ -374,24 +377,19 @@
                 if(!gameStarted || gameOver || gameWon) return;
                 timeLeft--;
                 document.getElementById('timer-display').innerText = formatTime(timeLeft);
+                
+                // Khi còn đúng 60 giây (1 phút): Kích hoạt đợt Final Wave
+                if(timeLeft === 60 && !finalWaveTriggered) {
+                    finalWaveTriggered = true;
+                    triggerFinalWaveBanner();
+                }
+
                 if(timeLeft <= 0) {
                     triggerWin();
                 }
             }, 1000);
 
-            let spawnRate = (currentLevel === 1) ? 4000 : 2500;
-            zombieSpawner = setInterval(() => {
-                if(!gameStarted || gameOver || gameWon) return;
-                let row = Math.floor(Math.random() * gridRows);
-                let isConehead = (currentLevel === 2 && Math.random() < 0.5);
-                zombies.push({
-                    row: row, 
-                    col: 10.0, 
-                    hp: isConehead ? 150 : 60, 
-                    maxHp: isConehead ? 150 : 60,
-                    isConehead: isConehead
-                });
-            }, spawnRate);
+            scheduleNextZombie();
 
             sunSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon) return;
@@ -404,12 +402,71 @@
             animationFrameId = requestAnimationFrame(gameLoop);
         }
 
+        function triggerFinalWaveBanner() {
+            playSound('boom');
+            let banner = document.createElement('div');
+            banner.className = 'screen-overlay';
+            banner.style.background = 'rgba(180, 0, 0, 0.4)';
+            banner.innerHTML = `<h1 style="color: #ffeb3b; font-size: 22px; text-shadow: 2px 2px #000;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 11px;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
+            container.appendChild(banner);
+
+            // Spawn ngay một đợt zombie lớn rải đều các hàng
+            for (let r = 0; r < gridRows; r++) {
+                let isConehead = Math.random() < 0.6;
+                zombies.push({
+                    row: r,
+                    col: 10.0,
+                    hp: isConehead ? 150 : 60,
+                    maxHp: isConehead ? 150 : 60,
+                    isConehead: isConehead
+                });
+            }
+
+            setTimeout(() => {
+                banner.remove();
+            }, 3000);
+        }
+
+        function scheduleNextZombie() {
+            if(!gameStarted || gameOver || gameWon) return;
+            
+            // Nếu qua mốc 1 phút cuối, zombie spawn dày đặc và liên tục hơn nhiều
+            let delay = (timeLeft <= 60) ? 1200 : ((currentLevel === 1) ? 3800 : 2300);
+
+            zombieTimeout = setTimeout(() => {
+                if(!gameStarted || gameOver || gameWon) return;
+                let row = Math.floor(Math.random() * gridRows);
+                let isConehead = (currentLevel === 2 && Math.random() < 0.5) || (timeLeft <= 60 && Math.random() < 0.6);
+                zombies.push({
+                    row: row, 
+                    col: 10.0, 
+                    hp: isConehead ? 150 : 60, 
+                    maxHp: isConehead ? 150 : 60,
+                    isConehead: isConehead
+                });
+
+                // Trong đợt cuối, thỉnh thoảng spawn thêm con phụ cùng lúc cho hỗn loạn
+                if (timeLeft <= 60 && Math.random() < 0.7) {
+                    let row2 = Math.floor(Math.random() * gridRows);
+                    zombies.push({
+                        row: row2, 
+                        col: 10.0, 
+                        hp: 60, 
+                        maxHp: 60,
+                        isConehead: false
+                    });
+                }
+
+                scheduleNextZombie();
+            }, delay);
+        }
+
         function triggerGameOver() {
             stopBGM();
             gameOver = true;
             gameStarted = false;
             cancelAnimationFrame(animationFrameId);
-            clearInterval(zombieSpawner);
+            if(zombieTimeout) clearTimeout(zombieTimeout);
             clearInterval(sunSpawner);
             clearInterval(timerInterval);
             gameoverScreen.classList.remove('hidden');
@@ -420,7 +477,7 @@
             gameWon = true;
             gameStarted = false;
             cancelAnimationFrame(animationFrameId);
-            clearInterval(zombieSpawner);
+            if(zombieTimeout) clearTimeout(zombieTimeout);
             clearInterval(sunSpawner);
             clearInterval(timerInterval);
             winScreen.classList.remove('hidden');
@@ -595,7 +652,8 @@
                     }
                 } else if(p.type === 'sunflower') {
                     p.sunTimer += dt;
-                    if(p.sunTimer > 220) {
+                    // Đã làm chậm thời gian hoa hướng dương ra mặt trời (tăng ngưỡng lên 450)
+                    if(p.sunTimer > 450) {
                         sunDrops.push({
                             row: p.row,
                             col: p.col,
@@ -648,7 +706,6 @@
             animationFrameId = requestAnimationFrame(gameLoop);
         }
 
-        // Tách riêng vẽ cây và xe cắt cỏ tĩnh (chỉ gọi khi thay đổi, KHÔNG gọi liên tục trong gameLoop)
         function renderStaticElements() {
             container.querySelectorAll('.static-entity, .lawnmower').forEach(el => el.remove());
 
@@ -684,7 +741,6 @@
             });
         }
 
-        // Chỉ vẽ các đối tượng di chuyển liên tục trong gameLoop
         function renderDynamicElements() {
             container.querySelectorAll('.dynamic-entity, .bullet, .sun-drop, .active-mower').forEach(el => el.remove());
 
