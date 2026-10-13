@@ -156,9 +156,9 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Mục tiêu mới: Sống sót qua các màn chơi khắc nghiệt!</p>
+                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Đã tối ưu siêu mượt 60FPS khi trồng kín sân!</p>
                 <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 1: DỄ (Sống sót 3 phút)</button>
-                <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 2: KHÓ (Sống sót 5 phút - Zombie Đông & Trâu)</button>
+                <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 2: KHÓ (Sống sót 5 phút)</button>
             </div>
 
             <!-- Màn hình Game Over -->
@@ -285,7 +285,7 @@
         let gameWon = false;
         let currentLevel = 1;
         let suns = 100;
-        let timeLeft = 180; // Thời gian sinh tồn (giây)
+        let timeLeft = 180;
         let selectedType = null; 
         const gridRows = 5;
         const gridCols = 10;
@@ -342,7 +342,6 @@
             initAudio(); 
             startBGM(); 
             currentLevel = level;
-            // Màn 1: 3 phút (180s), Màn 2: 5 phút (300s)
             timeLeft = (currentLevel === 1) ? 180 : 300;
             document.getElementById('level-display').innerText = currentLevel;
             document.getElementById('timer-display').innerText = formatTime(timeLeft);
@@ -371,7 +370,6 @@
             if(sunSpawner) clearInterval(sunSpawner);
             if(timerInterval) clearInterval(timerInterval);
 
-            // Đồng hồ đếm ngược thời gian sinh tồn mỗi giây
             timerInterval = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon) return;
                 timeLeft--;
@@ -381,7 +379,6 @@
                 }
             }, 1000);
 
-            // Màn 2 tăng độ khó: xuất hiện nhanh hơn và có tỷ lệ cao gặp zombie giáp
             let spawnRate = (currentLevel === 1) ? 4000 : 2500;
             zombieSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon) return;
@@ -402,6 +399,7 @@
                 document.getElementById('sun-count').innerText = suns;
             }, 8000);
 
+            renderStaticElements();
             lastTime = performance.now();
             animationFrameId = requestAnimationFrame(gameLoop);
         }
@@ -475,6 +473,7 @@
                     if(idx !== -1) {
                         plants.splice(idx, 1);
                         playSound('plant');
+                        renderStaticElements();
                     }
                     selectedType = null;
                     updateButtonStyles();
@@ -505,6 +504,7 @@
                             document.getElementById('sun-count').innerText = suns;
                             selectedType = null;
                             updateButtonStyles();
+                            renderStaticElements();
                         } else { alert("Không đủ mặt trời (Cần 50☀️)!"); }
                     } else if(selectedType === 'sunflower') {
                         if(suns >= 40) {
@@ -514,6 +514,7 @@
                             document.getElementById('sun-count').innerText = suns;
                             selectedType = null;
                             updateButtonStyles();
+                            renderStaticElements();
                         } else { alert("Không đủ mặt trời (Cần 40☀️)!"); }
                     } else if(selectedType === 'wallnut') {
                         if(suns >= 30) {
@@ -523,6 +524,7 @@
                             document.getElementById('sun-count').innerText = suns;
                             selectedType = null;
                             updateButtonStyles();
+                            renderStaticElements();
                         } else { alert("Không đủ mặt trời (Cần 30☀️)!"); }
                     }
                 }
@@ -560,6 +562,7 @@
 
             bullets.forEach(b => b.col += 0.12 * dt);
 
+            let plantsChanged = false;
             zombies.forEach(z => {
                 let hitPlant = plants.find(p => p.row === z.row && Math.abs(p.col - z.col) < 0.5);
                 if(hitPlant) {
@@ -567,12 +570,17 @@
                     playSound('bite');
                     if(hitPlant.hp <= 0) {
                         plants = plants.filter(p => p !== hitPlant);
+                        plantsChanged = true;
                     }
                 } else {
                     let speed = z.isConehead ? 0.0055 : 0.0075;
                     z.col -= speed * dt;
                 }
             });
+
+            if(plantsChanged) {
+                renderStaticElements();
+            }
 
             plants.forEach(p => {
                 if(p.type === 'peashooter') {
@@ -629,18 +637,20 @@
                         activeMowers.push({row: z.row, col: 0});
                         playSound('mower');
                         zombies.splice(zi, 1);
+                        renderStaticElements();
                     } else if(!activeMowers.some(m => m.row === z.row)) {
                         triggerGameOver();
                     }
                 }
             });
 
-            render();
+            renderDynamicElements();
             animationFrameId = requestAnimationFrame(gameLoop);
         }
 
-        function render() {
-            container.querySelectorAll('.entity:not(.grid-cell), .bullet, .sun-drop, .lawnmower, .active-mower').forEach(el => el.remove());
+        // Tách riêng vẽ cây và xe cắt cỏ tĩnh (chỉ gọi khi thay đổi, KHÔNG gọi liên tục trong gameLoop)
+        function renderStaticElements() {
+            container.querySelectorAll('.static-entity, .lawnmower').forEach(el => el.remove());
 
             let cWidth = container.clientWidth;
             let cHeight = container.clientHeight;
@@ -658,18 +668,9 @@
                 }
             });
 
-            activeMowers.forEach(m => {
-                let div = document.createElement('div');
-                div.className = 'active-mower';
-                div.style.left = (m.col * cellW) + 'px';
-                div.style.top = (m.row * cellH + cellH * 0.25) + 'px';
-                div.innerText = '🚜💨';
-                container.appendChild(div);
-            });
-
             plants.forEach(p => {
                 let div = document.createElement('div');
-                div.className = 'entity';
+                div.className = 'entity static-entity';
                 div.style.left = (p.col * cellW) + 'px';
                 div.style.top = (p.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
@@ -681,10 +682,29 @@
                 else if(p.type === 'wallnut') div.innerText = '🥔';
                 container.appendChild(div);
             });
+        }
+
+        // Chỉ vẽ các đối tượng di chuyển liên tục trong gameLoop
+        function renderDynamicElements() {
+            container.querySelectorAll('.dynamic-entity, .bullet, .sun-drop, .active-mower').forEach(el => el.remove());
+
+            let cWidth = container.clientWidth;
+            let cHeight = container.clientHeight;
+            let cellW = cWidth / gridCols;
+            let cellH = cHeight / gridRows;
+
+            activeMowers.forEach(m => {
+                let div = document.createElement('div');
+                div.className = 'active-mower';
+                div.style.left = (m.col * cellW) + 'px';
+                div.style.top = (m.row * cellH + cellH * 0.25) + 'px';
+                div.innerText = '🚜💨';
+                container.appendChild(div);
+            });
 
             zombies.forEach(z => {
                 let div = document.createElement('div');
-                div.className = 'entity';
+                div.className = 'entity dynamic-entity';
                 div.style.left = (z.col * cellW) + 'px';
                 div.style.top = (z.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
