@@ -21,13 +21,13 @@
         }
         
         .game-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
             background: linear-gradient(45deg, #00ff87, #60efff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 8px rgba(0, 255, 135, 0.3);
-            margin: 2px 0;
+            margin: 1px 0;
             letter-spacing: 1px;
             text-align: center;
         }
@@ -43,8 +43,8 @@
         #game-container { 
             position: relative; 
             width: 100%; 
-            height: 58vw; 
-            max-height: 440px; 
+            height: 56vw; 
+            max-height: 420px; 
             background: linear-gradient(to bottom, #4a7c36, #3b6329); 
             margin: 2px auto; 
             border: 3px solid #333; 
@@ -52,6 +52,27 @@
             touch-action: manipulation; 
             border-radius: 8px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.7); 
+        }
+
+        /* Tự động co giãn chuẩn cho màn hình ngang (Landscape) */
+        @media (orientation: landscape) {
+            #game-container {
+                height: 60vh;
+                max-height: 280px;
+            }
+            .ui {
+                padding: 3px !important;
+                font-size: 10px !important;
+            }
+            .seed-card {
+                padding: 2px 6px !important;
+                font-size: 9px !important;
+                min-width: 50px !important;
+            }
+            .game-title {
+                font-size: 12px;
+                margin: 0;
+            }
         }
 
         .grid-cell { 
@@ -67,7 +88,7 @@
             font-size: 11px; 
             font-weight: bold; 
             background: #1e1e1e; 
-            padding: 6px; 
+            padding: 5px; 
             border-radius: 6px; 
             width: 100%;
             border: 1px solid #333; 
@@ -76,7 +97,7 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .seed-card { 
@@ -97,14 +118,14 @@
         }
         .seed-card:active { transform: translateY(2px); box-shadow: 0 0 #442200; }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
-        .fullscreen-btn { background: linear-gradient(to bottom, #42a5f5, #1565c0); color: white; border: 2px solid #0d47a1; padding: 6px 12px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .fullscreen-btn { background: linear-gradient(to bottom, #42a5f5, #1565c0); color: white; border: 2px solid #0d47a1; padding: 5px 10px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 10px; }
 
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bullet { width: 8px; height: 8px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
-        .sun-drop { position: absolute; font-size: 24px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
+        .sun-drop { position: absolute; font-size: 22px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
         
-        .lawnmower { position: absolute; font-size: 24px; z-index: 4; left: 2px; transform: scaleX(-1); pointer-events: none; }
-        .active-mower { position: absolute; font-size: 26px; z-index: 6; transform: scaleX(-1); pointer-events: none; }
+        .lawnmower { position: absolute; font-size: 22px; z-index: 4; left: 2px; transform: scaleX(-1); pointer-events: none; }
+        .active-mower { position: absolute; font-size: 24px; z-index: 6; transform: scaleX(-1); pointer-events: none; }
         
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
         
@@ -132,20 +153,20 @@
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui">
-            <div style="width: 100%; margin-bottom: 2px; font-size: 12px;">
+            <div style="width: 100%; margin-bottom: 1px; font-size: 11px;">
                 ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Sống sót: <span id="timer-display" style="color: #00e676;">03:00</span>
             </div>
             <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
-                <span>🌿 Đậu</span><span style="font-size:9px; color:#ffeb3b;">50☀️</span>
+                <span>🌿 Đậu</span><span style="font-size:8px; color:#ffeb3b;">50☀️</span>
             </div>
             <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
-                <span>🌻 Hoa</span><span style="font-size:9px; color:#ffeb3b;">40☀️</span>
+                <span>🌻 Hoa</span><span style="font-size:8px; color:#ffeb3b;">40☀️</span>
             </div>
             <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
-                <span>🥔 Khoai</span><span style="font-size:9px; color:#ffeb3b;">30☀️</span>
+                <span>🥔 Khoai</span><span style="font-size:8px; color:#ffeb3b;">30☀️</span>
             </div>
             <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
-                <span>💣 Bom</span><span style="font-size:9px; color:#ffeb3b;">125☀️</span>
+                <span>💣 Bom</span><span style="font-size:8px; color:#ffeb3b;">125☀️</span>
             </div>
             <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
                 <span>⛏️ Xẻng</span><span>Bỏ cây</span>
@@ -156,7 +177,7 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Đã cân bằng tốc độ sinh mặt trời & thêm đợt Final Wave!</p>
+                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Đã tối ưu hiển thị hoàn hảo ở mọi góc xoay màn hình!</p>
                 <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 1: DỄ (Sống sót 3 phút)</button>
                 <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 2: KHÓ (Sống sót 5 phút)</button>
             </div>
@@ -378,7 +399,6 @@
                 timeLeft--;
                 document.getElementById('timer-display').innerText = formatTime(timeLeft);
                 
-                // Khi còn đúng 60 giây (1 phút): Kích hoạt đợt Final Wave
                 if(timeLeft === 60 && !finalWaveTriggered) {
                     finalWaveTriggered = true;
                     triggerFinalWaveBanner();
@@ -407,10 +427,9 @@
             let banner = document.createElement('div');
             banner.className = 'screen-overlay';
             banner.style.background = 'rgba(180, 0, 0, 0.4)';
-            banner.innerHTML = `<h1 style="color: #ffeb3b; font-size: 22px; text-shadow: 2px 2px #000;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 11px;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
+            banner.innerHTML = `<h1 style="color: #ffeb3b; font-size: 20px; text-shadow: 2px 2px #000;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 10px;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
             container.appendChild(banner);
 
-            // Spawn ngay một đợt zombie lớn rải đều các hàng
             for (let r = 0; r < gridRows; r++) {
                 let isConehead = Math.random() < 0.6;
                 zombies.push({
@@ -430,7 +449,6 @@
         function scheduleNextZombie() {
             if(!gameStarted || gameOver || gameWon) return;
             
-            // Nếu qua mốc 1 phút cuối, zombie spawn dày đặc và liên tục hơn nhiều
             let delay = (timeLeft <= 60) ? 1200 : ((currentLevel === 1) ? 3800 : 2300);
 
             zombieTimeout = setTimeout(() => {
@@ -445,7 +463,6 @@
                     isConehead: isConehead
                 });
 
-                // Trong đợt cuối, thỉnh thoảng spawn thêm con phụ cùng lúc cho hỗn loạn
                 if (timeLeft <= 60 && Math.random() < 0.7) {
                     let row2 = Math.floor(Math.random() * gridRows);
                     zombies.push({
@@ -652,7 +669,6 @@
                     }
                 } else if(p.type === 'sunflower') {
                     p.sunTimer += dt;
-                    // Đã làm chậm thời gian hoa hướng dương ra mặt trời (tăng ngưỡng lên 450)
                     if(p.sunTimer > 450) {
                         sunDrops.push({
                             row: p.row,
@@ -732,7 +748,7 @@
                 div.style.top = (p.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
                 div.style.height = cellH + 'px';
-                div.style.fontSize = '24px';
+                div.style.fontSize = '22px';
                 div.style.zIndex = '2';
                 if(p.type === 'peashooter') div.innerText = '🌿';
                 else if(p.type === 'sunflower') div.innerText = '🌻';
@@ -765,7 +781,7 @@
                 div.style.top = (z.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
                 div.style.height = cellH + 'px';
-                div.style.fontSize = '24px';
+                div.style.fontSize = '22px';
                 div.style.zIndex = '2';
                 div.innerText = z.isConehead ? '🧟‍♂️' : '🧟';
                 container.appendChild(div);
