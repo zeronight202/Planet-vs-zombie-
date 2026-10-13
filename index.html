@@ -35,7 +35,7 @@
         #game-wrapper { 
             position: relative; 
             width: 100vw; 
-            max-width: 850px; 
+            max-width: 900px; 
             text-align: center; 
             padding: 0 4px;
         }
@@ -43,8 +43,8 @@
         #game-container { 
             position: relative; 
             width: 100%; 
-            height: 56vw; 
-            max-height: 420px; 
+            height: 54vw; 
+            max-height: 400px; 
             background: linear-gradient(to bottom, #4a7c36, #3b6329); 
             margin: 2px auto; 
             border: 3px solid #333; 
@@ -54,11 +54,10 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.7); 
         }
 
-        /* Tự động co giãn chuẩn cho màn hình ngang (Landscape) */
         @media (orientation: landscape) {
             #game-container {
-                height: 60vh;
-                max-height: 280px;
+                height: 62vh;
+                max-height: 290px;
             }
             .ui {
                 padding: 3px !important;
@@ -70,17 +69,22 @@
                 min-width: 50px !important;
             }
             .game-title {
-                font-size: 12px;
+                font-size: 11px;
                 margin: 0;
             }
         }
 
         .grid-cell { 
             position: absolute; 
-            width: 10%; 
+            width: 9.09%; /* 100% / 11 cột */
             height: 20%; 
-            border: 1px dashed rgba(255,255,255,0.15); 
+            border: 1px dashed rgba(255,255,255,0.12); 
             box-sizing: border-box; 
+        }
+        /* Cột đầu tiên dành riêng cho xe cày */
+        .grid-cell.mower-lane {
+            background: rgba(0, 0, 0, 0.15);
+            border-right: 2px solid rgba(255, 255, 255, 0.3);
         }
 
         .ui { 
@@ -124,7 +128,7 @@
         .bullet { width: 8px; height: 8px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
         .sun-drop { position: absolute; font-size: 22px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
         
-        .lawnmower { position: absolute; font-size: 22px; z-index: 4; left: 2px; transform: scaleX(-1); pointer-events: none; }
+        .lawnmower { position: absolute; font-size: 22px; z-index: 4; transform: scaleX(-1); pointer-events: none; }
         .active-mower { position: absolute; font-size: 24px; z-index: 6; transform: scaleX(-1); pointer-events: none; }
         
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
@@ -177,7 +181,7 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Đã tối ưu hiển thị hoàn hảo ở mọi góc xoay màn hình!</p>
+                <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Bản đồ siêu rộng 10 cột + Làn xe cày riêng biệt!</p>
                 <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 1: DỄ (Sống sót 3 phút)</button>
                 <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 12px; padding: 5px 14px; margin: 2px;">MÀN 2: KHÓ (Sống sót 5 phút)</button>
             </div>
@@ -309,7 +313,7 @@
         let timeLeft = 180;
         let selectedType = null; 
         const gridRows = 5;
-        const gridCols = 10;
+        const gridCols = 11; // Cột 0 là xe cày, Cột 1-10 là 10 ô trồng cây
 
         let plants = []; 
         let zombies = []; 
@@ -336,7 +340,8 @@
                 for(let c=0; c<gridCols; c++) {
                     let div = document.createElement('div');
                     div.className = 'grid-cell';
-                    div.style.left = (c * 10) + '%';
+                    if(c === 0) div.classList.add('mower-lane');
+                    div.style.left = (c * (100 / gridCols)) + '%';
                     div.style.top = (r * 20) + '%';
                     container.appendChild(div);
                 }
@@ -434,7 +439,7 @@
                 let isConehead = Math.random() < 0.6;
                 zombies.push({
                     row: r,
-                    col: 10.0,
+                    col: 10.5,
                     hp: isConehead ? 150 : 60,
                     maxHp: isConehead ? 150 : 60,
                     isConehead: isConehead
@@ -457,7 +462,7 @@
                 let isConehead = (currentLevel === 2 && Math.random() < 0.5) || (timeLeft <= 60 && Math.random() < 0.6);
                 zombies.push({
                     row: row, 
-                    col: 10.0, 
+                    col: 10.5, 
                     hp: isConehead ? 150 : 60, 
                     maxHp: isConehead ? 150 : 60,
                     isConehead: isConehead
@@ -467,7 +472,7 @@
                     let row2 = Math.floor(Math.random() * gridRows);
                     zombies.push({
                         row: row2, 
-                        col: 10.0, 
+                        col: 10.5, 
                         hp: 60, 
                         maxHp: 60,
                         isConehead: false
@@ -541,9 +546,13 @@
             let col = Math.floor(x / cellW);
             let row = Math.floor(y / cellH);
 
-            if(row >= 0 && row < gridRows && col >= 0 && col < gridCols) {
+            // Không cho phép thao tác ở cột 0 (cột xe cày)
+            if(col === 0) return;
+
+            if(row >= 0 && row < gridRows && col > 0 && col < gridCols) {
+                let plantCol = col - 1; // Quy đổi sang cột trồng cây (0 đến 9)
                 if(selectedType === 'shovel') {
-                    let idx = plants.findIndex(p => p.row === row && p.col === col);
+                    let idx = plants.findIndex(p => p.row === row && p.col === plantCol);
                     if(idx !== -1) {
                         plants.splice(idx, 1);
                         playSound('plant');
@@ -554,14 +563,14 @@
                     return;
                 }
 
-                let exists = plants.some(p => p.row === row && p.col === col);
+                let exists = plants.some(p => p.row === row && p.col === plantCol);
                 if(!exists) {
                     if(selectedType === 'cherry') {
                         if(suns >= 125) {
                             suns -= 125;
                             playSound('boom');
                             zombies = zombies.filter(z => {
-                                let inRange = (z.row >= row - 1 && z.row <= row + 1 && z.col >= col - 1 && z.col <= col + 1);
+                                let inRange = (z.row >= row - 1 && z.row <= row + 1 && Math.abs(z.col - (plantCol + 1)) <= 1.2);
                                 return !inRange;
                             });
                             document.getElementById('sun-count').innerText = suns;
@@ -572,7 +581,7 @@
                         }
                     } else if(selectedType === 'peashooter') {
                         if(suns >= 50) {
-                            plants.push({type: 'peashooter', row: row, col: col, hp: 100, shootTimer: 0});
+                            plants.push({type: 'peashooter', row: row, col: plantCol, hp: 100, shootTimer: 0});
                             suns -= 50;
                             playSound('plant');
                             document.getElementById('sun-count').innerText = suns;
@@ -582,7 +591,7 @@
                         } else { alert("Không đủ mặt trời (Cần 50☀️)!"); }
                     } else if(selectedType === 'sunflower') {
                         if(suns >= 40) {
-                            plants.push({type: 'sunflower', row: row, col: col, hp: 80, sunTimer: 0});
+                            plants.push({type: 'sunflower', row: row, col: plantCol, hp: 80, sunTimer: 0});
                             suns -= 40;
                             playSound('plant');
                             document.getElementById('sun-count').innerText = suns;
@@ -592,7 +601,7 @@
                         } else { alert("Không đủ mặt trời (Cần 40☀️)!"); }
                     } else if(selectedType === 'wallnut') {
                         if(suns >= 30) {
-                            plants.push({type: 'wallnut', row: row, col: col, hp: 300});
+                            plants.push({type: 'wallnut', row: row, col: plantCol, hp: 300});
                             suns -= 30;
                             playSound('plant');
                             document.getElementById('sun-count').innerText = suns;
@@ -629,7 +638,7 @@
             let cellH = cHeight / gridRows;
 
             activeMowers.forEach(m => {
-                m.col += 0.2 * dt;
+                m.col += 0.22 * dt;
                 zombies = zombies.filter(z => !(z.row === m.row && Math.abs(z.col - m.col) < 0.8));
             });
             activeMowers = activeMowers.filter(m => m.col < gridCols);
@@ -638,7 +647,7 @@
 
             let plantsChanged = false;
             zombies.forEach(z => {
-                let hitPlant = plants.find(p => p.row === z.row && Math.abs(p.col - z.col) < 0.5);
+                let hitPlant = plants.find(p => p.row === z.row && Math.abs((p.col + 1) - z.col) < 0.5);
                 if(hitPlant) {
                     hitPlant.hp -= 0.8 * dt;
                     playSound('bite');
@@ -658,11 +667,11 @@
 
             plants.forEach(p => {
                 if(p.type === 'peashooter') {
-                    let hasZombie = zombies.some(z => z.row === p.row && z.col > p.col);
+                    let hasZombie = zombies.some(z => z.row === p.row && z.col > (p.col + 1));
                     if(hasZombie) {
                         p.shootTimer += dt;
                         if(p.shootTimer > 45) {
-                            bullets.push({row: p.row, col: p.col + 0.5});
+                            bullets.push({row: p.row, col: (p.col + 1) + 0.5});
                             playSound('shoot');
                             p.shootTimer = 0;
                         }
@@ -673,7 +682,7 @@
                         sunDrops.push({
                             row: p.row,
                             col: p.col,
-                            x: (p.col + 0.5) * cellW,
+                            x: ((p.col + 1) + 0.5) * cellW,
                             y: (p.row + 0.5) * cellH
                         });
                         p.sunTimer = 0;
@@ -704,8 +713,9 @@
             bullets = survivingBullets;
             zombies = zombies.filter((z, zi) => !destroyedZombies.has(zi));
 
+            // Kích hoạt xe cắt cỏ khi zombie chạm vào cột 0 (làn xe cày)
             zombies.forEach((z, zi) => {
-                if(z.col <= 0.1) {
+                if(z.col <= 0.6) {
                     if(lawnmowers[z.row]) {
                         lawnmowers[z.row] = false;
                         activeMowers.push({row: z.row, col: 0});
@@ -734,7 +744,7 @@
                 if(hasMower) {
                     let div = document.createElement('div');
                     div.className = 'lawnmower';
-                    div.style.left = '4px';
+                    div.style.left = (0 * cellW + cellW * 0.15) + 'px';
                     div.style.top = (r * cellH + cellH * 0.25) + 'px';
                     div.innerText = '🚜';
                     container.appendChild(div);
@@ -744,7 +754,8 @@
             plants.forEach(p => {
                 let div = document.createElement('div');
                 div.className = 'entity static-entity';
-                div.style.left = (p.col * cellW) + 'px';
+                let screenCol = p.col + 1; // Dịch sang phải 1 ô do cột 0 là xe cày
+                div.style.left = (screenCol * cellW) + 'px';
                 div.style.top = (p.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
                 div.style.height = cellH + 'px';
