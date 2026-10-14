@@ -143,6 +143,16 @@
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bullet { width: 9px; height: 9px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
         
+        /* Hiệu ứng phát sáng và nhặt mặt trời */
+        @keyframes sunflowerGlow {
+            0% { filter: drop-shadow(0 0 2px #ffeb3b) brightness(1); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 10px #ffeb3b) brightness(1.3); transform: scale(1.1); }
+            100% { filter: drop-shadow(0 0 2px #ffeb3b) brightness(1); transform: scale(1); }
+        }
+        .sunflower-glow {
+            animation: sunflowerGlow 1.2s infinite ease-in-out;
+        }
+
         .sun-drop { 
             position: absolute; 
             font-size: 32px; 
@@ -867,9 +877,11 @@
                     }
                 } else if(p.type === 'sunflower') {
                     p.sunTimer += dt;
+                    // Hoa hướng dương phát sáng và rớt mặt trời ra xung quanh chuẩn game gốc
                     if(p.sunTimer > 500) {
-                        let sunX = ((p.col + 1) + 0.5) * cellW + (Math.random() * 30 - 15);
-                        let sunY = (p.row + 0.5) * cellH;
+                        let screenCol = p.col + 1;
+                        let sunX = (screenCol * cellW) + (cellW * 0.5) + (Math.random() * 30 - 15);
+                        let sunY = (p.row * cellH) + (cellH * 0.5) + (Math.random() * 20 - 10);
                         sunDrops.push({
                             x: sunX,
                             y: sunY,
@@ -877,6 +889,7 @@
                             life: 400
                         });
                         p.sunTimer = 0;
+                        renderStaticElements();
                     }
                 }
             });
@@ -945,6 +958,9 @@
             plants.forEach(p => {
                 let div = document.createElement('div');
                 div.className = 'entity static-entity';
+                if(p.type === 'sunflower') {
+                    div.classList.add('sunflower-glow');
+                }
                 let screenCol = p.col + 1;
                 div.style.left = (screenCol * cellW) + 'px';
                 div.style.top = (p.row * cellH) + 'px';
@@ -1016,7 +1032,7 @@
                     let idx = sunDrops.indexOf(s);
                     if(idx !== -1) {
                         sunDrops.splice(idx, 1);
-                        suns += 25;
+                        suns = Math.min(999, suns + 25);
                         document.getElementById('sun-count').innerText = suns;
                         playSound('collect');
                     }
