@@ -142,7 +142,7 @@
 
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bullet { width: 9px; height: 9px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
-        .sun-drop { position: absolute; font-size: 26px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
+        .sun-drop { position: absolute; font-size: 28px; cursor: pointer; z-index: 5; animation: bounce 0.6s infinite alternate; }
         
         .lawnmower { position: absolute; font-size: 26px; z-index: 4; transform: scaleX(-1); pointer-events: none; }
         .active-mower { position: absolute; font-size: 28px; z-index: 6; transform: scaleX(-1); pointer-events: none; }
@@ -222,7 +222,7 @@
     <div id="game-wrapper">
         <div class="ui">
             <div style="width: 100%; font-size: 13px;">
-                ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Sống sót: <span id="timer-display" style="color: #00e676;">03:00</span>
+                ☀️ <span id="sun-count" style="color: #ffeb3b;">50</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Sống sót: <span id="timer-display" style="color: #00e676;">03:00</span>
             </div>
             
             <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; width: 100%;">
@@ -443,7 +443,7 @@
         let gameOver = false;
         let gameWon = false;
         let currentLevel = 1;
-        let suns = 100;
+        let suns = 50; // Khởi điểm 50 mặt trời chuẩn game gốc
         let timeLeft = 180;
         let selectedType = null; 
         const gridRows = 5;
@@ -496,6 +496,7 @@
             stopFireworks();
             if(timerInterval) clearInterval(timerInterval);
             if(zombieTimeout) clearTimeout(zombieTimeout);
+            if(sunSpawner) clearInterval(sunSpawner);
         }
 
         function formatTime(seconds) {
@@ -523,7 +524,7 @@
             gameStarted = true;
             gameOver = false;
             gameWon = false;
-            suns = 100;
+            suns = 50;
             plants = [];
             zombies = [];
             bullets = [];
@@ -557,11 +558,19 @@
 
             scheduleNextZombie();
 
+            // Tạo mặt trời rơi từ trên trời xuống chuẩn phong cách PvZ (khoảng 9-10 giây)
             sunSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon || isPaused) return;
-                suns += 25;
-                document.getElementById('sun-count').innerText = suns;
-            }, 8000);
+                let cWidth = container.clientWidth || 800;
+                let randomX = Math.random() * (cWidth - 100) + 50;
+                let targetY = Math.random() * (container.clientHeight * 0.5) + (container.clientHeight * 0.25);
+                sunDrops.push({
+                    x: randomX,
+                    y: -30,
+                    targetY: targetY,
+                    life: 400 // thời gian tồn tại trên màn hình trước khi biến mất
+                });
+            }, 9500);
 
             renderStaticElements();
             lastTime = performance.now();
@@ -677,7 +686,8 @@
             let cellW = container.clientWidth / gridCols;
             let cellH = container.clientHeight / gridRows;
 
-            let clickedSunIndex = sunDrops.findIndex(s => Math.abs(s.x - x) < 35 && Math.abs(s.y - y) < 35);
+            // Nhặt mặt trời (Kiểm tra khoảng cách với các hạt mặt trời đang rơi/nằm trên sân)
+            let clickedSunIndex = sunDrops.findIndex(s => Math.abs(s.x - x) < 40 && Math.abs(s.y - y) < 40);
             if(clickedSunIndex !== -1) {
                 sunDrops.splice(clickedSunIndex, 1);
                 suns += 25;
@@ -813,7 +823,15 @@
             bullets.forEach(b => b.col += 0.12 * dt);
             bullets = bullets.filter(b => b.col < gridCols);
 
-            sunDrops.forEach(s => s.life -= dt);
+            // Cập nhật vị trí mặt trời rơi và thời gian tồn tại
+            sunDrops.forEach(s => {
+                if (s.y < s.targetY) {
+                    s.y += 1.2 * dt; // Tốc độ rơi từ từ
+                    if (s.y > s.targetY) s.y = s.targetY;
+                } else {
+                    s.life -= dt;
+                }
+            });
             sunDrops = sunDrops.filter(s => s.life > 0);
 
             let plantsChanged = false;
@@ -845,7 +863,6 @@
                     if(hasZombie) {
                         p.shootTimer += dt;
                         if(p.shootTimer > 45) {
-                            // Đạn xuất phát từ miệng cây (p.col + 1.1) bay về phía trước
                             bullets.push({row: p.row, col: p.col + 1.1});
                             playSound('shoot');
                             p.shootTimer = 0;
@@ -853,12 +870,13 @@
                     }
                 } else if(p.type === 'sunflower') {
                     p.sunTimer += dt;
-                    if(p.sunTimer > 450) {
+                    if(p.sunTimer > 500) { // Hoa hướng dương sản xuất mặt trời định kỳ
+                        let sunX = ((p.col + 1) + 0.5) * cellW + (Math.random() * 30 - 15);
+                        let sunY = (p.row + 0.5) * cellH;
                         sunDrops.push({
-                            row: p.row,
-                            col: p.col,
-                            x: ((p.col + 1) + 0.5) * cellW,
-                            y: (p.row + 0.5) * cellH,
+                            x: sunX,
+                            y: sunY,
+                            targetY: sunY,
                             life: 400
                         });
                         p.sunTimer = 0;
@@ -872,10 +890,9 @@
             bullets.forEach((b, bi) => {
                 let hit = false;
                 zombies.forEach((z, zi) => {
-                    // Va chạm chính xác khi đạn chạm đến vị trí zombie
                     if(!destroyedZombies.has(zi) && b.row === z.row && Math.abs(b.col - z.col) < 0.35) {
                         z.hp -= 12;
-                        z.hitFlash = 6; // Bật hiệu ứng chớp sáng khi bị bắn trúng
+                        z.hitFlash = 6;
                         playSound('hit');
                         hit = true;
                         if(z.hp <= 0) {
@@ -972,7 +989,6 @@
                 div.style.fontSize = '26px';
                 div.style.zIndex = '2';
                 
-                // Hiệu ứng chớp sáng khi zombie trúng đạn
                 if(z.hitFlash > 0) {
                     div.style.filter = 'brightness(3) sepia(1) hue-rotate(-50deg)';
                 } else {
