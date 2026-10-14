@@ -143,7 +143,6 @@
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bullet { width: 9px; height: 9px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
         
-        /* Tối ưu vùng bấm và tương tác mặt trời trên PC/Mobile */
         .sun-drop { 
             position: absolute; 
             font-size: 32px; 
@@ -599,8 +598,8 @@
                 zombies.push({
                     row: r,
                     col: 10.5,
-                    hp: isConehead ? 150 : 60,
-                    maxHp: isConehead ? 150 : 60,
+                    hp: isConehead ? 420 : 180,
+                    maxHp: isConehead ? 420 : 180,
                     isConehead: isConehead,
                     hitFlash: 0
                 });
@@ -614,7 +613,6 @@
         function scheduleNextZombie() {
             if(!gameStarted || gameOver || gameWon) return;
             
-            // Tăng tần suất xuất hiện zombie để thử thách hơn (Màn 1: 5s, Màn 2: 3.5s)
             let delay = (timeLeft <= 60) ? 1800 : ((currentLevel === 1) ? 5000 : 3500);
 
             zombieTimeout = setTimeout(() => {
@@ -625,8 +623,8 @@
                     zombies.push({
                         row: row, 
                         col: 10.5, 
-                        hp: isConehead ? 150 : 60, 
-                        maxHp: isConehead ? 150 : 60,
+                        hp: isConehead ? 420 : 180, 
+                        maxHp: isConehead ? 420 : 180,
                         isConehead: isConehead,
                         hitFlash: 0
                     });
@@ -636,8 +634,8 @@
                         zombies.push({
                             row: row2, 
                             col: 10.5, 
-                            hp: 60, 
-                            maxHp: 60,
+                            hp: 180, 
+                            maxHp: 180,
                             isConehead: false,
                             hitFlash: 0
                         });
@@ -845,7 +843,6 @@
                         plantsChanged = true;
                     }
                 } else {
-                    // Tăng tốc độ zombie lên một chút để thử thách hơn
                     let speed = z.isConehead ? 0.0024 : 0.0034;
                     z.col -= speed * dt;
                 }
@@ -1014,7 +1011,6 @@
                 div.style.top = s.y + 'px';
                 div.innerText = '☀️';
                 
-                // Gắn sự kiện click/touch trực tiếp lên hạt mặt trời để nhặt siêu nhạy trên PC và điện thoại
                 let collectAction = (e) => {
                     e.stopPropagation();
                     let idx = sunDrops.indexOf(s);
