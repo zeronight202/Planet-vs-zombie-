@@ -54,7 +54,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.7); 
         }
 
-        /* Tối ưu riêng cho màn hình dọc thiết bị di động */
         @media (max-width: 768px) and (orientation: portrait) {
             #game-container {
                 height: 48vw;
@@ -74,7 +73,6 @@
             }
         }
 
-        /* Tối ưu riêng cho màn hình ngang (landscape) thiết bị nhỏ */
         @media (max-width: 900px) and (orientation: landscape) {
             #game-container {
                 height: 58vh;
@@ -138,6 +136,20 @@
         .lawnmower { position: absolute; font-size: 26px; z-index: 4; transform: scaleX(-1); pointer-events: none; }
         .active-mower { position: absolute; font-size: 28px; z-index: 6; transform: scaleX(-1); pointer-events: none; }
         
+        /* Hiệu ứng nổ bom Cherry */
+        @keyframes explodeAnim {
+            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; filter: brightness(2); }
+            50% { transform: translate(-50%, -50%) scale(2.5); opacity: 0.9; filter: brightness(1.5); }
+            100% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
+        }
+        .explosion-fx {
+            position: absolute;
+            font-size: 55px;
+            z-index: 25;
+            pointer-events: none;
+            animation: explodeAnim 0.5s ease-out forwards;
+        }
+
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
         
         .screen-overlay { 
@@ -188,7 +200,7 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <h1 style="color: #4CAF50;">CHỌN MÀN CHƠI</h1>
-                <p style="font-size: 13px; color: #ccc; margin-bottom: 12px;">Giao diện đã phóng lớn rộng rãi tối ưu cho máy tính!</p>
+                <p style="font-size: 13px; color: #ccc; margin-bottom: 12px;">Đã thêm hiệu ứng nổ cực chất cho Bom Cherry!</p>
                 <button onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="background: linear-gradient(to bottom, #66bb6a, #388e3c); color: white; font-size: 14px; padding: 8px 18px; margin: 4px; cursor: pointer;">MÀN 1: DỄ (Sống sót 3 phút)</button><br>
                 <button onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #ffa726, #f57c00); color: white; font-size: 14px; padding: 8px 18px; margin: 4px; cursor: pointer;">MÀN 2: KHÓ (Sống sót 5 phút)</button>
             </div>
@@ -267,6 +279,7 @@
                     osc.start(); osc.stop(audioCtx.currentTime + 0.1);
                 } else if(type === 'shoot') {
                     osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueValueAtTime?.(200, audioCtx.currentTime + 0.08);
                     osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.08);
                     gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
@@ -575,10 +588,23 @@
                         if(suns >= 125) {
                             suns -= 125;
                             playSound('boom');
+                            
+                            // Tạo hiệu ứng nổ (💥) tại ô đặt bom
+                            let fx = document.createElement('div');
+                            fx.className = 'explosion-fx';
+                            fx.innerText = '💥';
+                            let screenCol = plantCol + 1;
+                            fx.style.left = ((screenCol + 0.5) * cellW) + 'px';
+                            fx.style.top = ((row + 0.5) * cellH) + 'px';
+                            container.appendChild(fx);
+                            setTimeout(() => fx.remove(), 500);
+
+                            // Xóa zombie trong vùng 3x3 quanh điểm nổ
                             zombies = zombies.filter(z => {
-                                let inRange = (z.row >= row - 1 && z.row <= row + 1 && Math.abs(z.col - (plantCol + 1)) <= 1.2);
+                                let inRange = (z.row >= row - 1 && z.row <= row + 1 && Math.abs(z.col - (plantCol + 1)) <= 1.5);
                                 return !inRange;
                             });
+
                             document.getElementById('sun-count').innerText = suns;
                             selectedType = null;
                             updateButtonStyles();
