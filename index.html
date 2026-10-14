@@ -221,12 +221,10 @@
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui">
-            <!-- Thông số game -->
             <div style="width: 100%; font-size: 13px;">
                 ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Sống sót: <span id="timer-display" style="color: #00e676;">03:00</span>
             </div>
             
-            <!-- Hàng nút chọn cây (tách riêng biệt) -->
             <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; width: 100%;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
                     <span>🌿 Đậu</span><span style="font-size:9px; color:#ffeb3b;">50☀️</span>
@@ -245,7 +243,6 @@
                 </div>
             </div>
 
-            <!-- Hàng nút điều khiển chung (Tạm dừng + Toàn màn hình) -->
             <div style="display: flex; gap: 8px; justify-content: center; width: 100%;">
                 <button class="control-btn" id="pause-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; box-shadow: 0 2px #92400e;">⏸️ Tạm dừng</button>
                 <button class="control-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
@@ -844,7 +841,8 @@
                     if(hasZombie) {
                         p.shootTimer += dt;
                         if(p.shootTimer > 45) {
-                            bullets.push({row: p.row, col: (p.col + 1) + 0.5});
+                            // Đạn xuất phát chính xác từ vị trí cây (col + 1) để bay tới zombie
+                            bullets.push({row: p.row, col: p.col + 1});
                             playSound('shoot');
                             p.shootTimer = 0;
                         }
@@ -870,7 +868,8 @@
             bullets.forEach((b, bi) => {
                 let hit = false;
                 zombies.forEach((z, zi) => {
-                    if(!destroyedZombies.has(zi) && b.row === z.row && Math.abs(b.col - z.col) < 0.5) {
+                    // Kiểm tra va chạm chuẩn xác: đạn phải bay đến sát vị trí của zombie mới gây sát thương
+                    if(!destroyedZombies.has(zi) && b.row === z.row && Math.abs(b.col - z.col) < 0.35) {
                         z.hp -= 12;
                         playSound('hit');
                         hit = true;
