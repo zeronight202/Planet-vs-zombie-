@@ -583,7 +583,8 @@
                     col: 10.5,
                     hp: isConehead ? 150 : 60,
                     maxHp: isConehead ? 150 : 60,
-                    isConehead: isConehead
+                    isConehead: isConehead,
+                    hitFlash: 0
                 });
             }
 
@@ -607,7 +608,8 @@
                         col: 10.5, 
                         hp: isConehead ? 150 : 60, 
                         maxHp: isConehead ? 150 : 60,
-                        isConehead: isConehead
+                        isConehead: isConehead,
+                        hitFlash: 0
                     });
 
                     if (timeLeft <= 60 && Math.random() < 0.7) {
@@ -617,7 +619,8 @@
                             col: 10.5, 
                             hp: 60, 
                             maxHp: 60,
-                            isConehead: false
+                            isConehead: false,
+                            hitFlash: 0
                         });
                     }
                 }
@@ -815,6 +818,7 @@
 
             let plantsChanged = false;
             zombies.forEach(z => {
+                if(z.hitFlash > 0) z.hitFlash--;
                 let hitPlant = plants.find(p => p.row === z.row && Math.abs((p.col + 1) - z.col) < 0.5);
                 if(hitPlant) {
                     hitPlant.hp -= 0.8 * dt;
@@ -841,8 +845,8 @@
                     if(hasZombie) {
                         p.shootTimer += dt;
                         if(p.shootTimer > 45) {
-                            // Đạn xuất phát chính xác từ vị trí cây (col + 1) để bay tới zombie
-                            bullets.push({row: p.row, col: p.col + 1});
+                            // Đạn xuất phát từ miệng cây (p.col + 1.1) bay về phía trước
+                            bullets.push({row: p.row, col: p.col + 1.1});
                             playSound('shoot');
                             p.shootTimer = 0;
                         }
@@ -868,9 +872,10 @@
             bullets.forEach((b, bi) => {
                 let hit = false;
                 zombies.forEach((z, zi) => {
-                    // Kiểm tra va chạm chuẩn xác: đạn phải bay đến sát vị trí của zombie mới gây sát thương
+                    // Va chạm chính xác khi đạn chạm đến vị trí zombie
                     if(!destroyedZombies.has(zi) && b.row === z.row && Math.abs(b.col - z.col) < 0.35) {
                         z.hp -= 12;
+                        z.hitFlash = 6; // Bật hiệu ứng chớp sáng khi bị bắn trúng
                         playSound('hit');
                         hit = true;
                         if(z.hp <= 0) {
@@ -966,6 +971,14 @@
                 div.style.height = cellH + 'px';
                 div.style.fontSize = '26px';
                 div.style.zIndex = '2';
+                
+                // Hiệu ứng chớp sáng khi zombie trúng đạn
+                if(z.hitFlash > 0) {
+                    div.style.filter = 'brightness(3) sepia(1) hue-rotate(-50deg)';
+                } else {
+                    div.style.filter = 'none';
+                }
+
                 div.innerText = z.isConehead ? '🧟‍♂️' : '🧟';
                 container.appendChild(div);
             });
