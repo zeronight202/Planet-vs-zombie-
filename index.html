@@ -66,7 +66,7 @@
             .seed-card {
                 padding: 3px 6px !important;
                 font-size: 9px !important;
-                min-width: 52px !important;
+                min-width: 50px !important;
             }
             .game-title {
                 font-size: 13px;
@@ -103,15 +103,14 @@
             border: 1px solid #333; 
             text-align: center; 
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .seed-card { 
-            padding: 6px 12px; 
-            font-size: 12px; 
+            padding: 5px 10px; 
+            font-size: 11px; 
             background: linear-gradient(to bottom, #fff385, #e0a800); 
             border: 2px solid #553300; 
             cursor: pointer; 
@@ -123,11 +122,23 @@
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            min-width: 65px;
+            min-width: 60px;
         }
         .seed-card:active { transform: translateY(2px); box-shadow: 0 0 #442200; }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
-        .fullscreen-btn { background: linear-gradient(to bottom, #42a5f5, #1565c0); color: white; border: 2px solid #0d47a1; padding: 6px 14px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 12px; }
+        
+        .control-btn { 
+            background: linear-gradient(to bottom, #42a5f5, #1565c0); 
+            color: white; 
+            border: 2px solid #0d47a1; 
+            padding: 6px 14px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 11px; 
+            box-shadow: 0 2px #0a3570;
+        }
+        .control-btn:active { transform: translateY(2px); box-shadow: 0 0 #0a3570; }
 
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .bullet { width: 9px; height: 9px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
@@ -210,26 +221,37 @@
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui">
-            <div style="width: 100%; margin-bottom: 2px; font-size: 13px;">
+            <!-- Thông số game -->
+            <div style="width: 100%; font-size: 13px;">
                 ☀️ <span id="sun-count" style="color: #ffeb3b;">100</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Sống sót: <span id="timer-display" style="color: #00e676;">03:00</span>
             </div>
-            <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
-                <span>🌿 Đậu</span><span style="font-size:9px; color:#ffeb3b;">50☀️</span>
+            
+            <!-- Hàng nút chọn cây (tách riêng biệt) -->
+            <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; width: 100%;">
+                <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
+                    <span>🌿 Đậu</span><span style="font-size:9px; color:#ffeb3b;">50☀️</span>
+                </div>
+                <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
+                    <span>🌻 Hoa</span><span style="font-size:9px; color:#ffeb3b;">40☀️</span>
+                </div>
+                <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
+                    <span>🥔 Khoai</span><span style="font-size:9px; color:#ffeb3b;">30☀️</span>
+                </div>
+                <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
+                    <span>💣 Bom</span><span style="font-size:9px; color:#ffeb3b;">125☀️</span>
+                </div>
+                <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
+                    <span>⛏️ Xẻng</span><span>Bỏ cây</span>
+                </div>
             </div>
-            <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
-                <span>🌻 Hoa</span><span style="font-size:9px; color:#ffeb3b;">40☀️</span>
+
+            <!-- Hàng nút điều khiển chung (Tạm dừng + Toàn màn hình) -->
+            <div style="display: flex; gap: 8px; justify-content: center; width: 100%;">
+                <button class="control-btn" id="pause-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; box-shadow: 0 2px #92400e;">⏸️ Tạm dừng</button>
+                <button class="control-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
             </div>
-            <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
-                <span>🥔 Khoai</span><span style="font-size:9px; color:#ffeb3b;">30☀️</span>
-            </div>
-            <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
-                <span>💣 Bom</span><span style="font-size:9px; color:#ffeb3b;">125☀️</span>
-            </div>
-            <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
-                <span>⛏️ Xẻng</span><span>Bỏ cây</span>
-            </div>
-            <button class="fullscreen-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
         </div>
+
         <div id="game-container" onclick="handleGridClick(event)" ontouchend="handleTouchGrid(event)">
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
@@ -245,6 +267,17 @@
                     <div class="pvz-menu-btn" onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #d97706, #b45309);">
                         <span style="font-size: 14px;">🔥 MÀN 2: KHÓ</span>
                         <span style="font-size: 10px; color: #ffeb3b;">Sống sót 5 phút</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Màn hình Tạm Dừng -->
+            <div id="pause-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.75);">
+                <div class="pvz-menu-board">
+                    <h1 style="color: #ffeb3b; font-size: 22px; margin-bottom: 6px; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
+                    <p style="font-size: 12px; color: #ccc; margin-bottom: 12px;">Trò chơi đang dừng lại.</p>
+                    <div class="pvz-menu-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d);">
+                        <span>▶️ TIẾP TỤC CHƠI</span>
                     </div>
                 </div>
             </div>
@@ -297,6 +330,25 @@
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 }
+            }
+        }
+
+        let isPaused = false;
+        function togglePause() {
+            if(!gameStarted || gameOver || gameWon) return;
+            initAudio();
+            isPaused = !isPaused;
+            let btn = document.getElementById('pause-btn');
+            let pauseOverlay = document.getElementById('pause-overlay');
+            if(isPaused) {
+                btn.innerHTML = '▶️ Tiếp tục';
+                if(pauseOverlay) pauseOverlay.classList.remove('hidden');
+                if(bgm) bgm.pause();
+            } else {
+                btn.innerHTML = '⏸️ Tạm dừng';
+                if(pauseOverlay) pauseOverlay.classList.add('hidden');
+                if(bgm) bgm.play().catch(e => {});
+                lastTime = performance.now();
             }
         }
 
@@ -376,7 +428,6 @@
             } catch(e) {}
         }
 
-        // Hiệu ứng chớp màn hình đỏ khi thiếu mặt trời
         function triggerRedFlash() {
             let flash = document.createElement('div');
             flash.style.position = 'absolute';
@@ -417,6 +468,7 @@
 
         const container = document.getElementById('game-container');
         const menuScreen = document.getElementById('menu-screen');
+        const pauseOverlay = document.getElementById('pause-overlay');
         const gameoverScreen = document.getElementById('gameover-screen');
         const winScreen = document.getElementById('win-screen');
 
@@ -437,6 +489,9 @@
 
         function showMenu() {
             stopBGM();
+            isPaused = false;
+            document.getElementById('pause-btn').innerHTML = '⏸️ Tạm dừng';
+            pauseOverlay.classList.add('hidden');
             gameoverScreen.classList.add('hidden');
             winScreen.classList.add('hidden');
             menuScreen.classList.remove('hidden');
@@ -458,6 +513,9 @@
             currentLevel = level;
             timeLeft = (currentLevel === 1) ? 180 : 300;
             finalWaveTriggered = false;
+            isPaused = false;
+            document.getElementById('pause-btn').innerHTML = '⏸️ Tạm dừng';
+            pauseOverlay.classList.add('hidden');
             document.getElementById('level-display').innerText = currentLevel;
             document.getElementById('timer-display').innerText = formatTime(timeLeft);
 
@@ -486,7 +544,7 @@
             if(timerInterval) clearInterval(timerInterval);
 
             timerInterval = setInterval(() => {
-                if(!gameStarted || gameOver || gameWon) return;
+                if(!gameStarted || gameOver || gameWon || isPaused) return;
                 timeLeft--;
                 document.getElementById('timer-display').innerText = formatTime(timeLeft);
                 
@@ -503,7 +561,7 @@
             scheduleNextZombie();
 
             sunSpawner = setInterval(() => {
-                if(!gameStarted || gameOver || gameWon) return;
+                if(!gameStarted || gameOver || gameWon || isPaused) return;
                 suns += 25;
                 document.getElementById('sun-count').innerText = suns;
             }, 8000);
@@ -544,27 +602,28 @@
 
             zombieTimeout = setTimeout(() => {
                 if(!gameStarted || gameOver || gameWon) return;
-                let row = Math.floor(Math.random() * gridRows);
-                let isConehead = (currentLevel === 2 && Math.random() < 0.5) || (timeLeft <= 60 && Math.random() < 0.6);
-                zombies.push({
-                    row: row, 
-                    col: 10.5, 
-                    hp: isConehead ? 150 : 60, 
-                    maxHp: isConehead ? 150 : 60,
-                    isConehead: isConehead
-                });
-
-                if (timeLeft <= 60 && Math.random() < 0.7) {
-                    let row2 = Math.floor(Math.random() * gridRows);
+                if(!isPaused) {
+                    let row = Math.floor(Math.random() * gridRows);
+                    let isConehead = (currentLevel === 2 && Math.random() < 0.5) || (timeLeft <= 60 && Math.random() < 0.6);
                     zombies.push({
-                        row: row2, 
+                        row: row, 
                         col: 10.5, 
-                        hp: 60, 
-                        maxHp: 60,
-                        isConehead: false
+                        hp: isConehead ? 150 : 60, 
+                        maxHp: isConehead ? 150 : 60,
+                        isConehead: isConehead
                     });
-                }
 
+                    if (timeLeft <= 60 && Math.random() < 0.7) {
+                        let row2 = Math.floor(Math.random() * gridRows);
+                        zombies.push({
+                            row: row2, 
+                            col: 10.5, 
+                            hp: 60, 
+                            maxHp: 60,
+                            isConehead: false
+                        });
+                    }
+                }
                 scheduleNextZombie();
             }, delay);
         }
@@ -594,7 +653,7 @@
 
         function selectPlant(type) {
             initAudio();
-            if(!gameStarted || gameOver || gameWon) return;
+            if(!gameStarted || gameOver || gameWon || isPaused) return;
             selectedType = type;
             updateButtonStyles();
         }
@@ -611,7 +670,7 @@
 
         function processInteraction(clientX, clientY) {
             initAudio();
-            if(!gameStarted || gameOver || gameWon) return;
+            if(!gameStarted || gameOver || gameWon || isPaused) return;
             let rect = container.getBoundingClientRect();
             let x = clientX - rect.left;
             let y = clientY - rect.top;
@@ -730,6 +789,12 @@
 
         function gameLoop(timestamp) {
             if(!gameStarted || gameOver || gameWon) return;
+            if(isPaused) {
+                lastTime = timestamp;
+                animationFrameId = requestAnimationFrame(gameLoop);
+                return;
+            }
+
             let dt = (timestamp - lastTime) / 16.67;
             if(dt > 3) dt = 3;
             lastTime = timestamp;
