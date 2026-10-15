@@ -384,7 +384,8 @@
 
         const ZOMBIE_IMAGES = {
             normal: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><path d="M30 35 Q40 20 55 25" fill="none" stroke="%234a5568" stroke-width="4" stroke-linecap="round"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/><path d="M44 52 Q50 58 56 52 Z" fill="%231a202c"/></svg>',
-            conehead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="45" r="22" fill="%23cbd5e0"/><polygon points="50,2 28,38 72,38" fill="%23dd6b20"/><path d="M34 26 L66 26" stroke="%23cbd5e0" stroke-width="4"/><circle cx="42" cy="43" r="5" fill="%23fff"/><circle cx="42" cy="43" r="2" fill="%23e53e3e"/><circle cx="56" cy="41" r="4" fill="%23fff"/><circle cx="56" cy="41" r="1.5" fill="%23e53e3e"/><path d="M44 55 Q50 60 56 55 Z" fill="%231a202c"/></svg>'
+            conehead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="45" r="22" fill="%23cbd5e0"/><polygon points="50,2 28,38 72,38" fill="%23dd6b20"/><path d="M34 26 L66 26" stroke="%23cbd5e0" stroke-width="4"/><circle cx="42" cy="43" r="5" fill="%23fff"/><circle cx="42" cy="43" r="2" fill="%23e53e3e"/><circle cx="56" cy="41" r="4" fill="%23fff"/><circle cx="56" cy="41" r="1.5" fill="%23e53e3e"/><path d="M44 55 Q50 60 56 55 Z" fill="%231a202c"/></svg>',
+            buckethead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="45" r="22" fill="%23cbd5e0"/><polygon points="28,34 72,34 62,4 38,4" fill="%23a0aec0"/><ellipse cx="50" cy="4" rx="12" ry="2.5" fill="%23cbd5e0"/><path d="M24 20 Q50 -5 76 20" fill="none" stroke="%23718096" stroke-width="4"/><circle cx="42" cy="43" r="5" fill="%23fff"/><circle cx="42" cy="43" r="2" fill="%23e53e3e"/><circle cx="56" cy="41" r="4" fill="%23fff"/><circle cx="56" cy="41" r="1.5" fill="%23e53e3e"/><path d="M44 55 Q50 60 56 55 Z" fill="%231a202c"/></svg>'
         };
 
         const LAWNMOWER_SVG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="45" width="55" height="25" rx="6" fill="%23e53e3e"/><rect x="25" y="35" width="25" height="15" rx="3" fill="%23cbd5e0"/><circle cx="20" cy="70" r="12" fill="%232d3748"/><circle cx="20" cy="70" r="5" fill="%23cbd5e0"/><circle cx="65" cy="70" r="12" fill="%232d3748"/><circle cx="65" cy="70" r="5" fill="%23cbd5e0"/><path d="M75 50 L90 35 L95 38" fill="none" stroke="%23718096" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -672,13 +673,19 @@
             container.appendChild(banner);
 
             for (let r = 0; r < gridRows; r++) {
-                let isConehead = Math.random() < 0.6;
+                let rand = Math.random();
+                let type = 'normal';
+                let hp = 180;
+                if(currentLevel === 2 && rand < 0.6) {
+                    type = rand < 0.3 ? 'buckethead' : 'conehead';
+                    hp = type === 'buckethead' ? 1100 : 420;
+                }
                 zombies.push({
                     row: r,
                     col: 10.5,
-                    hp: isConehead ? 420 : 180,
-                    maxHp: isConehead ? 420 : 180,
-                    isConehead: isConehead,
+                    hp: hp,
+                    maxHp: hp,
+                    type: type,
                     hitFlash: 0
                 });
             }
@@ -697,13 +704,24 @@
                 if(!gameStarted || gameOver || gameWon) return;
                 if(!isPaused) {
                     let row = Math.floor(Math.random() * gridRows);
-                    let isConehead = (currentLevel === 2 && Math.random() < 0.5) || (timeLeft <= 60 && Math.random() < 0.6);
+                    let rand = Math.random();
+                    let type = 'normal';
+                    let hp = 180;
+
+                    if(currentLevel === 2) {
+                        if(rand < 0.25) { type = 'buckethead'; hp = 1100; }
+                        else if(rand < 0.55) { type = 'conehead'; hp = 420; }
+                    } else if(timeLeft <= 60) {
+                        if(rand < 0.3) { type = 'buckethead'; hp = 1100; }
+                        else if(rand < 0.6) { type = 'conehead'; hp = 420; }
+                    }
+
                     zombies.push({
                         row: row, 
                         col: 10.5, 
-                        hp: isConehead ? 420 : 180, 
-                        maxHp: isConehead ? 420 : 180,
-                        isConehead: isConehead,
+                        hp: hp, 
+                        maxHp: hp,
+                        type: type,
                         hitFlash: 0
                     });
 
@@ -714,7 +732,7 @@
                             col: 10.5, 
                             hp: 180, 
                             maxHp: 180,
-                            isConehead: false,
+                            type: 'normal',
                             hitFlash: 0
                         });
                     }
@@ -828,7 +846,7 @@
                             plants.push({type: 'sunflower', row: row, col: plantCol, hp: 80, sunTimer: 0});
                             playSound('plant');
                         } else if(selectedType === 'wallnut') {
-                            plants.push({type: 'wallnut', row: row, col: plantCol, hp: 300});
+                            plants.push({type: 'wallnut', row: row, col: plantCol, hp: 3000});
                             playSound('plant');
                         } else if(selectedType === 'potatomine') {
                             plants.push({type: 'potatomine', row: row, col: plantCol, hp: 80, armed: false, armTimer: 0});
@@ -984,7 +1002,7 @@
                         }
                     }
                 } else {
-                    let speed = z.isConehead ? 0.0024 : 0.0034;
+                    let speed = (z.type === 'buckethead') ? 0.002 : (z.type === 'conehead' ? 0.0024 : 0.0034);
                     z.col -= speed * dt;
                 }
             });
@@ -1166,7 +1184,13 @@
                 }
 
                 let img = document.createElement('img');
-                img.src = z.isConehead ? ZOMBIE_IMAGES.conehead : ZOMBIE_IMAGES.normal;
+                if(z.type === 'buckethead') {
+                    img.src = ZOMBIE_IMAGES.buckethead;
+                } else if(z.type === 'conehead') {
+                    img.src = ZOMBIE_IMAGES.conehead;
+                } else {
+                    img.src = ZOMBIE_IMAGES.normal;
+                }
                 div.appendChild(img);
 
                 container.appendChild(div);
