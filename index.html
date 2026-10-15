@@ -149,6 +149,15 @@
             animation: sunflowerGlow 1.2s infinite ease-in-out;
         }
 
+        @keyframes cherryPulse {
+            0% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.2); filter: brightness(1.6); }
+            100% { transform: scale(1); filter: brightness(1); }
+        }
+        .cherry-fuse {
+            animation: cherryPulse 0.35s infinite ease-in-out;
+        }
+
         .sun-drop { 
             position: absolute; 
             font-size: 28px; 
@@ -247,15 +256,15 @@
             <div style="display: flex; gap: 3px; justify-content: center; flex-wrap: wrap; width: 100%;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
-                    <span>Đậu</span><span style="font-size:7.5px; color:#ffeb3b;">50☀️</span>
+                    <span>Đậu</span><span style="font-size:7.5px; color:#ffeb3b;">100☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23ecc94b'><circle cx='50' cy='20' r='12'/><circle cx='80' cy='32' r='12'/><circle cx='92' cy='60' r='12'/><circle cx='75' cy='85' r='12'/><circle cx='45' cy='90' r='12'/><circle cx='20' cy='80' r='12'/><circle cx='8' cy='55' r='12'/><circle cx='20' cy='30' r='12'/></g><circle cx='50' cy='55' r='28' fill='%23d69e2e'/><circle cx='40' cy='48' r='6' fill='%23fff'/><circle cx='40' cy='48' r='3' fill='%23000'/><circle cx='60' cy='48' r='6' fill='%23fff'/><circle cx='60' cy='48' r='3' fill='%23000'/></svg>" alt="Sunflower">
-                    <span>Hoa</span><span style="font-size:7.5px; color:#ffeb3b;">40☀️</span>
+                    <span>Hoa</span><span style="font-size:7.5px; color:#ffeb3b;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='52' rx='32' ry='38' fill='%23d69e2e'/><ellipse cx='50' cy='52' rx='27' ry='33' fill='%23b7791f'/><ellipse cx='42' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='42' cy='46' r='4' fill='%23000'/><ellipse cx='62' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='62' cy='46' r='4' fill='%23000'/></svg>" alt="Wallnut">
-                    <span>Khoai</span><span style="font-size:7.5px; color:#ffeb3b;">30☀️</span>
+                    <span>Khoai</span><span style="font-size:7.5px; color:#ffeb3b;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('potatomine')" ontouchend="selectPlant('potatomine'); event.preventDefault();" id="btn-potatomine">
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='80' rx='16' ry='6' fill='%2354381e'/><path d='M47 80 L47 55 Q47 42 50 36 Q53 42 53 55 L53 80 Z' fill='%2348bb78'/><circle cx='50' cy='35' r='6' fill='%23e53e3e'/><path d='M50 45 Q42 43 44 52 Z' fill='%2338a169'/></svg>" alt="Potato Mine">
@@ -263,7 +272,7 @@
                 </div>
                 <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M35 65 Q45 25 65 30' fill='none' stroke='%2338a169' stroke-width='5'/><circle cx='32' cy='68' r='22' fill='%23e53e3e'/><circle cx='68' cy='68' r='22' fill='%23e53e3e'/></svg>" alt="Cherry">
-                    <span>Bom</span><span style="font-size:7.5px; color:#ffeb3b;">125☀️</span>
+                    <span>Bom</span><span style="font-size:7.5px; color:#ffeb3b;">150☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
                     <span style="font-size:13px;">⛏️</span>
@@ -757,34 +766,21 @@
                 let exists = plants.some(p => p.row === row && p.col === plantCol);
                 if(!exists) {
                     if(selectedType === 'cherry') {
-                        if(suns >= 125) {
-                            suns -= 125;
-                            playSound('boom');
-                            
-                            let fx = document.createElement('div');
-                            fx.className = 'explosion-fx';
-                            fx.innerText = '💥';
-                            let screenCol = plantCol + 1;
-                            fx.style.left = ((screenCol + 0.5) * cellW) + 'px';
-                            fx.style.top = ((row + 0.5) * cellH) + 'px';
-                            container.appendChild(fx);
-                            setTimeout(() => fx.remove(), 500);
-
-                            zombies = zombies.filter(z => {
-                                let inRange = (z.row >= row - 1 && z.row <= row + 1 && Math.abs(z.col - (plantCol + 1)) <= 1.2);
-                                return !inRange;
-                            });
-
+                        if(suns >= 150) {
+                            plants.push({type: 'cherry', row: row, col: plantCol, hp: 999, fuseTimer: 0});
+                            suns -= 150;
+                            playSound('plant');
                             document.getElementById('sun-count').innerText = suns;
                             selectedType = null;
                             updateButtonStyles();
+                            renderStaticElements();
                         } else {
                             triggerRedFlash();
                         }
                     } else if(selectedType === 'peashooter') {
-                        if(suns >= 50) {
+                        if(suns >= 100) {
                             plants.push({type: 'peashooter', row: row, col: plantCol, hp: 100, shootTimer: 0});
-                            suns -= 50;
+                            suns -= 100;
                             playSound('plant');
                             document.getElementById('sun-count').innerText = suns;
                             selectedType = null;
@@ -794,9 +790,9 @@
                             triggerRedFlash(); 
                         }
                     } else if(selectedType === 'sunflower') {
-                        if(suns >= 40) {
+                        if(suns >= 50) {
                             plants.push({type: 'sunflower', row: row, col: plantCol, hp: 80, sunTimer: 0});
-                            suns -= 40;
+                            suns -= 50;
                             playSound('plant');
                             document.getElementById('sun-count').innerText = suns;
                             selectedType = null;
@@ -806,9 +802,9 @@
                             triggerRedFlash(); 
                         }
                     } else if(selectedType === 'wallnut') {
-                        if(suns >= 30) {
+                        if(suns >= 50) {
                             plants.push({type: 'wallnut', row: row, col: plantCol, hp: 300});
-                            suns -= 30;
+                            suns -= 50;
                             playSound('plant');
                             document.getElementById('sun-count').innerText = suns;
                             selectedType = null;
@@ -891,6 +887,7 @@
 
             let plantsChanged = false;
             let explodedMines = [];
+            let explodedCherries = [];
 
             plants.forEach(p => {
                 if (p.type === 'potatomine' && !p.armed) {
@@ -899,8 +896,34 @@
                         p.armed = true;
                         plantsChanged = true;
                     }
+                } else if (p.type === 'cherry') {
+                    p.fuseTimer += dt;
+                    if (p.fuseTimer > 60) { // Khoảng 1 giây nổ
+                        explodedCherries.push(p);
+                    }
                 }
             });
+
+            if (explodedCherries.length > 0) {
+                explodedCherries.forEach(cherry => {
+                    playSound('boom');
+                    let fx = document.createElement('div');
+                    fx.className = 'explosion-fx';
+                    fx.innerText = '💥';
+                    let screenCol = cherry.col + 1;
+                    fx.style.left = ((screenCol + 0.5) * cellW) + 'px';
+                    fx.style.top = ((cherry.row + 0.5) * cellH) + 'px';
+                    container.appendChild(fx);
+                    setTimeout(() => fx.remove(), 500);
+
+                    zombies = zombies.filter(z => {
+                        let inRange = (z.row >= cherry.row - 1 && z.row <= cherry.row + 1 && Math.abs(z.col - (cherry.col + 1)) <= 1.2);
+                        return !inRange;
+                    });
+                });
+                plants = plants.filter(p => !explodedCherries.includes(p));
+                plantsChanged = true;
+            }
 
             zombies.forEach(z => {
                 if(z.hitFlash > 0) z.hitFlash--;
@@ -921,7 +944,7 @@
                         container.appendChild(fx);
                         setTimeout(() => fx.remove(), 500);
 
-                    } else {
+                    } else if (hitPlant.type !== 'cherry') {
                         hitPlant.hp -= 0.8 * dt;
                         playSound('bite');
                         if(hitPlant.hp <= 0) {
@@ -1054,6 +1077,8 @@
                 div.className = 'entity static-entity';
                 if(p.type === 'sunflower') {
                     div.classList.add('sunflower-glow');
+                } else if(p.type === 'cherry') {
+                    div.classList.add('cherry-fuse');
                 }
                 let screenCol = p.col + 1;
                 div.style.left = (screenCol * cellW) + 'px';
