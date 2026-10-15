@@ -109,7 +109,7 @@
         }
 
         .seed-card { 
-            padding: 5px 10px; 
+            padding: 4px 8px; 
             font-size: 11px; 
             background: linear-gradient(to bottom, #fff385, #e0a800); 
             border: 2px solid #553300; 
@@ -122,7 +122,14 @@
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            min-width: 60px;
+            min-width: 65px;
+        }
+        .seed-card img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            margin-bottom: 2px;
+            pointer-events: none;
         }
         .seed-card:active { transform: translateY(2px); box-shadow: 0 0 #442200; }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
@@ -140,20 +147,33 @@
         }
         .control-btn:active { transform: translateY(2px); box-shadow: 0 0 #0a3570; }
 
-        .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        .bullet { width: 9px; height: 9px; background: #fff200; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #ffcc00; pointer-events: none; }
+        .entity { 
+            position: absolute; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            pointer-events: none; 
+        }
+        .entity img {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .bullet { width: 10px; height: 10px; background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; }
         
         /* Hiệu ứng nhấp nháy phát sáng cho Hoa hướng dương */
         @keyframes sunflowerGlow {
             0% { filter: drop-shadow(0 0 2px #ffeb3b) brightness(1); transform: scale(1); }
-            50% { filter: drop-shadow(0 0 12px #ffeb3b) brightness(1.35); transform: scale(1.1); }
+            50% { filter: drop-shadow(0 0 12px #ffeb3b) brightness(1.35); transform: scale(1.08); }
             100% { filter: drop-shadow(0 0 2px #ffeb3b) brightness(1); transform: scale(1); }
         }
         .sunflower-glow {
             animation: sunflowerGlow 1.2s infinite ease-in-out;
         }
 
-        /* Vùng nhấp thu thập mặt trời rộng rãi, dễ lấy */
+        /* Hạt mặt trời */
         .sun-drop { 
             position: absolute; 
             font-size: 34px; 
@@ -248,19 +268,24 @@
             
             <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; width: 100%;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
-                    <span>🌿 Đậu</span><span style="font-size:9px; color:#ffeb3b;">50☀️</span>
+                    <img src="https://static.wikia.nocookie.net/plantsvszombies/images/1/1a/PvZ1_Peashooter.png" alt="Peashooter">
+                    <span>Đậu</span><span style="font-size:9px; color:#ffeb3b;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
-                    <span>🌻 Hoa</span><span style="font-size:9px; color:#ffeb3b;">40☀️</span>
+                    <img src="https://static.wikia.nocookie.net/plantsvszombies/images/8/8e/PvZ1_Sunflower.png" alt="Sunflower">
+                    <span>Hoa</span><span style="font-size:9px; color:#ffeb3b;">40☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
-                    <span>🥔 Khoai</span><span style="font-size:9px; color:#ffeb3b;">30☀️</span>
+                    <img src="https://static.wikia.nocookie.net/plantsvszombies/images/1/14/PvZ1_Wall-nut.png" alt="Wallnut">
+                    <span>Khoai</span><span style="font-size:9px; color:#ffeb3b;">30☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
-                    <span>💣 Bom</span><span style="font-size:9px; color:#ffeb3b;">125☀️</span>
+                    <img src="https://static.wikia.nocookie.net/plantsvszombies/images/2/27/PvZ1_CherryBomb.png" alt="Cherry">
+                    <span>Bom</span><span style="font-size:9px; color:#ffeb3b;">125☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
-                    <span>⛏️ Xẻng</span><span>Bỏ cây</span>
+                    <span style="font-size:18px;">⛏️</span>
+                    <span>Xẻng</span><span>Bỏ cây</span>
                 </div>
             </div>
 
@@ -327,6 +352,19 @@
     </div>
 
     <script>
+        // Link hình ảnh các loại cây và Zombie
+        const PLANT_IMAGES = {
+            peashooter: 'https://static.wikia.nocookie.net/plantsvszombies/images/1/1a/PvZ1_Peashooter.png',
+            sunflower: 'https://static.wikia.nocookie.net/plantsvszombies/images/8/8e/PvZ1_Sunflower.png',
+            wallnut: 'https://static.wikia.nocookie.net/plantsvszombies/images/1/14/PvZ1_Wall-nut.png',
+            cherry: 'https://static.wikia.nocookie.net/plantsvszombies/images/2/27/PvZ1_CherryBomb.png'
+        };
+
+        const ZOMBIE_IMAGES = {
+            normal: 'https://static.wikia.nocookie.net/plantsvszombies/images/d/df/PvZ1_Zombie.png',
+            conehead: 'https://static.wikia.nocookie.net/plantsvszombies/images/f/f2/PvZ1_Conehead_Zombie.png'
+        };
+
         let bgm = new Audio('themesoundplntsv.mp3');
         bgm.loop = true;
         bgm.volume = 0.5;
@@ -840,7 +878,6 @@
                     if (s.animProgress > 1) s.animProgress = 1;
                     
                     let p = s.animProgress;
-                    // Đường cong Parabol văng ngẫu nhiên từ vị trí cây
                     s.x = s.startX + s.vx * p;
                     s.y = s.startY + s.vy * p - 35 * Math.sin(p * Math.PI);
                 } else if (!s.isSunflowerSun && s.y < s.targetY) {
@@ -893,7 +930,6 @@
                         let startX = (screenCol + 0.5) * cellW;
                         let startY = (p.row + 0.5) * cellH;
                         
-                        // Hướng văng ngẫu nhiên xung quanh cây
                         let angle = Math.random() * Math.PI * 2;
                         let dist = 35 + Math.random() * 35;
                         let vx = Math.cos(angle) * dist;
@@ -987,11 +1023,12 @@
                 div.style.top = (p.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
                 div.style.height = cellH + 'px';
-                div.style.fontSize = '26px';
                 div.style.zIndex = '2';
-                if(p.type === 'peashooter') div.innerText = '🌿';
-                else if(p.type === 'sunflower') div.innerText = '🌻';
-                else if(p.type === 'wallnut') div.innerText = '🥔';
+                
+                let img = document.createElement('img');
+                img.src = PLANT_IMAGES[p.type];
+                div.appendChild(img);
+
                 container.appendChild(div);
             });
         }
@@ -1020,7 +1057,6 @@
                 div.style.top = (z.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
                 div.style.height = cellH + 'px';
-                div.style.fontSize = '26px';
                 div.style.zIndex = '2';
                 
                 if(z.hitFlash > 0) {
@@ -1029,7 +1065,10 @@
                     div.style.filter = 'none';
                 }
 
-                div.innerText = z.isConehead ? '🧟‍♂️' : '🧟';
+                let img = document.createElement('img');
+                img.src = z.isConehead ? ZOMBIE_IMAGES.conehead : ZOMBIE_IMAGES.normal;
+                div.appendChild(img);
+
                 container.appendChild(div);
             });
 
@@ -1048,7 +1087,6 @@
                 div.style.top = s.y + 'px';
                 div.innerText = '☀️';
                 
-                // Bấm hoặc chạm siêu nhạy để nhặt mặt trời
                 let collectAction = (e) => {
                     e.stopPropagation();
                     let idx = sunDrops.indexOf(s);
