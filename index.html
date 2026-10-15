@@ -110,6 +110,29 @@
             display: none;
         }
 
+        .control-btn { 
+            background: linear-gradient(to bottom, #42a5f5, #1565c0); 
+            color: white; 
+            border: 1px solid #0d47a1; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            box-shadow: 0 2px #0a3570;
+        }
+        .control-btn:active { transform: translateY(2px); box-shadow: 0 0 #0a3570; }
+
+        .menu-btn-game {
+            background: linear-gradient(to bottom, #a0522d, #6b3012);
+            border: 1px solid #3d1c07;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px #2b1304;
+            text-shadow: 1px 1px #000;
+        }
+        .menu-btn-game:active { transform: translateY(2px); box-shadow: 0 0 #2b1304; }
+
         .entity { 
             position: absolute; 
             display: flex; 
@@ -226,6 +249,7 @@
             .ui { padding: 3px 4px; font-size: 8.5px; gap: 3px; }
             .seed-card { padding: 2px 2px; font-size: 7.5px; min-width: 36px; }
             .seed-card img { width: 16px; height: 16px; }
+            .control-btn, .menu-btn-game { padding: 2px 5px; font-size: 8.5px; }
             .sun-drop { font-size: 24px; padding: 8px; }
             .lawnmower { width: 26px; height: 26px; }
             .active-mower { width: 30px; height: 30px; }
@@ -242,6 +266,7 @@
             .ui { padding: 8px 14px; font-size: 15px; gap: 8px; }
             .seed-card { padding: 6px 10px; font-size: 12px; min-width: 72px; border-radius: 8px; }
             .seed-card img { width: 34px; height: 34px; }
+            .control-btn, .menu-btn-game { padding: 4px 10px; font-size: 12px; border-radius: 6px; }
             .sun-drop { font-size: 42px; padding: 16px; }
             .lawnmower { width: 48px; height: 48px; }
             .active-mower { width: 54px; height: 54px; }
@@ -259,11 +284,16 @@
             <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2px 8px;">
                 <span>☀️ <span id="sun-count" style="color: #ffeb3b;">50</span></span>
                 <span>Màn: <span id="level-display" style="color: #00ffff;">1</span></span>
-                <div style="display: flex; align-items: center; gap: 6px; width: 45%;">
+                <div style="display: flex; align-items: center; gap: 6px; width: 35%;">
                     <div style="flex-grow: 1; background: #222; height: 12px; border-radius: 6px; position: relative; overflow: hidden; border: 1px solid #555;">
                         <div id="progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #48bb78, #38a169); transition: width 0.3s;"></div>
                     </div>
                     <span style="font-size: 1.2em; line-height: 1;" title="Đợt tấn công cuối">🚩</span>
+                </div>
+                <!-- NÚT FULL MÀN HÌNH VÀ MENU GỘP GIỐNG GAME GỐC -->
+                <div style="display: flex; gap: 4px;">
+                    <button class="control-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
+                    <button class="menu-btn-game" id="pause-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();">MENU</button>
                 </div>
             </div>
             
@@ -354,6 +384,23 @@
                 </div>
             </div>
 
+            <!-- BẢNG TẠM DỪNG GỘP TẤT CẢ TÙY CHỌN (GỐC GAME) -->
+            <div id="pause-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.75);">
+                <div class="pvz-menu-board">
+                    <h1 style="color: #ffeb3b; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
+                    <p style="color: #ccc; margin-bottom: 6px; font-size: 0.85em;">Trò chơi đang tạm dừng</p>
+                    <div class="pvz-menu-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 6px 10px; margin-top: 4px;">
+                        <span>▶️ TIẾP TỤC CHƠI</span>
+                    </div>
+                    <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 6px 10px; margin-top: 4px;">
+                        <span>⚙️ CÀI ĐẶT ÂM LƯỢNG</span>
+                    </div>
+                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 6px 10px; margin-top: 4px;">
+                        <span>🚪 THOÁT RA MENU</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board">
@@ -440,6 +487,32 @@
         function stopBGM() {
             bgm.pause();
             bgm.currentTime = 0;
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {});
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        let isPaused = false;
+        function togglePause() {
+            if(!gameStarted || gameOver || gameWon) return;
+            initAudio();
+            isPaused = !isPaused;
+            let pauseOverlay = document.getElementById('pause-overlay');
+            if(isPaused) {
+                if(pauseOverlay) pauseOverlay.classList.remove('hidden');
+                if(bgm) bgm.pause();
+            } else {
+                if(pauseOverlay) pauseOverlay.classList.add('hidden');
+                if(bgm) bgm.play().catch(e => {});
+                lastTime = performance.now();
+            }
         }
 
         let audioCtx = null;
@@ -560,6 +633,7 @@
         const container = document.getElementById('game-container');
         const gameUI = document.getElementById('game-ui');
         const menuScreen = document.getElementById('menu-screen');
+        const pauseOverlay = document.getElementById('pause-overlay');
         const gameoverScreen = document.getElementById('gameover-screen');
         const winScreen = document.getElementById('win-screen');
 
@@ -580,7 +654,9 @@
 
         function showMenu() {
             stopBGM();
+            isPaused = false;
             if(gameUI) gameUI.classList.add('hidden');
+            pauseOverlay.classList.add('hidden');
             gameoverScreen.classList.add('hidden');
             winScreen.classList.add('hidden');
             document.getElementById('settings-overlay').classList.add('hidden');
@@ -604,8 +680,10 @@
             totalZombiesForLevel = (currentLevel === 1) ? 20 : (currentLevel === 2 ? 30 : 40);
             zombiesSpawnedCount = 0;
             finalWaveTriggered = false;
+            isPaused = false;
             
             if(gameUI) gameUI.classList.remove('hidden');
+            pauseOverlay.classList.add('hidden');
             document.getElementById('level-display').innerText = currentLevel;
             updateProgressBar();
 
@@ -639,7 +717,7 @@
             scheduleNextZombie();
 
             sunSpawner = setInterval(() => {
-                if(!gameStarted || gameOver || gameWon) return;
+                if(!gameStarted || gameOver || gameWon || isPaused) return;
                 let cWidth = container.clientWidth || 800;
                 let randomX = Math.random() * (cWidth - 100) + 50;
                 let targetY = Math.random() * (container.clientHeight * 0.5) + (container.clientHeight * 0.25);
@@ -707,35 +785,37 @@
 
             zombieTimeout = setTimeout(() => {
                 if(!gameStarted || gameOver || gameWon) return;
-                let row = Math.floor(Math.random() * gridRows);
-                let rand = Math.random();
-                let type = 'normal';
-                let hp = 180;
+                if(!isPaused) {
+                    let row = Math.floor(Math.random() * gridRows);
+                    let rand = Math.random();
+                    let type = 'normal';
+                    let hp = 180;
 
-                if(currentLevel === 2) {
-                    if(rand < 0.35) { type = 'conehead'; hp = 420; }
-                } else if(currentLevel === 3) {
-                    if(rand < 0.3) { type = 'buckethead'; hp = 1100; }
-                    else if(rand < 0.65) { type = 'conehead'; hp = 420; }
-                }
+                    if(currentLevel === 2) {
+                        if(rand < 0.35) { type = 'conehead'; hp = 420; }
+                    } else if(currentLevel === 3) {
+                        if(rand < 0.3) { type = 'buckethead'; hp = 1100; }
+                        else if(rand < 0.65) { type = 'conehead'; hp = 420; }
+                    }
 
-                zombies.push({
-                    row: row, 
-                    col: 10.5, 
-                    hp: hp, 
-                    maxHp: hp,
-                    type: type,
-                    hitFlash: 0,
-                    slowTimer: 0
-                });
+                    zombies.push({
+                        row: row, 
+                        col: 10.5, 
+                        hp: hp, 
+                        maxHp: hp,
+                        type: type,
+                        hitFlash: 0,
+                        slowTimer: 0
+                    });
 
-                zombiesSpawnedCount++;
-                updateProgressBar();
+                    zombiesSpawnedCount++;
+                    updateProgressBar();
 
-                if(zombiesSpawnedCount >= totalZombiesForLevel && !finalWaveTriggered) {
-                    finalWaveTriggered = true;
-                    triggerFinalWaveBanner();
-                    return;
+                    if(zombiesSpawnedCount >= totalZombiesForLevel && !finalWaveTriggered) {
+                        finalWaveTriggered = true;
+                        triggerFinalWaveBanner();
+                        return;
+                    }
                 }
                 scheduleNextZombie();
             }, delay);
@@ -764,7 +844,7 @@
 
         function selectPlant(type) {
             initAudio();
-            if(!gameStarted || gameOver || gameWon) return;
+            if(!gameStarted || gameOver || gameWon || isPaused) return;
             
             if(type !== 'shovel') {
                 let data = PLANT_DATA[type];
@@ -791,7 +871,7 @@
 
         function processInteraction(clientX, clientY) {
             initAudio();
-            if(!gameStarted || gameOver || gameWon) return;
+            if(!gameStarted || gameOver || gameWon || isPaused) return;
             let rect = container.getBoundingClientRect();
             let x = clientX - rect.left;
             let y = clientY - rect.top;
@@ -878,6 +958,11 @@
 
         function gameLoop(timestamp) {
             if(!gameStarted || gameOver || gameWon) return;
+            if(isPaused) {
+                lastTime = timestamp;
+                animationFrameId = requestAnimationFrame(gameLoop);
+                return;
+            }
 
             let dt = (timestamp - lastTime) / 16.67;
             if(dt > 3) dt = 3;
