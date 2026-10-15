@@ -110,17 +110,6 @@
             display: none;
         }
 
-        .control-btn { 
-            background: linear-gradient(to bottom, #42a5f5, #1565c0); 
-            color: white; 
-            border: 1px solid #0d47a1; 
-            border-radius: 5px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            box-shadow: 0 2px #0a3570;
-        }
-        .control-btn:active { transform: translateY(2px); box-shadow: 0 0 #0a3570; }
-
         .entity { 
             position: absolute; 
             display: flex; 
@@ -233,11 +222,10 @@
         @media (max-width: 768px) {
             .game-title { font-size: 11px; }
             #game-wrapper { max-width: 540px; padding: 0 2px; }
-            #game-container { height: 44vh; max-height: 280px; min-height: 200px; }
-            .ui { padding: 2px 4px; font-size: 8.5px; gap: 2px; }
-            .seed-card { padding: 2px 2px; font-size: 7px; min-width: 34px; }
-            .seed-card img { width: 15px; height: 15px; }
-            .control-btn { padding: 2px 4px; font-size: 8px; }
+            #game-container { height: 46vh; max-height: 300px; min-height: 220px; }
+            .ui { padding: 3px 4px; font-size: 8.5px; gap: 3px; }
+            .seed-card { padding: 2px 2px; font-size: 7.5px; min-width: 36px; }
+            .seed-card img { width: 16px; height: 16px; }
             .sun-drop { font-size: 24px; padding: 8px; }
             .lawnmower { width: 26px; height: 26px; }
             .active-mower { width: 30px; height: 30px; }
@@ -250,11 +238,10 @@
         @media (min-width: 769px) {
             .game-title { font-size: 22px; margin: 6px 0; }
             #game-wrapper { max-width: 1150px; }
-            #game-container { height: 64vh; max-height: 560px; min-height: 380px; border-width: 4px; }
+            #game-container { height: 65vh; max-height: 580px; min-height: 400px; border-width: 4px; }
             .ui { padding: 8px 14px; font-size: 15px; gap: 8px; }
-            .seed-card { padding: 5px 8px; font-size: 11px; min-width: 68px; border-radius: 8px; }
-            .seed-card img { width: 32px; height: 32px; }
-            .control-btn { padding: 6px 12px; font-size: 13px; border-radius: 6px; }
+            .seed-card { padding: 6px 10px; font-size: 12px; min-width: 72px; border-radius: 8px; }
+            .seed-card img { width: 34px; height: 34px; }
             .sun-drop { font-size: 42px; padding: 16px; }
             .lawnmower { width: 48px; height: 48px; }
             .active-mower { width: 54px; height: 54px; }
@@ -269,7 +256,7 @@
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui hidden" id="game-ui">
-            <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 8px;">
+            <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2px 8px;">
                 <span>☀️ <span id="sun-count" style="color: #ffeb3b;">50</span></span>
                 <span>Màn: <span id="level-display" style="color: #00ffff;">1</span></span>
                 <div style="display: flex; align-items: center; gap: 6px; width: 45%;">
@@ -280,7 +267,7 @@
                 </div>
             </div>
             
-            <div style="display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; width: 100%;">
+            <div style="display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; width: 100%; padding: 2px 0;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
                     <div class="cooldown-overlay" id="cd-peashooter"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
@@ -315,13 +302,6 @@
                     <span style="font-size: 1.2em;">⛏️</span>
                     <span>Xẻng</span>
                 </div>
-            </div>
-
-            <div style="display: flex; gap: 5px; justify-content: center; width: 100%; margin-top: 1px;">
-                <button class="control-btn" id="pause-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; box-shadow: 0 2px #92400e;">⏸️ Dừng</button>
-                <button class="control-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #6b7280, #4b5563); border-color: #374151; box-shadow: 0 2px #1f2937;">⚙️ Cài đặt</button>
-                <button class="control-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
-                <button class="control-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #ef4444, #dc2626); border-color: #991b1b; box-shadow: 0 2px #7f1d1d;">🚪 Thoát</button>
             </div>
         </div>
 
@@ -370,23 +350,6 @@
 
                     <div class="pvz-menu-btn" onclick="closeSettings()" ontouchend="closeSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 6px 10px; margin-top: 8px;">
                         <span>QUAY LẠI</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Màn hình Tạm Dừng -->
-            <div id="pause-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.75);">
-                <div class="pvz-menu-board">
-                    <h1 style="color: #ffeb3b; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
-                    <p style="color: #ccc; margin-bottom: 6px; font-size: 0.85em;">Trò chơi đang dừng lại.</p>
-                    <div class="pvz-menu-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 6px 10px; margin-top: 4px;">
-                        <span>▶️ TIẾP TỤC CHƠI</span>
-                    </div>
-                    <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 6px 10px; margin-top: 4px;">
-                        <span>⚙️ CÀI ĐẶT</span>
-                    </div>
-                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 6px 10px; margin-top: 4px;">
-                        <span>🚪 THOÁT RA MENU</span>
                     </div>
                 </div>
             </div>
@@ -477,35 +440,6 @@
         function stopBGM() {
             bgm.pause();
             bgm.currentTime = 0;
-        }
-
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {});
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-
-        let isPaused = false;
-        function togglePause() {
-            if(!gameStarted || gameOver || gameWon) return;
-            initAudio();
-            isPaused = !isPaused;
-            let btn = document.getElementById('pause-btn');
-            let pauseOverlay = document.getElementById('pause-overlay');
-            if(isPaused) {
-                btn.innerHTML = '▶️ Tiếp';
-                if(pauseOverlay) pauseOverlay.classList.remove('hidden');
-                if(bgm) bgm.pause();
-            } else {
-                btn.innerHTML = '⏸️ Dừng';
-                if(pauseOverlay) pauseOverlay.classList.add('hidden');
-                if(bgm) bgm.play().catch(e => {});
-                lastTime = performance.now();
-            }
         }
 
         let audioCtx = null;
@@ -626,7 +560,6 @@
         const container = document.getElementById('game-container');
         const gameUI = document.getElementById('game-ui');
         const menuScreen = document.getElementById('menu-screen');
-        const pauseOverlay = document.getElementById('pause-overlay');
         const gameoverScreen = document.getElementById('gameover-screen');
         const winScreen = document.getElementById('win-screen');
 
@@ -647,10 +580,7 @@
 
         function showMenu() {
             stopBGM();
-            isPaused = false;
-            document.getElementById('pause-btn').innerHTML = '⏸️ Dừng';
             if(gameUI) gameUI.classList.add('hidden');
-            pauseOverlay.classList.add('hidden');
             gameoverScreen.classList.add('hidden');
             winScreen.classList.add('hidden');
             document.getElementById('settings-overlay').classList.add('hidden');
@@ -674,11 +604,8 @@
             totalZombiesForLevel = (currentLevel === 1) ? 20 : (currentLevel === 2 ? 30 : 40);
             zombiesSpawnedCount = 0;
             finalWaveTriggered = false;
-            isPaused = false;
-            document.getElementById('pause-btn').innerHTML = '⏸️ Dừng';
             
             if(gameUI) gameUI.classList.remove('hidden');
-            pauseOverlay.classList.add('hidden');
             document.getElementById('level-display').innerText = currentLevel;
             updateProgressBar();
 
@@ -712,7 +639,7 @@
             scheduleNextZombie();
 
             sunSpawner = setInterval(() => {
-                if(!gameStarted || gameOver || gameWon || isPaused) return;
+                if(!gameStarted || gameOver || gameWon) return;
                 let cWidth = container.clientWidth || 800;
                 let randomX = Math.random() * (cWidth - 100) + 50;
                 let targetY = Math.random() * (container.clientHeight * 0.5) + (container.clientHeight * 0.25);
@@ -780,37 +707,35 @@
 
             zombieTimeout = setTimeout(() => {
                 if(!gameStarted || gameOver || gameWon) return;
-                if(!isPaused) {
-                    let row = Math.floor(Math.random() * gridRows);
-                    let rand = Math.random();
-                    let type = 'normal';
-                    let hp = 180;
+                let row = Math.floor(Math.random() * gridRows);
+                let rand = Math.random();
+                let type = 'normal';
+                let hp = 180;
 
-                    if(currentLevel === 2) {
-                        if(rand < 0.35) { type = 'conehead'; hp = 420; }
-                    } else if(currentLevel === 3) {
-                        if(rand < 0.3) { type = 'buckethead'; hp = 1100; }
-                        else if(rand < 0.65) { type = 'conehead'; hp = 420; }
-                    }
+                if(currentLevel === 2) {
+                    if(rand < 0.35) { type = 'conehead'; hp = 420; }
+                } else if(currentLevel === 3) {
+                    if(rand < 0.3) { type = 'buckethead'; hp = 1100; }
+                    else if(rand < 0.65) { type = 'conehead'; hp = 420; }
+                }
 
-                    zombies.push({
-                        row: row, 
-                        col: 10.5, 
-                        hp: hp, 
-                        maxHp: hp,
-                        type: type,
-                        hitFlash: 0,
-                        slowTimer: 0
-                    });
+                zombies.push({
+                    row: row, 
+                    col: 10.5, 
+                    hp: hp, 
+                    maxHp: hp,
+                    type: type,
+                    hitFlash: 0,
+                    slowTimer: 0
+                });
 
-                    zombiesSpawnedCount++;
-                    updateProgressBar();
+                zombiesSpawnedCount++;
+                updateProgressBar();
 
-                    if(zombiesSpawnedCount >= totalZombiesForLevel && !finalWaveTriggered) {
-                        finalWaveTriggered = true;
-                        triggerFinalWaveBanner();
-                        return;
-                    }
+                if(zombiesSpawnedCount >= totalZombiesForLevel && !finalWaveTriggered) {
+                    finalWaveTriggered = true;
+                    triggerFinalWaveBanner();
+                    return;
                 }
                 scheduleNextZombie();
             }, delay);
@@ -839,7 +764,7 @@
 
         function selectPlant(type) {
             initAudio();
-            if(!gameStarted || gameOver || gameWon || isPaused) return;
+            if(!gameStarted || gameOver || gameWon) return;
             
             if(type !== 'shovel') {
                 let data = PLANT_DATA[type];
@@ -866,7 +791,7 @@
 
         function processInteraction(clientX, clientY) {
             initAudio();
-            if(!gameStarted || gameOver || gameWon || isPaused) return;
+            if(!gameStarted || gameOver || gameWon) return;
             let rect = container.getBoundingClientRect();
             let x = clientX - rect.left;
             let y = clientY - rect.top;
@@ -953,11 +878,6 @@
 
         function gameLoop(timestamp) {
             if(!gameStarted || gameOver || gameWon) return;
-            if(isPaused) {
-                lastTime = timestamp;
-                animationFrameId = requestAnimationFrame(gameLoop);
-                return;
-            }
 
             let dt = (timestamp - lastTime) / 16.67;
             if(dt > 3) dt = 3;
@@ -1150,7 +1070,7 @@
                         z.hp -= 12;
                         z.hitFlash = 6;
                         if(b.isIce) {
-                            z.slowTimer = 220; // Làm chậm trong khoảng thời gian
+                            z.slowTimer = 220;
                         }
                         playSound('hit');
                         hit = true;
