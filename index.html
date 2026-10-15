@@ -262,8 +262,15 @@
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui">
-            <div style="width: 100%; font-size: 11px;">
-                ☀️ <span id="sun-count" style="color: #ffeb3b;">50</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Sống sót: <span id="timer-display" style="color: #00e676;">03:00</span>
+            <div style="width: 100%; font-size: 11px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px;">
+                <span>☀️ <span id="sun-count" style="color: #ffeb3b;">50</span></span>
+                <span>Màn: <span id="level-display" style="color: #00ffff;">1</span></span>
+                <div style="display: flex; align-items: center; gap: 4px; width: 45%;">
+                    <div style="flex-grow: 1; background: #222; height: 10px; border-radius: 5px; position: relative; overflow: hidden; border: 1px solid #555;">
+                        <div id="progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #48bb78, #38a169); transition: width 0.3s;"></div>
+                    </div>
+                    <span style="font-size: 13px; line-height: 1;" title="Đợt tấn công cuối">🚩</span>
+                </div>
             </div>
             
             <div style="display: flex; gap: 3px; justify-content: center; flex-wrap: wrap; width: 100%;">
@@ -314,17 +321,17 @@
                     
                     <div class="pvz-menu-btn" onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();">
                         <span style="font-size: 12px;">MÀN 1</span>
-                        <span style="font-size: 9px; color: #ffeb3b;">Sống sót 3 phút</span>
+                        <span style="font-size: 9px; color: #ffeb3b;">Tiêu diệt hết zombie để thắng</span>
                     </div>
 
                     <div class="pvz-menu-btn" onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #d97706, #b45309);">
                         <span style="font-size: 12px;">MÀN 2</span>
-                        <span style="font-size: 9px; color: #ffeb3b;">Sống sót 4 phút</span>
+                        <span style="font-size: 9px; color: #ffeb3b;">Có Zombie đội nón</span>
                     </div>
 
                     <div class="pvz-menu-btn" onclick="startGame(3)" ontouchend="startGame(3); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b);">
                         <span style="font-size: 12px;">MÀN 3</span>
-                        <span style="font-size: 9px; color: #ffeb3b;">Sống sót 5 phút</span>
+                        <span style="font-size: 9px; color: #ffeb3b;">Có Zombie đội xô sắt</span>
                     </div>
                 </div>
             </div>
@@ -533,7 +540,6 @@
         let gameWon = false;
         let currentLevel = 1;
         let suns = 50;
-        let timeLeft = 180;
         let selectedType = null; 
         const gridRows = 5;
         const gridCols = 11;
@@ -549,8 +555,9 @@
         let animationFrameId = null;
         let zombieTimeout = null;
         let sunSpawner = null;
-        let timerInterval = null;
         let finalWaveTriggered = false;
+        let zombiesSpawnedCount = 0;
+        let totalZombiesForLevel = 15;
 
         const container = document.getElementById('game-container');
         const menuScreen = document.getElementById('menu-screen');
@@ -583,28 +590,28 @@
             menuScreen.classList.remove('hidden');
             gameStarted = false;
             stopFireworks();
-            if(timerInterval) clearInterval(timerInterval);
             if(zombieTimeout) clearTimeout(zombieTimeout);
             if(sunSpawner) clearInterval(sunSpawner);
         }
 
-        function formatTime(seconds) {
-            let m = Math.floor(seconds / 60);
-            let s = seconds % 60;
-            return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+        function updateProgressBar() {
+            let pct = Math.min(100, (zombiesSpawnedCount / totalZombiesForLevel) * 100);
+            let bar = document.getElementById('progress-bar-fill');
+            if(bar) bar.style.width = pct + '%';
         }
 
         function startGame(level) {
             initAudio(); 
             startBGM(); 
             currentLevel = level;
-            timeLeft = (currentLevel === 1) ? 180 : (currentLevel === 2 ? 240 : 300);
+            totalZombiesForLevel = (currentLevel === 1) ? 15 : (currentLevel === 2 ? 25 : 35);
+            zombiesSpawnedCount = 0;
             finalWaveTriggered = false;
             isPaused = false;
             document.getElementById('pause-btn').innerHTML = '⏸️ Tạm dừng';
             pauseOverlay.classList.add('hidden');
             document.getElementById('level-display').innerText = currentLevel;
-            document.getElementById('timer-display').innerText = formatTime(timeLeft);
+            updateProgressBar();
 
             menuScreen.classList.add('hidden');
             gameoverScreen.classList.add('hidden');
@@ -632,22 +639,6 @@
             if(animationFrameId) cancelAnimationFrame(animationFrameId);
             if(zombieTimeout) clearTimeout(zombieTimeout);
             if(sunSpawner) clearInterval(sunSpawner);
-            if(timerInterval) clearInterval(timerInterval);
-
-            timerInterval = setInterval(() => {
-                if(!gameStarted || gameOver || gameWon || isPaused) return;
-                timeLeft--;
-                document.getElementById('timer-display').innerText = formatTime(timeLeft);
-                
-                if(timeLeft === 60 && !finalWaveTriggered) {
-                    finalWaveTriggered = true;
-                    triggerFinalWaveBanner();
-                }
-
-                if(timeLeft <= 0) {
-                    triggerWin();
-                }
-            }, 1000);
 
             scheduleNextZombie();
 
@@ -682,14 +673,14 @@
                 let hp = 180;
                 let rand = Math.random();
 
-                if(currentLevel === 2 && rand < 0.5) {
+                if(currentLevel === 2 && rand < 0.6) {
                     type = 'conehead';
                     hp = 420;
                 } else if(currentLevel === 3) {
-                    if(rand < 0.4) {
+                    if(rand < 0.45) {
                         type = 'buckethead';
                         hp = 1100;
-                    } else if(rand < 0.8) {
+                    } else if(rand < 0.85) {
                         type = 'conehead';
                         hp = 420;
                     }
@@ -712,8 +703,9 @@
 
         function scheduleNextZombie() {
             if(!gameStarted || gameOver || gameWon) return;
-            
-            let delay = (timeLeft <= 60) ? 1600 : ((currentLevel === 1) ? 5000 : (currentLevel === 2 ? 3800 : 2800));
+            if(zombiesSpawnedCount >= totalZombiesForLevel) return;
+
+            let delay = (currentLevel === 1) ? 4500 : (currentLevel === 2 ? 3500 : 2600);
 
             zombieTimeout = setTimeout(() => {
                 if(!gameStarted || gameOver || gameWon) return;
@@ -728,8 +720,6 @@
                     } else if(currentLevel === 3) {
                         if(rand < 0.3) { type = 'buckethead'; hp = 1100; }
                         else if(rand < 0.65) { type = 'conehead'; hp = 420; }
-                    } else if(timeLeft <= 60 && currentLevel === 1) {
-                        if(rand < 0.3) { type = 'conehead'; hp = 420; }
                     }
 
                     zombies.push({
@@ -741,16 +731,13 @@
                         hitFlash: 0
                     });
 
-                    if (timeLeft <= 60 && Math.random() < 0.7) {
-                        let row2 = Math.floor(Math.random() * gridRows);
-                        zombies.push({
-                            row: row2, 
-                            col: 10.5, 
-                            hp: 180, 
-                            maxHp: 180,
-                            type: 'normal',
-                            hitFlash: 0
-                        });
+                    zombiesSpawnedCount++;
+                    updateProgressBar();
+
+                    if(zombiesSpawnedCount >= totalZombiesForLevel && !finalWaveTriggered) {
+                        finalWaveTriggered = true;
+                        triggerFinalWaveBanner();
+                        return; // Dừng sinh zombie lẻ để đánh đợt cuối
                     }
                 }
                 scheduleNextZombie();
@@ -764,7 +751,6 @@
             cancelAnimationFrame(animationFrameId);
             if(zombieTimeout) clearTimeout(zombieTimeout);
             clearInterval(sunSpawner);
-            clearInterval(timerInterval);
             gameoverScreen.classList.remove('hidden');
         }
 
@@ -775,7 +761,6 @@
             cancelAnimationFrame(animationFrameId);
             if(zombieTimeout) clearTimeout(zombieTimeout);
             clearInterval(sunSpawner);
-            clearInterval(timerInterval);
             winScreen.classList.remove('hidden');
             startFireworks();
         }
@@ -1096,6 +1081,11 @@
 
             bullets = survivingBullets;
             zombies = zombies.filter((z, zi) => !destroyedZombies.has(zi));
+
+            if(finalWaveTriggered && zombiesSpawnedCount >= totalZombiesForLevel && zombies.length === 0) {
+                triggerWin();
+                return;
+            }
 
             zombies.forEach((z, zi) => {
                 if(z.col <= 0.6) {
