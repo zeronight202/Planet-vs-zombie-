@@ -11,7 +11,7 @@
             color: white; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
-            padding: 4px; 
+            padding: 2px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
@@ -26,7 +26,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 6px rgba(0, 255, 135, 0.3);
-            margin: 2px 0;
+            margin: 1px 0;
             letter-spacing: 1px;
             text-align: center;
         }
@@ -44,7 +44,7 @@
             position: relative; 
             width: 100%; 
             background: linear-gradient(to bottom, #4a7c36, #3b6329); 
-            margin: 3px auto; 
+            margin: 2px auto; 
             border: 3px solid #333; 
             overflow: hidden; 
             touch-action: manipulation; 
@@ -65,7 +65,7 @@
         }
 
         .ui { 
-            margin: 3px 0; 
+            margin: 2px 0; 
             font-weight: bold; 
             background: #1e1e1e; 
             border-radius: 8px; 
@@ -194,26 +194,30 @@
             z-index: 20; 
             border-radius: 8px; 
             text-align: center; 
-            padding: 10px;
+            padding: 5px;
         }
 
         .pvz-menu-board {
-            background: linear-gradient(to bottom, rgba(50, 25, 10, 0.95), rgba(30, 12, 4, 0.95));
-            border: 3px solid #5c3a21;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.9), inset 0 2px 5px rgba(255,255,255,0.1);
+            background: linear-gradient(to bottom, rgba(50, 25, 10, 0.98), rgba(30, 12, 4, 0.98));
+            border: 2px solid #5c3a21;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.9), inset 0 2px 5px rgba(255,255,255,0.1);
             width: 90%;
+            max-width: 320px;
+            max-height: 94vh;
+            overflow-y: auto;
+            padding: 8px 12px;
             text-align: center;
         }
 
         .pvz-menu-btn {
             background: linear-gradient(to bottom, #a0522d, #6b3012);
             border: 2px solid #3d1c07;
-            border-radius: 8px;
+            border-radius: 6px;
             color: #fff;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 3px #2b1304;
+            box-shadow: 0 2px #2b1304;
             transition: transform 0.1s;
             display: flex;
             flex-direction: column;
@@ -226,20 +230,20 @@
 
         /* --- RESPONSIVE CHO MOBILE & PC --- */
         @media (max-width: 768px) {
-            .game-title { font-size: 13px; }
+            .game-title { font-size: 11px; }
             #game-wrapper { max-width: 520px; padding: 0 2px; }
-            #game-container { height: 46vh; max-height: 310px; min-height: 220px; }
-            .ui { padding: 3px 6px; font-size: 10px; gap: 3px; }
-            .seed-card { padding: 2px 3px; font-size: 8px; min-width: 42px; }
-            .seed-card img { width: 18px; height: 18px; }
-            .control-btn { padding: 3px 6px; font-size: 9.5px; }
-            .sun-drop { font-size: 26px; padding: 10px; }
-            .lawnmower { width: 28px; height: 28px; }
-            .active-mower { width: 32px; height: 32px; }
-            .bullet { width: 7px; height: 7px; }
-            .explosion-fx { font-size: 38px; }
-            .pvz-menu-board { max-width: 300px; padding: 10px 15px; }
-            .pvz-menu-btn { padding: 6px 10px; font-size: 11px; margin-top: 5px; }
+            #game-container { height: 44vh; max-height: 280px; min-height: 200px; }
+            .ui { padding: 2px 4px; font-size: 9px; gap: 2px; }
+            .seed-card { padding: 2px 3px; font-size: 7.5px; min-width: 38px; }
+            .seed-card img { width: 16px; height: 16px; }
+            .control-btn { padding: 2px 5px; font-size: 8.5px; }
+            .sun-drop { font-size: 24px; padding: 8px; }
+            .lawnmower { width: 26px; height: 26px; }
+            .active-mower { width: 30px; height: 30px; }
+            .bullet { width: 6px; height: 6px; }
+            .explosion-fx { font-size: 34px; }
+            .pvz-menu-board { max-width: 290px; padding: 6px 10px; }
+            .pvz-menu-btn { padding: 4px 8px; font-size: 10px; margin-top: 4px; }
         }
 
         @media (min-width: 769px) {
@@ -255,8 +259,8 @@
             .active-mower { width: 54px; height: 54px; }
             .bullet { width: 12px; height: 12px; }
             .explosion-fx { font-size: 65px; }
-            .pvz-menu-board { max-width: 450px; padding: 22px 30px; }
-            .pvz-menu-btn { padding: 12px 18px; font-size: 16px; margin-top: 10px; border-radius: 10px; }
+            .pvz-menu-board { max-width: 450px; padding: 20px 25px; max-height: 85vh; }
+            .pvz-menu-btn { padding: 10px 16px; font-size: 15px; margin-top: 8px; border-radius: 8px; }
         }
     </style>
 </head>
@@ -275,7 +279,7 @@
                 </div>
             </div>
             
-            <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; width: 100%;">
+            <div style="display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; width: 100%;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
                     <div class="cooldown-overlay" id="cd-peashooter"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
@@ -307,7 +311,7 @@
                 </div>
             </div>
 
-            <div style="display: flex; gap: 6px; justify-content: center; width: 100%; margin-top: 2px;">
+            <div style="display: flex; gap: 5px; justify-content: center; width: 100%; margin-top: 1px;">
                 <button class="control-btn" id="pause-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; box-shadow: 0 2px #92400e;">⏸️ Dừng</button>
                 <button class="control-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #6b7280, #4b5563); border-color: #374151; box-shadow: 0 2px #1f2937;">⚙️ Cài đặt</button>
                 <button class="control-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
@@ -319,26 +323,26 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #66bb6a; margin-bottom: 6px; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI</h1>
-                    <p style="color: #d0d0d0; margin-bottom: 10px; font-size: 0.9em;">Bảo vệ khu vườn khỏi lũ zombie!</p>
+                    <h1 style="color: #66bb6a; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI</h1>
+                    <p style="color: #d0d0d0; margin-bottom: 6px; font-size: 0.85em;">Bảo vệ khu vườn khỏi lũ zombie!</p>
                     
-                    <div class="pvz-menu-btn" onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();">
-                        <span>MÀN 1</span>
-                        <span style="font-size: 0.8em; color: #ffeb3b;">Tiêu diệt hết zombie để thắng</span>
+                    <div class="pvz-menu-btn" onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();" style="padding: 6px 10px; margin-top: 4px;">
+                        <span style="font-size: 1em;">MÀN 1</span>
+                        <span style="font-size: 0.75em; color: #ffeb3b;">Tiêu diệt hết zombie để thắng</span>
                     </div>
 
-                    <div class="pvz-menu-btn" onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #d97706, #b45309);">
-                        <span>MÀN 2</span>
-                        <span style="font-size: 0.8em; color: #ffeb3b;">Có Zombie đội nón</span>
+                    <div class="pvz-menu-btn" onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #d97706, #b45309); padding: 6px 10px; margin-top: 4px;">
+                        <span style="font-size: 1em;">MÀN 2</span>
+                        <span style="font-size: 0.75em; color: #ffeb3b;">Có Zombie đội nón</span>
                     </div>
 
-                    <div class="pvz-menu-btn" onclick="startGame(3)" ontouchend="startGame(3); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b);">
-                        <span>MÀN 3</span>
-                        <span style="font-size: 0.8em; color: #ffeb3b;">Có Zombie đội xô sắt</span>
+                    <div class="pvz-menu-btn" onclick="startGame(3)" ontouchend="startGame(3); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 6px 10px; margin-top: 4px;">
+                        <span style="font-size: 1em;">MÀN 3</span>
+                        <span style="font-size: 0.75em; color: #ffeb3b;">Có Zombie đội xô sắt</span>
                     </div>
 
-                    <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); margin-top: 10px;">
-                        <span>⚙️ CÀI ĐẶT ÂM LƯỢNG</span>
+                    <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 6px 10px; margin-top: 6px;">
+                        <span style="font-size: 0.95em;">⚙️ CÀI ĐẶT ÂM LƯỢNG</span>
                     </div>
                 </div>
             </div>
@@ -346,19 +350,19 @@
             <!-- Bảng Cài Đặt (Settings) -->
             <div id="settings-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.85);">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ffeb3b; margin-bottom: 14px; text-shadow: 2px 2px #000;">⚙️ CÀI ĐẶT</h1>
+                    <h1 style="color: #ffeb3b; margin-bottom: 8px; font-size: 1.25em; text-shadow: 2px 2px #000;">⚙️ CÀI ĐẶT</h1>
                     
-                    <div style="margin: 10px 0; text-align: left;">
+                    <div style="margin: 6px 0; text-align: left; font-size: 0.9em;">
                         <label style="color: #4ade80; font-weight: bold;">🎵 Nhạc nền (BGM): <span id="bgm-val">50%</span></label>
-                        <input type="range" id="bgm-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 5px;" oninput="updateBgmVolume(this.value)">
+                        <input type="range" id="bgm-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 3px;" oninput="updateBgmVolume(this.value)">
                     </div>
 
-                    <div style="margin: 10px 0; text-align: left;">
+                    <div style="margin: 6px 0; text-align: left; font-size: 0.9em;">
                         <label style="color: #60a5fa; font-weight: bold;">🔊 Hiệu ứng (SFX): <span id="sfx-val">50%</span></label>
-                        <input type="range" id="sfx-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 5px;" oninput="updateSfxVolume(this.value)">
+                        <input type="range" id="sfx-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 3px;" oninput="updateSfxVolume(this.value)">
                     </div>
 
-                    <div class="pvz-menu-btn" onclick="closeSettings()" ontouchend="closeSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d); margin-top: 15px;">
+                    <div class="pvz-menu-btn" onclick="closeSettings()" ontouchend="closeSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 6px 10px; margin-top: 8px;">
                         <span>QUAY LẠI</span>
                     </div>
                 </div>
@@ -367,15 +371,15 @@
             <!-- Màn hình Tạm Dừng -->
             <div id="pause-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.75);">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ffeb3b; margin-bottom: 6px; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
-                    <p style="color: #ccc; margin-bottom: 10px; font-size: 0.9em;">Trò chơi đang dừng lại.</p>
-                    <div class="pvz-menu-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d);">
+                    <h1 style="color: #ffeb3b; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
+                    <p style="color: #ccc; margin-bottom: 6px; font-size: 0.85em;">Trò chơi đang dừng lại.</p>
+                    <div class="pvz-menu-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 6px 10px; margin-top: 4px;">
                         <span>▶️ TIẾP TỤC CHƠI</span>
                     </div>
-                    <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); margin-top: 6px;">
+                    <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 6px 10px; margin-top: 4px;">
                         <span>⚙️ CÀI ĐẶT</span>
                     </div>
-                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b); margin-top: 6px;">
+                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 6px 10px; margin-top: 4px;">
                         <span>🚪 THOÁT RA MENU</span>
                     </div>
                 </div>
@@ -384,9 +388,9 @@
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ff5252; margin-bottom: 6px; text-shadow: 2px 2px #000;">GAME OVER</h1>
-                    <p style="color: #ccc; margin-bottom: 10px; font-size: 0.9em;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
-                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();">
+                    <h1 style="color: #ff5252; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">GAME OVER</h1>
+                    <p style="color: #ccc; margin-bottom: 6px; font-size: 0.85em;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
+                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="padding: 6px 10px; margin-top: 6px;">
                         <span>VỀ MENU CHÍNH</span>
                     </div>
                 </div>
@@ -395,16 +399,16 @@
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board" style="position: relative; z-index: 22;">
-                    <h1 style="color: #00e676; margin-bottom: 6px; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
-                    <p style="color: #ccc; margin-bottom: 10px; font-size: 0.9em;">Bạn đã bảo vệ khu vườn thành công xuất sắc!</p>
-                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d);">
+                    <h1 style="color: #00e676; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
+                    <p style="color: #ccc; margin-bottom: 6px; font-size: 0.85em;">Bạn đã bảo vệ khu vườn thành công xuất sắc!</p>
+                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 6px 10px; margin-top: 6px;">
                         <span>VỀ MENU CHÍNH</span>
                     </div>
                 </div>
                 <canvas id="fireworks-canvas" width="800" height="400" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
             </div>
         </div>
-        <div style="font-size: 0.85em; color: #888; margin-top: 3px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
+        <div style="font-size: 0.8em; color: #888; margin-top: 2px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
     </div>
 
     <script>
@@ -1267,7 +1271,7 @@
             bullets.forEach(b => {
                 let div = document.createElement('div');
                 div.className = 'bullet';
-                let bulletSize = window.innerWidth > 768 ? '12px' : '7px';
+                let bulletSize = window.innerWidth > 768 ? '12px' : '6px';
                 div.style.width = bulletSize;
                 div.style.height = bulletSize;
                 div.style.left = (b.col * cellW) + 'px';
