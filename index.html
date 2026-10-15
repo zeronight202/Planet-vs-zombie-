@@ -313,12 +313,17 @@
                     <p style="font-size: 10px; color: #d0d0d0; margin-bottom: 8px;">Bảo vệ khu vườn khỏi lũ zombie!</p>
                     
                     <div class="pvz-menu-btn" onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();">
-                        <span style="font-size: 12px;">🌻 MÀN 1: DỄ</span>
+                        <span style="font-size: 12px;">MÀN 1</span>
                         <span style="font-size: 9px; color: #ffeb3b;">Sống sót 3 phút</span>
                     </div>
 
                     <div class="pvz-menu-btn" onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #d97706, #b45309);">
-                        <span style="font-size: 12px;">🔥 MÀN 2: KHÓ</span>
+                        <span style="font-size: 12px;">MÀN 2</span>
+                        <span style="font-size: 9px; color: #ffeb3b;">Sống sót 4 phút</span>
+                    </div>
+
+                    <div class="pvz-menu-btn" onclick="startGame(3)" ontouchend="startGame(3); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b);">
+                        <span style="font-size: 12px;">MÀN 3</span>
                         <span style="font-size: 9px; color: #ffeb3b;">Sống sót 5 phút</span>
                     </div>
                 </div>
@@ -593,7 +598,7 @@
             initAudio(); 
             startBGM(); 
             currentLevel = level;
-            timeLeft = (currentLevel === 1) ? 180 : 300;
+            timeLeft = (currentLevel === 1) ? 180 : (currentLevel === 2 ? 240 : 300);
             finalWaveTriggered = false;
             isPaused = false;
             document.getElementById('pause-btn').innerHTML = '⏸️ Tạm dừng';
@@ -673,13 +678,23 @@
             container.appendChild(banner);
 
             for (let r = 0; r < gridRows; r++) {
-                let rand = Math.random();
                 let type = 'normal';
                 let hp = 180;
-                if(currentLevel === 2 && rand < 0.6) {
-                    type = rand < 0.3 ? 'buckethead' : 'conehead';
-                    hp = type === 'buckethead' ? 1100 : 420;
+                let rand = Math.random();
+
+                if(currentLevel === 2 && rand < 0.5) {
+                    type = 'conehead';
+                    hp = 420;
+                } else if(currentLevel === 3) {
+                    if(rand < 0.4) {
+                        type = 'buckethead';
+                        hp = 1100;
+                    } else if(rand < 0.8) {
+                        type = 'conehead';
+                        hp = 420;
+                    }
                 }
+
                 zombies.push({
                     row: r,
                     col: 10.5,
@@ -698,7 +713,7 @@
         function scheduleNextZombie() {
             if(!gameStarted || gameOver || gameWon) return;
             
-            let delay = (timeLeft <= 60) ? 1800 : ((currentLevel === 1) ? 5000 : 3500);
+            let delay = (timeLeft <= 60) ? 1600 : ((currentLevel === 1) ? 5000 : (currentLevel === 2 ? 3800 : 2800));
 
             zombieTimeout = setTimeout(() => {
                 if(!gameStarted || gameOver || gameWon) return;
@@ -709,11 +724,12 @@
                     let hp = 180;
 
                     if(currentLevel === 2) {
-                        if(rand < 0.25) { type = 'buckethead'; hp = 1100; }
-                        else if(rand < 0.55) { type = 'conehead'; hp = 420; }
-                    } else if(timeLeft <= 60) {
+                        if(rand < 0.35) { type = 'conehead'; hp = 420; }
+                    } else if(currentLevel === 3) {
                         if(rand < 0.3) { type = 'buckethead'; hp = 1100; }
-                        else if(rand < 0.6) { type = 'conehead'; hp = 420; }
+                        else if(rand < 0.65) { type = 'conehead'; hp = 420; }
+                    } else if(timeLeft <= 60 && currentLevel === 1) {
+                        if(rand < 0.3) { type = 'conehead'; hp = 420; }
                     }
 
                     zombies.push({
