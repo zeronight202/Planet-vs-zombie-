@@ -163,7 +163,6 @@
 
         .bullet { width: 10px; height: 10px; background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; }
         
-        /* Hiệu ứng nhấp nháy phát sáng cho Hoa hướng dương */
         @keyframes sunflowerGlow {
             0% { filter: drop-shadow(0 0 2px #ffeb3b) brightness(1); transform: scale(1); }
             50% { filter: drop-shadow(0 0 12px #ffeb3b) brightness(1.35); transform: scale(1.08); }
@@ -173,7 +172,6 @@
             animation: sunflowerGlow 1.2s infinite ease-in-out;
         }
 
-        /* Hạt mặt trời */
         .sun-drop { 
             position: absolute; 
             font-size: 34px; 
@@ -268,19 +266,19 @@
             
             <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; width: 100%;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
-                    <img src="https://static.wikia.nocookie.net/plantsvszombies/images/1/1a/PvZ1_Peashooter.png" alt="Peashooter">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
                     <span>Đậu</span><span style="font-size:9px; color:#ffeb3b;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
-                    <img src="https://static.wikia.nocookie.net/plantsvszombies/images/8/8e/PvZ1_Sunflower.png" alt="Sunflower">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23ecc94b'><circle cx='50' cy='20' r='12'/><circle cx='80' cy='32' r='12'/><circle cx='92' cy='60' r='12'/><circle cx='75' cy='85' r='12'/><circle cx='45' cy='90' r='12'/><circle cx='20' cy='80' r='12'/><circle cx='8' cy='55' r='12'/><circle cx='20' cy='30' r='12'/></g><circle cx='50' cy='55' r='28' fill='%23d69e2e'/><circle cx='40' cy='48' r='6' fill='%23fff'/><circle cx='40' cy='48' r='3' fill='%23000'/><circle cx='60' cy='48' r='6' fill='%23fff'/><circle cx='60' cy='48' r='3' fill='%23000'/></svg>" alt="Sunflower">
                     <span>Hoa</span><span style="font-size:9px; color:#ffeb3b;">40☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
-                    <img src="https://static.wikia.nocookie.net/plantsvszombies/images/1/14/PvZ1_Wall-nut.png" alt="Wallnut">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='52' rx='32' ry='38' fill='%23d69e2e'/><ellipse cx='50' cy='52' rx='27' ry='33' fill='%23b7791f'/><ellipse cx='42' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='42' cy='46' r='4' fill='%23000'/><ellipse cx='62' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='62' cy='46' r='4' fill='%23000'/></svg>" alt="Wallnut">
                     <span>Khoai</span><span style="font-size:9px; color:#ffeb3b;">30☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
-                    <img src="https://static.wikia.nocookie.net/plantsvszombies/images/2/27/PvZ1_CherryBomb.png" alt="Cherry">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M35 65 Q45 25 65 30' fill='none' stroke='%2338a169' stroke-width='5'/><circle cx='32' cy='68' r='22' fill='%23e53e3e'/><circle cx='68' cy='68' r='22' fill='%23e53e3e'/></svg>" alt="Cherry">
                     <span>Bom</span><span style="font-size:9px; color:#ffeb3b;">125☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
@@ -296,7 +294,6 @@
         </div>
 
         <div id="game-container" onclick="handleGridClick(event)" ontouchend="handleTouchGrid(event)">
-            <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <div class="pvz-menu-board">
                     <h1 style="color: #66bb6a; font-size: 20px; margin-bottom: 4px; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI</h1>
@@ -314,7 +311,6 @@
                 </div>
             </div>
 
-            <!-- Màn hình Tạm Dừng -->
             <div id="pause-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.75);">
                 <div class="pvz-menu-board">
                     <h1 style="color: #ffeb3b; font-size: 22px; margin-bottom: 6px; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
@@ -325,7 +321,6 @@
                 </div>
             </div>
 
-            <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board">
                     <h1 style="color: #ff5252; font-size: 22px; margin-bottom: 6px; text-shadow: 2px 2px #000;">GAME OVER</h1>
@@ -336,7 +331,6 @@
                 </div>
             </div>
 
-            <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board" style="position: relative; z-index: 22;">
                     <h1 style="color: #00e676; font-size: 22px; margin-bottom: 6px; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
@@ -352,17 +346,16 @@
     </div>
 
     <script>
-        // Link hình ảnh các loại cây và Zombie
         const PLANT_IMAGES = {
-            peashooter: 'https://static.wikia.nocookie.net/plantsvszombies/images/1/1a/PvZ1_Peashooter.png',
-            sunflower: 'https://static.wikia.nocookie.net/plantsvszombies/images/8/8e/PvZ1_Sunflower.png',
-            wallnut: 'https://static.wikia.nocookie.net/plantsvszombies/images/1/14/PvZ1_Wall-nut.png',
-            cherry: 'https://static.wikia.nocookie.net/plantsvszombies/images/2/27/PvZ1_CherryBomb.png'
+            peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="45" cy="55" r="30" fill="%2368d391"/><ellipse cx="75" cy="50" rx="18" ry="14" fill="%2368d391"/><ellipse cx="78" cy="50" rx="10" ry="7" fill="%2322543d"/><circle cx="38" cy="48" r="5" fill="%23fff"/><circle cx="38" cy="48" r="2" fill="%23000"/></svg>',
+            sunflower: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="%23ecc94b"><circle cx="50" cy="20" r="12"/><circle cx="80" cy="32" r="12"/><circle cx="92" cy="60" r="12"/><circle cx="75" cy="85" r="12"/><circle cx="45" cy="90" r="12"/><circle cx="20" cy="80" r="12"/><circle cx="8" cy="55" r="12"/><circle cx="20" cy="30" r="12"/></g><circle cx="50" cy="55" r="28" fill="%23d69e2e"/><circle cx="40" cy="48" r="6" fill="%23fff"/><circle cx="40" cy="48" r="3" fill="%23000"/><circle cx="60" cy="48" r="6" fill="%23fff"/><circle cx="60" cy="48" r="3" fill="%23000"/></svg>',
+            wallnut: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="52" rx="32" ry="38" fill="%23d69e2e"/><ellipse cx="50" cy="52" rx="27" ry="33" fill="%23b7791f"/><ellipse cx="42" cy="46" rx="9" ry="12" fill="%23fff"/><circle cx="42" cy="46" r="4" fill="%23000"/><ellipse cx="62" cy="46" rx="9" ry="12" fill="%23fff"/><circle cx="62" cy="46" r="4" fill="%23000"/></svg>',
+            cherry: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M35 65 Q45 25 65 30" fill="none" stroke="%2338a169" stroke-width="5"/><circle cx="32" cy="68" r="22" fill="%23e53e3e"/><circle cx="68" cy="68" r="22" fill="%23e53e3e"/></svg>'
         };
 
         const ZOMBIE_IMAGES = {
-            normal: 'https://static.wikia.nocookie.net/plantsvszombies/images/d/df/PvZ1_Zombie.png',
-            conehead: 'https://static.wikia.nocookie.net/plantsvszombies/images/f/f2/PvZ1_Conehead_Zombie.png'
+            normal: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="45" r="25" fill="%23a0aec0"/><rect x="42" y="65" width="16" height="25" fill="%233182ce"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23000"/><circle cx="58" cy="40" r="5" fill="%23fff"/><circle cx="58" cy="40" r="2" fill="%23000"/></svg>',
+            conehead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="45" r="25" fill="%23a0aec0"/><polygon points="50,5 30,35 70,35" fill="%23ed8936"/><rect x="42" y="65" width="16" height="25" fill="%233182ce"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23000"/><circle cx="58" cy="40" r="5" fill="%23fff"/><circle cx="58" cy="40" r="2" fill="%23000"/></svg>'
         };
 
         let bgm = new Audio('themesoundplntsv.mp3');
@@ -871,7 +864,6 @@
             bullets.forEach(b => b.col += 0.12 * dt);
             bullets = bullets.filter(b => b.col < gridCols);
 
-            // Cập nhật vị trí và quỹ đạo rơi/văng của Mặt Trời
             sunDrops.forEach(s => {
                 if (s.isSunflowerSun && s.animProgress < 1) {
                     s.animProgress += 0.04 * dt;
