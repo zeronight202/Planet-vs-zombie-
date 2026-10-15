@@ -87,6 +87,7 @@
         }
 
         .seed-card { 
+            position: relative;
             padding: 2px 4px; 
             font-size: 9px; 
             background: linear-gradient(to bottom, #fff385, #e0a800); 
@@ -101,6 +102,7 @@
             flex-direction: column;
             align-items: center;
             min-width: 46px;
+            overflow: hidden;
         }
         .seed-card img {
             width: 20px;
@@ -111,6 +113,17 @@
         .seed-card:active { transform: translateY(2px); box-shadow: 0 0 #442200; }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
         
+        .cooldown-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 5;
+            display: none;
+        }
+
         .control-btn { 
             background: linear-gradient(to bottom, #42a5f5, #1565c0); 
             color: white; 
@@ -255,22 +268,27 @@
             
             <div style="display: flex; gap: 3px; justify-content: center; flex-wrap: wrap; width: 100%;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
+                    <div class="cooldown-overlay" id="cd-peashooter"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
                     <span>Đậu</span><span style="font-size:7.5px; color:#ffeb3b;">100☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
+                    <div class="cooldown-overlay" id="cd-sunflower"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23ecc94b'><circle cx='50' cy='20' r='12'/><circle cx='80' cy='32' r='12'/><circle cx='92' cy='60' r='12'/><circle cx='75' cy='85' r='12'/><circle cx='45' cy='90' r='12'/><circle cx='20' cy='80' r='12'/><circle cx='8' cy='55' r='12'/><circle cx='20' cy='30' r='12'/></g><circle cx='50' cy='55' r='28' fill='%23d69e2e'/><circle cx='40' cy='48' r='6' fill='%23fff'/><circle cx='40' cy='48' r='3' fill='%23000'/><circle cx='60' cy='48' r='6' fill='%23fff'/><circle cx='60' cy='48' r='3' fill='%23000'/></svg>" alt="Sunflower">
                     <span>Hoa</span><span style="font-size:7.5px; color:#ffeb3b;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
+                    <div class="cooldown-overlay" id="cd-wallnut"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='52' rx='32' ry='38' fill='%23d69e2e'/><ellipse cx='50' cy='52' rx='27' ry='33' fill='%23b7791f'/><ellipse cx='42' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='42' cy='46' r='4' fill='%23000'/><ellipse cx='62' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='62' cy='46' r='4' fill='%23000'/></svg>" alt="Wallnut">
                     <span>Khoai</span><span style="font-size:7.5px; color:#ffeb3b;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('potatomine')" ontouchend="selectPlant('potatomine'); event.preventDefault();" id="btn-potatomine">
+                    <div class="cooldown-overlay" id="cd-potatomine"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='80' rx='16' ry='6' fill='%2354381e'/><path d='M47 80 L47 55 Q47 42 50 36 Q53 42 53 55 L53 80 Z' fill='%2348bb78'/><circle cx='50' cy='35' r='6' fill='%23e53e3e'/><path d='M50 45 Q42 43 44 52 Z' fill='%2338a169'/></svg>" alt="Potato Mine">
                     <span>Mìn</span><span style="font-size:7.5px; color:#ffeb3b;">25☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
+                    <div class="cooldown-overlay" id="cd-cherry"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M35 65 Q45 25 65 30' fill='none' stroke='%2338a169' stroke-width='5'/><circle cx='32' cy='68' r='22' fill='%23e53e3e'/><circle cx='68' cy='68' r='22' fill='%23e53e3e'/></svg>" alt="Cherry">
                     <span>Bom</span><span style="font-size:7.5px; color:#ffeb3b;">150☀️</span>
                 </div>
@@ -354,6 +372,14 @@
             potatomine_unarmed: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="80" rx="16" ry="6" fill="%2354381e"/><path d="M47 80 L47 55 Q47 42 50 36 Q53 42 53 55 L53 80 Z" fill="%2348bb78"/><circle cx="50" cy="35" r="6" fill="%23e53e3e"/><path d="M50 45 Q42 43 44 52 Z" fill="%2338a169"/></svg>',
             potatomine_armed: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="75" rx="25" ry="12" fill="%2354381e"/><ellipse cx="50" cy="62" rx="24" ry="20" fill="%23d69e2e"/><ellipse cx="50" cy="62" rx="20" ry="16" fill="%23b7791f"/><circle cx="50" cy="35" r="7" fill="%23e53e3e"/><path d="M50 42 L50 48" stroke="%23744210" stroke-width="3"/><circle cx="42" cy="58" r="4" fill="%23fff"/><circle cx="42" cy="58" r="2" fill="%23000"/><circle cx="58" cy="58" r="4" fill="%23fff"/><circle cx="58" cy="58" r="2" fill="%23000"/><path d="M45 68 Q50 72 55 68" fill="none" stroke="%23744210" stroke-width="2"/></svg>',
             cherry: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 25 Q35 10 25 35" fill="none" stroke="%2338a169" stroke-width="4" stroke-linecap="round"/><path d="M50 25 Q65 10 75 35" fill="none" stroke="%2338a169" stroke-width="4" stroke-linecap="round"/><path d="M45 18 Q55 5 60 20 Q50 25 45 18 Z" fill="%2348bb78"/><circle cx="30" cy="65" r="22" fill="%23e53e3e"/><circle cx="30" cy="65" r="18" fill="%23fc8181"/><path d="M20 58 L30 62 L20 66" fill="none" stroke="%239b2c2c" stroke-width="3" stroke-linecap="round"/><circle cx="70" cy="65" r="22" fill="%23e53e3e"/><circle cx="70" cy="65" r="18" fill="%23fc8181"/><path d="M80 58 L70 62 L80 66" fill="none" stroke="%239b2c2c" stroke-width="3" stroke-linecap="round"/></svg>'
+        };
+
+        const PLANT_DATA = {
+            peashooter: { cost: 100, cooldown: 5000, lastUsed: 0 },
+            sunflower: { cost: 50, cooldown: 5000, lastUsed: 0 },
+            wallnut: { cost: 50, cooldown: 15000, lastUsed: 0 },
+            potatomine: { cost: 25, cooldown: 12000, lastUsed: 0 },
+            cherry: { cost: 150, cooldown: 25000, lastUsed: 0 }
         };
 
         const ZOMBIE_IMAGES = {
@@ -589,6 +615,10 @@
             activeMowers = [];
             lawnmowers = [true, true, true, true, true];
             selectedType = null;
+            
+            for(let k in PLANT_DATA) {
+                PLANT_DATA[k].lastUsed = 0;
+            }
             updateButtonStyles();
 
             document.getElementById('sun-count').innerText = suns;
@@ -719,6 +749,16 @@
         function selectPlant(type) {
             initAudio();
             if(!gameStarted || gameOver || gameWon || isPaused) return;
+            
+            if(type !== 'shovel') {
+                let data = PLANT_DATA[type];
+                let now = performance.now();
+                if(now - data.lastUsed < data.cooldown) {
+                    triggerRedFlash();
+                    return;
+                }
+            }
+
             selectedType = type;
             updateButtonStyles();
         }
@@ -751,6 +791,8 @@
 
             if(row >= 0 && row < gridRows && col > 0 && col < gridCols) {
                 let plantCol = col - 1;
+                let now = performance.now();
+
                 if(selectedType === 'shovel') {
                     let idx = plants.findIndex(p => p.row === row && p.col === plantCol);
                     if(idx !== -1) {
@@ -765,66 +807,39 @@
 
                 let exists = plants.some(p => p.row === row && p.col === plantCol);
                 if(!exists) {
-                    if(selectedType === 'cherry') {
-                        if(suns >= 150) {
+                    let plantInfo = PLANT_DATA[selectedType];
+                    if(now - plantInfo.lastUsed < plantInfo.cooldown) {
+                        triggerRedFlash();
+                        return;
+                    }
+
+                    if(suns >= plantInfo.cost) {
+                        suns -= plantInfo.cost;
+                        plantInfo.lastUsed = now;
+                        document.getElementById('sun-count').innerText = suns;
+
+                        if(selectedType === 'cherry') {
                             plants.push({type: 'cherry', row: row, col: plantCol, hp: 999, fuseTimer: 0});
-                            suns -= 150;
                             playSound('plant');
-                            document.getElementById('sun-count').innerText = suns;
-                            selectedType = null;
-                            updateButtonStyles();
-                            renderStaticElements();
-                        } else {
-                            triggerRedFlash();
-                        }
-                    } else if(selectedType === 'peashooter') {
-                        if(suns >= 100) {
+                        } else if(selectedType === 'peashooter') {
                             plants.push({type: 'peashooter', row: row, col: plantCol, hp: 100, shootTimer: 0});
-                            suns -= 100;
                             playSound('plant');
-                            document.getElementById('sun-count').innerText = suns;
-                            selectedType = null;
-                            updateButtonStyles();
-                            renderStaticElements();
-                        } else { 
-                            triggerRedFlash(); 
-                        }
-                    } else if(selectedType === 'sunflower') {
-                        if(suns >= 50) {
+                        } else if(selectedType === 'sunflower') {
                             plants.push({type: 'sunflower', row: row, col: plantCol, hp: 80, sunTimer: 0});
-                            suns -= 50;
                             playSound('plant');
-                            document.getElementById('sun-count').innerText = suns;
-                            selectedType = null;
-                            updateButtonStyles();
-                            renderStaticElements();
-                        } else { 
-                            triggerRedFlash(); 
-                        }
-                    } else if(selectedType === 'wallnut') {
-                        if(suns >= 50) {
+                        } else if(selectedType === 'wallnut') {
                             plants.push({type: 'wallnut', row: row, col: plantCol, hp: 300});
-                            suns -= 50;
                             playSound('plant');
-                            document.getElementById('sun-count').innerText = suns;
-                            selectedType = null;
-                            updateButtonStyles();
-                            renderStaticElements();
-                        } else { 
-                            triggerRedFlash(); 
-                        }
-                    } else if(selectedType === 'potatomine') {
-                        if(suns >= 25) {
+                        } else if(selectedType === 'potatomine') {
                             plants.push({type: 'potatomine', row: row, col: plantCol, hp: 80, armed: false, armTimer: 0});
-                            suns -= 25;
                             playSound('plant');
-                            document.getElementById('sun-count').innerText = suns;
-                            selectedType = null;
-                            updateButtonStyles();
-                            renderStaticElements();
-                        } else { 
-                            triggerRedFlash(); 
                         }
+
+                        selectedType = null;
+                        updateButtonStyles();
+                        renderStaticElements();
+                    } else {
+                        triggerRedFlash();
                     }
                 }
             }
@@ -853,6 +868,22 @@
             let dt = (timestamp - lastTime) / 16.67;
             if(dt > 3) dt = 3;
             lastTime = timestamp;
+
+            let now = performance.now();
+            for(let t in PLANT_DATA) {
+                let data = PLANT_DATA[t];
+                let cdOverlay = document.getElementById('cd-' + t);
+                if(cdOverlay) {
+                    let elapsed = now - data.lastUsed;
+                    if(elapsed < data.cooldown) {
+                        let pct = ((data.cooldown - elapsed) / data.cooldown) * 100;
+                        cdOverlay.style.display = 'block';
+                        cdOverlay.style.height = pct + '%';
+                    } else {
+                        cdOverlay.style.display = 'none';
+                    }
+                }
+            }
 
             let cWidth = container.clientWidth;
             let cHeight = container.clientHeight;
@@ -898,7 +929,7 @@
                     }
                 } else if (p.type === 'cherry') {
                     p.fuseTimer += dt;
-                    if (p.fuseTimer > 60) { // Khoảng 1 giây nổ
+                    if (p.fuseTimer > 60) {
                         explodedCherries.push(p);
                     }
                 }
