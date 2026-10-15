@@ -164,6 +164,15 @@
         }
         .cherry-fuse { animation: cherryPulse 0.35s infinite ease-in-out; }
 
+        @keyframes punchPunch {
+            0% { transform: scale(1) translateX(0); }
+            25% { transform: scale(1.15) translateX(8px); }
+            50% { transform: scale(0.95) translateX(-4px); }
+            75% { transform: scale(1.15) translateX(8px); }
+            100% { transform: scale(1) translateX(0); }
+        }
+        .bonkchoy-punching { animation: punchPunch 0.25s infinite ease-in-out; }
+
         .sun-drop { 
             position: absolute; 
             cursor: pointer; 
@@ -247,8 +256,8 @@
             #game-wrapper { max-width: 540px; padding: 0 2px; }
             #game-container { height: 46vh; max-height: 300px; min-height: 220px; }
             .ui { padding: 3px 4px; font-size: 8.5px; gap: 3px; }
-            .seed-card { padding: 2px 2px; font-size: 7.5px; min-width: 36px; }
-            .seed-card img { width: 16px; height: 16px; }
+            .seed-card { padding: 2px 2px; font-size: 7px; min-width: 32px; }
+            .seed-card img { width: 15px; height: 15px; }
             .control-btn, .menu-btn-game { padding: 2px 5px; font-size: 8.5px; }
             .sun-drop { font-size: 24px; padding: 8px; }
             .lawnmower { width: 26px; height: 26px; }
@@ -264,8 +273,8 @@
             #game-wrapper { max-width: 1150px; }
             #game-container { height: 65vh; max-height: 580px; min-height: 400px; border-width: 4px; }
             .ui { padding: 8px 14px; font-size: 15px; gap: 8px; }
-            .seed-card { padding: 6px 10px; font-size: 12px; min-width: 72px; border-radius: 8px; }
-            .seed-card img { width: 34px; height: 34px; }
+            .seed-card { padding: 5px 8px; font-size: 11px; min-width: 68px; border-radius: 8px; }
+            .seed-card img { width: 32px; height: 32px; }
             .control-btn, .menu-btn-game { padding: 4px 10px; font-size: 12px; border-radius: 6px; }
             .sun-drop { font-size: 42px; padding: 16px; }
             .lawnmower { width: 48px; height: 48px; }
@@ -290,14 +299,13 @@
                     </div>
                     <span style="font-size: 1.2em; line-height: 1;" title="Đợt tấn công cuối">🚩</span>
                 </div>
-                <!-- NÚT FULL MÀN HÌNH VÀ MENU GỘP GIỐNG GAME GỐC -->
                 <div style="display: flex; gap: 4px;">
                     <button class="control-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
                     <button class="menu-btn-game" id="pause-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();">MENU</button>
                 </div>
             </div>
             
-            <div style="display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; width: 100%; padding: 2px 0;">
+            <div style="display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; width: 100%; padding: 2px 0;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
                     <div class="cooldown-overlay" id="cd-peashooter"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
@@ -307,6 +315,11 @@
                     <div class="cooldown-overlay" id="cd-snowpea"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2363b3ed'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%233182ce'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%231a202c'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Snow Pea">
                     <span>Đậu Băng</span><span style="color:#ffeb3b; font-size:0.8em;">175☀️</span>
+                </div>
+                <div class="seed-card" onclick="selectPlant('bonkchoy')" ontouchend="selectPlant('bonkchoy'); event.preventDefault();" id="btn-bonkchoy">
+                    <div class="cooldown-overlay" id="cd-bonkchoy"></div>
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='55' r='25' fill='%2348bb78'/><ellipse cx='30' cy='45' rx='12' ry='16' fill='%2338a169'/><ellipse cx='70' cy='45' rx='12' ry='16' fill='%2338a169'/><circle cx='42' cy='50' r='4' fill='%23fff'/><circle cx='42' cy='50' r='2' fill='%23000'/><circle cx='58' cy='50' r='4' fill='%23fff'/><circle cx='58' cy='50' r='2' fill='%23000'/><path d='M45 62 Q50 66 55 62' fill='none' stroke='%231a202c' stroke-width='2.5'/><circle cx='20' cy='35' r='10' fill='%23276749'/><circle cx='80' cy='35' r='10' fill='%23276749'/></svg>" alt="Bonk Choy">
+                    <span>Cải Đấm</span><span style="color:#ffeb3b; font-size:0.8em;">150☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
                     <div class="cooldown-overlay" id="cd-sunflower"></div>
@@ -431,6 +444,7 @@
         const PLANT_IMAGES = {
             peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%2338a169"/><path d="M45 75 L50 60 L55 75" fill="%2338a169"/><circle cx="45" cy="45" r="25" fill="%2348bb78"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%2338a169"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2338a169"/></svg>',
             snowpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%233182ce"/><path d="M45 75 L50 60 L55 75" fill="%233182ce"/><circle cx="45" cy="45" r="25" fill="%2363b3ed"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%233182ce"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2363b3ed"/></svg>',
+            bonkchoy: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="55" r="25" fill="%2348bb78"/><ellipse cx="30" cy="45" rx="12" ry="16" fill="%2338a169"/><ellipse cx="70" cy="45" rx="12" ry="16" fill="%2338a169"/><circle cx="42" cy="50" r="4" fill="%23fff"/><circle cx="42" cy="50" r="2" fill="%23000"/><circle cx="58" cy="50" r="4" fill="%23fff"/><circle cx="58" cy="50" r="2" fill="%23000"/><path d="M45 62 Q50 66 55 62" fill="none" stroke="%231a202c" stroke-width="2.5"/><circle cx="20" cy="35" r="10" fill="%23276749"/><circle cx="80" cy="35" r="10" fill="%23276749"/></svg>',
             sunflower: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M47 65 Q47 80 50 90" fill="none" stroke="%2338a169" stroke-width="6" stroke-linecap="round"/><path d="M35 80 Q25 75 35 70 Z" fill="%2338a169"/><path d="M65 80 Q75 75 65 70 Z" fill="%2338a169"/><g fill="%23ecc94b"><ellipse cx="50" cy="18" rx="8" ry="16"/><ellipse cx="75" cy="28" rx="12" ry="12" transform="rotate(30 75 28)"/><ellipse cx="87" cy="52" rx="16" ry="8" transform="rotate(15 87 52)"/><ellipse cx="78" cy="77" rx="12" ry="12" transform="rotate(60 78 77)"/><ellipse cx="50" cy="85" rx="8" ry="16"/><ellipse cx="22" cy="77" rx="12" ry="12" transform="rotate(30 22 77)"/><ellipse cx="13" cy="52" rx="16" ry="8" transform="rotate(15 13 52)"/><ellipse cx="25" cy="28" rx="12" ry="12" transform="rotate(60 25 28)"/></g><circle cx="50" cy="52" r="24" fill="%23b7791f"/><circle cx="50" cy="52" r="20" fill="%23d69e2e"/><circle cx="42" cy="48" r="4.5" fill="%23fff"/><circle cx="42" cy="48" r="2" fill="%23000"/><circle cx="58" cy="48" r="4.5" fill="%23fff"/><circle cx="58" cy="48" r="2" fill="%23000"/><path d="M44 58 Q50 64 56 58" fill="none" stroke="%23000" stroke-width="2.5" stroke-linecap="round"/></svg>',
             wallnut: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="52" rx="32" ry="38" fill="%23d69e2e"/><ellipse cx="50" cy="52" rx="27" ry="33" fill="%23b7791f"/><path d="M30 40 Q35 50 30 65" fill="none" stroke="%23975a16" stroke-width="3" stroke-linecap="round"/><path d="M70 40 Q65 50 70 65" fill="none" stroke="%23975a16" stroke-width="3" stroke-linecap="round"/><circle cx="41" cy="46" r="8" fill="%23fff"/><circle cx="41" cy="46" r="3.5" fill="%23000"/><circle cx="61" cy="46" r="8" fill="%23fff"/><circle cx="61" cy="46" r="3.5" fill="%23000"/><path d="M44 64 Q50 60 56 64" fill="none" stroke="%23744210" stroke-width="3" stroke-linecap="round"/></svg>',
             potatomine_unarmed: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="80" rx="16" ry="6" fill="%2354381e"/><path d="M47 80 L47 55 Q47 42 50 36 Q53 42 53 55 L53 80 Z" fill="%2348bb78"/><circle cx="50" cy="35" r="6" fill="%23e53e3e"/><path d="M50 45 Q42 43 44 52 Z" fill="%2338a169"/></svg>',
@@ -441,6 +455,7 @@
         const PLANT_DATA = {
             peashooter: { cost: 100, cooldown: 5000, lastUsed: 0 },
             snowpea: { cost: 175, cooldown: 6000, lastUsed: 0 },
+            bonkchoy: { cost: 150, cooldown: 6000, lastUsed: 0 },
             sunflower: { cost: 50, cooldown: 5000, lastUsed: 0 },
             wallnut: { cost: 50, cooldown: 15000, lastUsed: 0 },
             potatomine: { cost: 25, cooldown: 12000, lastUsed: 0 },
@@ -551,6 +566,13 @@
                     gain.gain.setValueAtTime(0.25 * sfxVolume, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+                } else if(type === 'punch') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.06);
+                    gain.gain.setValueAtTime(0.3 * sfxVolume, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.06);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.06);
                 } else if(type === 'hit') {
                     osc.frequency.setValueAtTime(120, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.08);
@@ -860,7 +882,7 @@
         }
 
         function updateButtonStyles() {
-            ['peashooter', 'snowpea', 'sunflower', 'wallnut', 'potatomine', 'cherry', 'shovel'].forEach(t => {
+            ['peashooter', 'snowpea', 'bonkchoy', 'sunflower', 'wallnut', 'potatomine', 'cherry', 'shovel'].forEach(t => {
                 let btn = document.getElementById('btn-' + t);
                 if(btn) {
                     if(selectedType === t) btn.classList.add('active-btn');
@@ -922,6 +944,9 @@
                             playSound('plant');
                         } else if(selectedType === 'snowpea') {
                             plants.push({type: 'snowpea', row: row, col: plantCol, hp: 100, shootTimer: 0});
+                            playSound('plant');
+                        } else if(selectedType === 'bonkchoy') {
+                            plants.push({type: 'bonkchoy', row: row, col: plantCol, hp: 300, punchTimer: 0, isPunching: false});
                             playSound('plant');
                         } else if(selectedType === 'sunflower') {
                             plants.push({type: 'sunflower', row: row, col: plantCol, hp: 80, sunTimer: 0});
@@ -1013,7 +1038,7 @@
                     s.life -= dt;
                 }
             });
-            sunDrops = sunDrops.filter(s => s.life > 0);
+            sunDrops.forEach(s => s.life > 0);
 
             let plantsChanged = false;
             let explodedMines = [];
@@ -1116,6 +1141,24 @@
                             playSound('shoot');
                             p.shootTimer = 0;
                         }
+                    }
+                } else if(p.type === 'bonkchoy') {
+                    // Cải đấm: tấn công zombie ở phạm vi cận chiến (trước hoặc sau 1.2 ô)
+                    let pCol = p.col + 1;
+                    let targetZombie = zombies.find(z => z.row === p.row && Math.abs(z.col - pCol) <= 1.25);
+                    
+                    if(targetZombie) {
+                        p.isPunching = true;
+                        p.punchTimer += dt;
+                        if(p.punchTimer > 12) {
+                            targetZombie.hp -= 15;
+                            targetZombie.hitFlash = 4;
+                            playSound('punch');
+                            p.punchTimer = 0;
+                        }
+                    } else {
+                        p.isPunching = false;
+                        p.punchTimer = 0;
                     }
                 } else if(p.type === 'sunflower') {
                     p.sunTimer += dt;
@@ -1226,7 +1269,10 @@
                     div.classList.add('sunflower-glow');
                 } else if(p.type === 'cherry') {
                     div.classList.add('cherry-fuse');
+                } else if(p.type === 'bonkchoy' && p.isPunching) {
+                    div.classList.add('bonkchoy-punching');
                 }
+
                 let screenCol = p.col + 1;
                 div.style.left = (screenCol * cellW) + 'px';
                 div.style.top = (p.row * cellH) + 'px';
