@@ -11,7 +11,7 @@
             color: white; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             margin: 0; 
-            padding: 2px; 
+            padding: 4px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
@@ -21,23 +21,23 @@
         }
         
         .game-title {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 900;
             background: linear-gradient(45deg, #00ff87, #60efff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 6px rgba(0, 255, 135, 0.3);
-            margin: 1px 0;
+            margin: 2px 0;
             letter-spacing: 1px;
             text-align: center;
         }
 
         #game-wrapper { 
             position: relative; 
-            width: 98vw; 
-            max-width: 1100px; 
+            width: 95vw; 
+            max-width: 1200px; 
             text-align: center; 
-            padding: 0 2px;
+            padding: 0 4px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -46,16 +46,16 @@
         #game-container { 
             position: relative; 
             width: 100%; 
-            height: 52vh; 
-            max-height: 350px; 
-            min-height: 240px;
+            height: 62vh; 
+            max-height: 500px; 
+            min-height: 340px;
             background: linear-gradient(to bottom, #4a7c36, #3b6329); 
-            margin: 2px auto; 
-            border: 2px solid #333; 
+            margin: 4px auto; 
+            border: 3px solid #333; 
             overflow: hidden; 
             touch-action: manipulation; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.7); 
+            border-radius: 10px; 
+            box-shadow: 0 6px 18px rgba(0,0,0,0.8); 
         }
 
         .grid-cell { 
@@ -71,29 +71,29 @@
         }
 
         .ui { 
-            margin: 2px 0; 
-            font-size: 11px; 
+            margin: 3px 0; 
+            font-size: 12px; 
             font-weight: bold; 
             background: #1e1e1e; 
-            padding: 3px 6px; 
-            border-radius: 6px; 
+            padding: 5px 10px; 
+            border-radius: 8px; 
             width: 100%;
             border: 1px solid #333; 
             text-align: center; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
         }
 
         .seed-card { 
             position: relative;
-            padding: 2px 4px; 
-            font-size: 9px; 
+            padding: 3px 6px; 
+            font-size: 10px; 
             background: linear-gradient(to bottom, #fff385, #e0a800); 
             border: 1px solid #553300; 
             cursor: pointer; 
-            border-radius: 5px; 
+            border-radius: 6px; 
             font-weight: bold; 
             color: #222; 
             box-shadow: 0 2px #442200; 
@@ -101,12 +101,12 @@
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            min-width: 46px;
+            min-width: 52px;
             overflow: hidden;
         }
         .seed-card img {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             object-fit: contain;
             pointer-events: none;
         }
@@ -128,11 +128,11 @@
             background: linear-gradient(to bottom, #42a5f5, #1565c0); 
             color: white; 
             border: 1px solid #0d47a1; 
-            padding: 3px 8px; 
-            border-radius: 4px; 
+            padding: 4px 10px; 
+            border-radius: 5px; 
             font-weight: bold; 
             cursor: pointer; 
-            font-size: 10px; 
+            font-size: 11px; 
             box-shadow: 0 2px #0a3570;
         }
         .control-btn:active { transform: translateY(2px); box-shadow: 0 0 #0a3570; }
@@ -151,7 +151,7 @@
             pointer-events: none;
         }
 
-        .bullet { width: 8px; height: 8px; background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; }
+        .bullet { width: 9px; height: 9px; background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; }
         
         @keyframes sunflowerGlow {
             0% { filter: drop-shadow(0 0 2px #ffeb3b) brightness(1); transform: scale(1); }
@@ -173,7 +173,7 @@
 
         .sun-drop { 
             position: absolute; 
-            font-size: 28px; 
+            font-size: 32px; 
             cursor: pointer; 
             z-index: 10; 
             padding: 12px; 
@@ -182,10 +182,10 @@
             filter: drop-shadow(0 2px 6px rgba(255, 235, 59, 0.8));
         }
         
-        .lawnmower { position: absolute; z-index: 4; pointer-events: none; width: 32px; height: 32px; }
+        .lawnmower { position: absolute; z-index: 4; pointer-events: none; width: 38px; height: 38px; }
         .lawnmower img { width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); }
         
-        .active-mower { position: absolute; z-index: 6; pointer-events: none; width: 36px; height: 36px; }
+        .active-mower { position: absolute; z-index: 6; pointer-events: none; width: 42px; height: 42px; }
         .active-mower img { width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); }
 
         @keyframes explodeAnim {
@@ -195,13 +195,13 @@
         }
         .explosion-fx {
             position: absolute;
-            font-size: 45px;
+            font-size: 50px;
             z-index: 25;
             pointer-events: none;
             animation: explodeAnim 0.5s ease-out forwards;
         }
 
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-5px); } }
         
         .screen-overlay { 
             position: absolute; 
@@ -215,7 +215,7 @@
             align-items: center; 
             justify-content: center; 
             z-index: 20; 
-            border-radius: 6px; 
+            border-radius: 8px; 
             text-align: center; 
             padding: 10px;
         }
@@ -224,9 +224,9 @@
             background: linear-gradient(to bottom, rgba(50, 25, 10, 0.95), rgba(30, 12, 4, 0.95));
             border: 3px solid #5c3a21;
             border-radius: 12px;
-            padding: 12px 20px;
+            padding: 16px 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.9), inset 0 2px 5px rgba(255,255,255,0.1);
-            max-width: 360px;
+            max-width: 380px;
             width: 90%;
             text-align: center;
         }
@@ -236,8 +236,8 @@
             border: 2px solid #3d1c07;
             border-radius: 8px;
             color: #fff;
-            padding: 7px 14px;
-            font-size: 12px;
+            padding: 8px 14px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 3px #2b1304;
@@ -248,7 +248,7 @@
             gap: 2px;
             text-shadow: 1px 1px #000;
             width: 100%;
-            margin-top: 6px;
+            margin-top: 8px;
         }
         .pvz-menu-btn:active {
             transform: translateY(2px);
@@ -262,51 +262,52 @@
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui hidden" id="game-ui">
-            <div style="width: 100%; font-size: 11px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px;">
+            <div style="width: 100%; font-size: 12px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px;">
                 <span>☀️ <span id="sun-count" style="color: #ffeb3b;">50</span></span>
                 <span>Màn: <span id="level-display" style="color: #00ffff;">1</span></span>
                 <div style="display: flex; align-items: center; gap: 4px; width: 45%;">
-                    <div style="flex-grow: 1; background: #222; height: 10px; border-radius: 5px; position: relative; overflow: hidden; border: 1px solid #555;">
+                    <div style="flex-grow: 1; background: #222; height: 12px; border-radius: 6px; position: relative; overflow: hidden; border: 1px solid #555;">
                         <div id="progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #48bb78, #38a169); transition: width 0.3s;"></div>
                     </div>
-                    <span style="font-size: 13px; line-height: 1;" title="Đợt tấn công cuối">🚩</span>
+                    <span style="font-size: 14px; line-height: 1;" title="Đợt tấn công cuối">🚩</span>
                 </div>
             </div>
             
-            <div style="display: flex; gap: 3px; justify-content: center; flex-wrap: wrap; width: 100%;">
+            <div style="display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; width: 100%;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
                     <div class="cooldown-overlay" id="cd-peashooter"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
-                    <span>Đậu</span><span style="font-size:7.5px; color:#ffeb3b;">100☀️</span>
+                    <span>Đậu</span><span style="font-size:8px; color:#ffeb3b;">100☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
                     <div class="cooldown-overlay" id="cd-sunflower"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23ecc94b'><circle cx='50' cy='20' r='12'/><circle cx='80' cy='32' r='12'/><circle cx='92' cy='60' r='12'/><circle cx='75' cy='85' r='12'/><circle cx='45' cy='90' r='12'/><circle cx='20' cy='80' r='12'/><circle cx='8' cy='55' r='12'/><circle cx='20' cy='30' r='12'/></g><circle cx='50' cy='55' r='28' fill='%23d69e2e'/><circle cx='40' cy='48' r='6' fill='%23fff'/><circle cx='40' cy='48' r='3' fill='%23000'/><circle cx='60' cy='48' r='6' fill='%23fff'/><circle cx='60' cy='48' r='3' fill='%23000'/></svg>" alt="Sunflower">
-                    <span>Hoa</span><span style="font-size:7.5px; color:#ffeb3b;">50☀️</span>
+                    <span>Hoa</span><span style="font-size:8px; color:#ffeb3b;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
                     <div class="cooldown-overlay" id="cd-wallnut"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='52' rx='32' ry='38' fill='%23d69e2e'/><ellipse cx='50' cy='52' rx='27' ry='33' fill='%23b7791f'/><ellipse cx='42' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='42' cy='46' r='4' fill='%23000'/><ellipse cx='62' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='62' cy='46' r='4' fill='%23000'/></svg>" alt="Wallnut">
-                    <span>Khoai</span><span style="font-size:7.5px; color:#ffeb3b;">50☀️</span>
+                    <span>Khoai</span><span style="font-size:8px; color:#ffeb3b;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('potatomine')" ontouchend="selectPlant('potatomine'); event.preventDefault();" id="btn-potatomine">
                     <div class="cooldown-overlay" id="cd-potatomine"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='80' rx='16' ry='6' fill='%2354381e'/><path d='M47 80 L47 55 Q47 42 50 36 Q53 42 53 55 L53 80 Z' fill='%2348bb78'/><circle cx='50' cy='35' r='6' fill='%23e53e3e'/><path d='M50 45 Q42 43 44 52 Z' fill='%2338a169'/></svg>" alt="Potato Mine">
-                    <span>Mìn</span><span style="font-size:7.5px; color:#ffeb3b;">25☀️</span>
+                    <span>Mìn</span><span style="font-size:8px; color:#ffeb3b;">25☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
                     <div class="cooldown-overlay" id="cd-cherry"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M35 65 Q45 25 65 30' fill='none' stroke='%2338a169' stroke-width='5'/><circle cx='32' cy='68' r='22' fill='%23e53e3e'/><circle cx='68' cy='68' r='22' fill='%23e53e3e'/></svg>" alt="Cherry">
-                    <span>Bom</span><span style="font-size:7.5px; color:#ffeb3b;">150☀️</span>
+                    <span>Bom</span><span style="font-size:8px; color:#ffeb3b;">150☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
-                    <span style="font-size:13px;">⛏️</span>
+                    <span style="font-size:14px;">⛏️</span>
                     <span>Xẻng</span>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 5px; justify-content: center; width: 100%; margin-top: 1px;">
+            <div style="display: flex; gap: 6px; justify-content: center; width: 100%; margin-top: 2px;">
                 <button class="control-btn" id="pause-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; box-shadow: 0 2px #92400e;">⏸️ Tạm dừng</button>
+                <button class="control-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #6b7280, #4b5563); border-color: #374151; box-shadow: 0 2px #1f2937;">⚙️ Cài đặt</button>
                 <button class="control-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
                 <button class="control-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #ef4444, #dc2626); border-color: #991b1b; box-shadow: 0 2px #7f1d1d;">🚪 Thoát game</button>
             </div>
@@ -316,22 +317,47 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #66bb6a; font-size: 16px; margin-bottom: 2px; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI</h1>
-                    <p style="font-size: 10px; color: #d0d0d0; margin-bottom: 8px;">Bảo vệ khu vườn khỏi lũ zombie!</p>
+                    <h1 style="color: #66bb6a; font-size: 18px; margin-bottom: 4px; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI</h1>
+                    <p style="font-size: 11px; color: #d0d0d0; margin-bottom: 10px;">Bảo vệ khu vườn khỏi lũ zombie!</p>
                     
                     <div class="pvz-menu-btn" onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();">
-                        <span style="font-size: 12px;">MÀN 1</span>
-                        <span style="font-size: 9px; color: #ffeb3b;">Tiêu diệt hết zombie để thắng</span>
+                        <span style="font-size: 13px;">MÀN 1</span>
+                        <span style="font-size: 10px; color: #ffeb3b;">Tiêu diệt hết zombie để thắng</span>
                     </div>
 
                     <div class="pvz-menu-btn" onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #d97706, #b45309);">
-                        <span style="font-size: 12px;">MÀN 2</span>
-                        <span style="font-size: 9px; color: #ffeb3b;">Có Zombie đội nón</span>
+                        <span style="font-size: 13px;">MÀN 2</span>
+                        <span style="font-size: 10px; color: #ffeb3b;">Có Zombie đội nón</span>
                     </div>
 
                     <div class="pvz-menu-btn" onclick="startGame(3)" ontouchend="startGame(3); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b);">
-                        <span style="font-size: 12px;">MÀN 3</span>
-                        <span style="font-size: 9px; color: #ffeb3b;">Có Zombie đội xô sắt</span>
+                        <span style="font-size: 13px;">MÀN 3</span>
+                        <span style="font-size: 10px; color: #ffeb3b;">Có Zombie đội xô sắt</span>
+                    </div>
+
+                    <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); margin-top: 10px;">
+                        <span style="font-size: 12px;">⚙️ CÀI ĐẶT ÂM LƯỢNG</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng Cài Đặt (Settings) -->
+            <div id="settings-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.85);">
+                <div class="pvz-menu-board">
+                    <h1 style="color: #ffeb3b; font-size: 18px; margin-bottom: 12px; text-shadow: 2px 2px #000;">⚙️ CÀI ĐẶT</h1>
+                    
+                    <div style="margin: 12px 0; text-align: left; font-size: 11px;">
+                        <label style="color: #4ade80; font-weight: bold;">🎵 Âm lượng nhạc nền (BGM): <span id="bgm-val">50%</span></label>
+                        <input type="range" id="bgm-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 5px;" oninput="updateBgmVolume(this.value)">
+                    </div>
+
+                    <div style="margin: 12px 0; text-align: left; font-size: 11px;">
+                        <label style="color: #60a5fa; font-weight: bold;">🔊 Âm lượng hiệu ứng (SFX): <span id="sfx-val">50%</span></label>
+                        <input type="range" id="sfx-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 5px;" oninput="updateSfxVolume(this.value)">
+                    </div>
+
+                    <div class="pvz-menu-btn" onclick="closeSettings()" ontouchend="closeSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d); margin-top: 15px;">
+                        <span>QUAY LẠI</span>
                     </div>
                 </div>
             </div>
@@ -343,6 +369,9 @@
                     <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Trò chơi đang dừng lại.</p>
                     <div class="pvz-menu-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d);">
                         <span>▶️ TIẾP TỤC CHƠI</span>
+                    </div>
+                    <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); margin-top: 5px;">
+                        <span>⚙️ CÀI ĐẶT</span>
                     </div>
                     <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b); margin-top: 5px;">
                         <span>🚪 THOÁT RA MENU</span>
@@ -373,7 +402,7 @@
                 <canvas id="fireworks-canvas" width="800" height="400" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
             </div>
         </div>
-        <div style="font-size: 8px; color: #888; margin-top: 1px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
+        <div style="font-size: 9px; color: #888; margin-top: 2px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
     </div>
 
     <script>
@@ -405,6 +434,26 @@
         let bgm = new Audio('themesoundplntsv.mp3');
         bgm.loop = true;
         bgm.volume = 0.5;
+        let sfxVolume = 0.5;
+
+        function updateBgmVolume(val) {
+            bgm.volume = val;
+            document.getElementById('bgm-val').innerText = Math.round(val * 100) + '%';
+        }
+
+        function updateSfxVolume(val) {
+            sfxVolume = parseFloat(val);
+            document.getElementById('sfx-val').innerText = Math.round(val * 100) + '%';
+        }
+
+        function openSettings() {
+            initAudio();
+            document.getElementById('settings-overlay').classList.remove('hidden');
+        }
+
+        function closeSettings() {
+            document.getElementById('settings-overlay').classList.add('hidden');
+        }
 
         function startBGM() {
             bgm.currentTime = 0;
@@ -461,6 +510,7 @@
 
         function playSound(type) {
             try {
+                if(sfxVolume <= 0) return;
                 initAudio();
                 if(!audioCtx) return;
                 let osc = audioCtx.createOscillator();
@@ -471,39 +521,39 @@
                 if(type === 'plant') {
                     osc.frequency.setValueAtTime(300, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
-                    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.4 * sfxVolume, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.1);
                 } else if(type === 'shoot') {
                     osc.frequency.setValueAtTime(500, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.08);
-                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.25 * sfxVolume, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.08);
                 } else if(type === 'hit') {
                     osc.frequency.setValueAtTime(120, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.08);
-                    gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.35 * sfxVolume, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.08);
                 } else if(type === 'collect') {
                     osc.frequency.setValueAtTime(400, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.12);
-                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.3 * sfxVolume, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.12);
                 } else if(type === 'boom') {
                     osc.type = 'square';
                     osc.frequency.setValueAtTime(150, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.4);
-                    gain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.6 * sfxVolume, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.4);
                 } else if(type === 'mower') {
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(250, audioCtx.currentTime);
                     osc.frequency.linearRampToValueAtTime(400, audioCtx.currentTime + 0.5);
-                    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.4 * sfxVolume, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.5);
                 } else if(type === 'bite') {
@@ -512,7 +562,7 @@
                         osc.type = 'sawtooth';
                         osc.frequency.setValueAtTime(180, audioCtx.currentTime);
                         osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.1);
-                        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                        gain.gain.setValueAtTime(0.3 * sfxVolume, audioCtx.currentTime);
                         gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
                         osc.start(); osc.stop(audioCtx.currentTime + 0.1);
                         lastBiteSoundTime = now;
@@ -589,6 +639,7 @@
             pauseOverlay.classList.add('hidden');
             gameoverScreen.classList.add('hidden');
             winScreen.classList.add('hidden');
+            document.getElementById('settings-overlay').classList.add('hidden');
             menuScreen.classList.remove('hidden');
             gameStarted = false;
             stopFireworks();
