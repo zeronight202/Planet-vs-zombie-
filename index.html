@@ -21,7 +21,6 @@
         }
         
         .game-title {
-            font-size: 16px;
             font-weight: 900;
             background: linear-gradient(45deg, #00ff87, #60efff);
             -webkit-background-clip: text;
@@ -34,10 +33,8 @@
 
         #game-wrapper { 
             position: relative; 
-            width: 95vw; 
-            max-width: 1200px; 
+            width: 96vw; 
             text-align: center; 
-            padding: 0 4px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -46,16 +43,13 @@
         #game-container { 
             position: relative; 
             width: 100%; 
-            height: 62vh; 
-            max-height: 500px; 
-            min-height: 340px;
             background: linear-gradient(to bottom, #4a7c36, #3b6329); 
-            margin: 4px auto; 
+            margin: 3px auto; 
             border: 3px solid #333; 
             overflow: hidden; 
             touch-action: manipulation; 
-            border-radius: 10px; 
-            box-shadow: 0 6px 18px rgba(0,0,0,0.8); 
+            border-radius: 8px; 
+            box-shadow: 0 6px 16px rgba(0,0,0,0.8); 
         }
 
         .grid-cell { 
@@ -72,10 +66,8 @@
 
         .ui { 
             margin: 3px 0; 
-            font-size: 12px; 
             font-weight: bold; 
             background: #1e1e1e; 
-            padding: 5px 10px; 
             border-radius: 8px; 
             width: 100%;
             border: 1px solid #333; 
@@ -83,17 +75,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
         }
 
         .seed-card { 
             position: relative;
-            padding: 3px 6px; 
-            font-size: 10px; 
             background: linear-gradient(to bottom, #fff385, #e0a800); 
             border: 1px solid #553300; 
             cursor: pointer; 
-            border-radius: 6px; 
+            border-radius: 5px; 
             font-weight: bold; 
             color: #222; 
             box-shadow: 0 2px #442200; 
@@ -101,12 +90,9 @@
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            min-width: 52px;
             overflow: hidden;
         }
         .seed-card img {
-            width: 24px;
-            height: 24px;
             object-fit: contain;
             pointer-events: none;
         }
@@ -128,11 +114,9 @@
             background: linear-gradient(to bottom, #42a5f5, #1565c0); 
             color: white; 
             border: 1px solid #0d47a1; 
-            padding: 4px 10px; 
             border-radius: 5px; 
             font-weight: bold; 
             cursor: pointer; 
-            font-size: 11px; 
             box-shadow: 0 2px #0a3570;
         }
         .control-btn:active { transform: translateY(2px); box-shadow: 0 0 #0a3570; }
@@ -151,41 +135,35 @@
             pointer-events: none;
         }
 
-        .bullet { width: 9px; height: 9px; background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; }
+        .bullet { background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; }
         
         @keyframes sunflowerGlow {
             0% { filter: drop-shadow(0 0 2px #ffeb3b) brightness(1); transform: scale(1); }
             50% { filter: drop-shadow(0 0 10px #ffeb3b) brightness(1.3); transform: scale(1.05); }
             100% { filter: drop-shadow(0 0 2px #ffeb3b) brightness(1); transform: scale(1); }
         }
-        .sunflower-glow {
-            animation: sunflowerGlow 1.2s infinite ease-in-out;
-        }
+        .sunflower-glow { animation: sunflowerGlow 1.2s infinite ease-in-out; }
 
         @keyframes cherryPulse {
             0% { transform: scale(1); filter: brightness(1); }
             50% { transform: scale(1.2); filter: brightness(1.6); }
             100% { transform: scale(1); filter: brightness(1); }
         }
-        .cherry-fuse {
-            animation: cherryPulse 0.35s infinite ease-in-out;
-        }
+        .cherry-fuse { animation: cherryPulse 0.35s infinite ease-in-out; }
 
         .sun-drop { 
             position: absolute; 
-            font-size: 32px; 
             cursor: pointer; 
             z-index: 10; 
-            padding: 12px; 
             transform: translate(-50%, -50%);
             animation: bounce 0.6s infinite alternate; 
             filter: drop-shadow(0 2px 6px rgba(255, 235, 59, 0.8));
         }
         
-        .lawnmower { position: absolute; z-index: 4; pointer-events: none; width: 38px; height: 38px; }
+        .lawnmower { position: absolute; z-index: 4; pointer-events: none; }
         .lawnmower img { width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); }
         
-        .active-mower { position: absolute; z-index: 6; pointer-events: none; width: 42px; height: 42px; }
+        .active-mower { position: absolute; z-index: 6; pointer-events: none; }
         .active-mower img { width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); }
 
         @keyframes explodeAnim {
@@ -195,7 +173,6 @@
         }
         .explosion-fx {
             position: absolute;
-            font-size: 50px;
             z-index: 25;
             pointer-events: none;
             animation: explodeAnim 0.5s ease-out forwards;
@@ -224,9 +201,7 @@
             background: linear-gradient(to bottom, rgba(50, 25, 10, 0.95), rgba(30, 12, 4, 0.95));
             border: 3px solid #5c3a21;
             border-radius: 12px;
-            padding: 16px 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.9), inset 0 2px 5px rgba(255,255,255,0.1);
-            max-width: 380px;
             width: 90%;
             text-align: center;
         }
@@ -236,8 +211,6 @@
             border: 2px solid #3d1c07;
             border-radius: 8px;
             color: #fff;
-            padding: 8px 14px;
-            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 3px #2b1304;
@@ -245,71 +218,100 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
             text-shadow: 1px 1px #000;
             width: 100%;
-            margin-top: 8px;
         }
-        .pvz-menu-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px #2b1304;
+        .pvz-menu-btn:active { transform: translateY(2px); box-shadow: 0 1px #2b1304; }
+        .hidden { display: none !important; }
+
+        /* --- RESPONSIVE CHO MOBILE & PC --- */
+        @media (max-width: 768px) {
+            .game-title { font-size: 13px; }
+            #game-wrapper { max-width: 520px; padding: 0 2px; }
+            #game-container { height: 46vh; max-height: 310px; min-height: 220px; }
+            .ui { padding: 3px 6px; font-size: 10px; gap: 3px; }
+            .seed-card { padding: 2px 3px; font-size: 8px; min-width: 42px; }
+            .seed-card img { width: 18px; height: 18px; }
+            .control-btn { padding: 3px 6px; font-size: 9.5px; }
+            .sun-drop { font-size: 26px; padding: 10px; }
+            .lawnmower { width: 28px; height: 28px; }
+            .active-mower { width: 32px; height: 32px; }
+            .bullet { width: 7px; height: 7px; }
+            .explosion-fx { font-size: 38px; }
+            .pvz-menu-board { max-width: 300px; padding: 10px 15px; }
+            .pvz-menu-btn { padding: 6px 10px; font-size: 11px; margin-top: 5px; }
         }
 
-        .hidden { display: none !important; }
+        @media (min-width: 769px) {
+            .game-title { font-size: 22px; margin: 6px 0; }
+            #game-wrapper { max-width: 1150px; }
+            #game-container { height: 64vh; max-height: 560px; min-height: 380px; border-width: 4px; }
+            .ui { padding: 8px 14px; font-size: 15px; gap: 8px; }
+            .seed-card { padding: 5px 10px; font-size: 12px; min-width: 75px; border-radius: 8px; }
+            .seed-card img { width: 36px; height: 36px; }
+            .control-btn { padding: 6px 14px; font-size: 14px; border-radius: 6px; }
+            .sun-drop { font-size: 42px; padding: 16px; }
+            .lawnmower { width: 48px; height: 48px; }
+            .active-mower { width: 54px; height: 54px; }
+            .bullet { width: 12px; height: 12px; }
+            .explosion-fx { font-size: 65px; }
+            .pvz-menu-board { max-width: 450px; padding: 22px 30px; }
+            .pvz-menu-btn { padding: 12px 18px; font-size: 16px; margin-top: 10px; border-radius: 10px; }
+        }
     </style>
 </head>
 <body>
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui hidden" id="game-ui">
-            <div style="width: 100%; font-size: 12px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px;">
+            <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 8px;">
                 <span>☀️ <span id="sun-count" style="color: #ffeb3b;">50</span></span>
                 <span>Màn: <span id="level-display" style="color: #00ffff;">1</span></span>
-                <div style="display: flex; align-items: center; gap: 4px; width: 45%;">
+                <div style="display: flex; align-items: center; gap: 6px; width: 45%;">
                     <div style="flex-grow: 1; background: #222; height: 12px; border-radius: 6px; position: relative; overflow: hidden; border: 1px solid #555;">
                         <div id="progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #48bb78, #38a169); transition: width 0.3s;"></div>
                     </div>
-                    <span style="font-size: 14px; line-height: 1;" title="Đợt tấn công cuối">🚩</span>
+                    <span style="font-size: 1.2em; line-height: 1;" title="Đợt tấn công cuối">🚩</span>
                 </div>
             </div>
             
-            <div style="display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; width: 100%;">
+            <div style="display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; width: 100%;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
                     <div class="cooldown-overlay" id="cd-peashooter"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
-                    <span>Đậu</span><span style="font-size:8px; color:#ffeb3b;">100☀️</span>
+                    <span>Đậu</span><span style="color:#ffeb3b; font-size:0.8em;">100☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
                     <div class="cooldown-overlay" id="cd-sunflower"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23ecc94b'><circle cx='50' cy='20' r='12'/><circle cx='80' cy='32' r='12'/><circle cx='92' cy='60' r='12'/><circle cx='75' cy='85' r='12'/><circle cx='45' cy='90' r='12'/><circle cx='20' cy='80' r='12'/><circle cx='8' cy='55' r='12'/><circle cx='20' cy='30' r='12'/></g><circle cx='50' cy='55' r='28' fill='%23d69e2e'/><circle cx='40' cy='48' r='6' fill='%23fff'/><circle cx='40' cy='48' r='3' fill='%23000'/><circle cx='60' cy='48' r='6' fill='%23fff'/><circle cx='60' cy='48' r='3' fill='%23000'/></svg>" alt="Sunflower">
-                    <span>Hoa</span><span style="font-size:8px; color:#ffeb3b;">50☀️</span>
+                    <span>Hoa</span><span style="color:#ffeb3b; font-size:0.8em;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('wallnut')" ontouchend="selectPlant('wallnut'); event.preventDefault();" id="btn-wallnut">
                     <div class="cooldown-overlay" id="cd-wallnut"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='52' rx='32' ry='38' fill='%23d69e2e'/><ellipse cx='50' cy='52' rx='27' ry='33' fill='%23b7791f'/><ellipse cx='42' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='42' cy='46' r='4' fill='%23000'/><ellipse cx='62' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='62' cy='46' r='4' fill='%23000'/></svg>" alt="Wallnut">
-                    <span>Khoai</span><span style="font-size:8px; color:#ffeb3b;">50☀️</span>
+                    <span>Khoai</span><span style="color:#ffeb3b; font-size:0.8em;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('potatomine')" ontouchend="selectPlant('potatomine'); event.preventDefault();" id="btn-potatomine">
                     <div class="cooldown-overlay" id="cd-potatomine"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='80' rx='16' ry='6' fill='%2354381e'/><path d='M47 80 L47 55 Q47 42 50 36 Q53 42 53 55 L53 80 Z' fill='%2348bb78'/><circle cx='50' cy='35' r='6' fill='%23e53e3e'/><path d='M50 45 Q42 43 44 52 Z' fill='%2338a169'/></svg>" alt="Potato Mine">
-                    <span>Mìn</span><span style="font-size:8px; color:#ffeb3b;">25☀️</span>
+                    <span>Mìn</span><span style="color:#ffeb3b; font-size:0.8em;">25☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('cherry')" ontouchend="selectPlant('cherry'); event.preventDefault();" id="btn-cherry">
                     <div class="cooldown-overlay" id="cd-cherry"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M35 65 Q45 25 65 30' fill='none' stroke='%2338a169' stroke-width='5'/><circle cx='32' cy='68' r='22' fill='%23e53e3e'/><circle cx='68' cy='68' r='22' fill='%23e53e3e'/></svg>" alt="Cherry">
-                    <span>Bom</span><span style="font-size:8px; color:#ffeb3b;">150☀️</span>
+                    <span>Bom</span><span style="color:#ffeb3b; font-size:0.8em;">150☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
-                    <span style="font-size:14px;">⛏️</span>
+                    <span style="font-size: 1.3em;">⛏️</span>
                     <span>Xẻng</span>
                 </div>
             </div>
 
             <div style="display: flex; gap: 6px; justify-content: center; width: 100%; margin-top: 2px;">
-                <button class="control-btn" id="pause-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; box-shadow: 0 2px #92400e;">⏸️ Tạm dừng</button>
+                <button class="control-btn" id="pause-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; box-shadow: 0 2px #92400e;">⏸️ Dừng</button>
                 <button class="control-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #6b7280, #4b5563); border-color: #374151; box-shadow: 0 2px #1f2937;">⚙️ Cài đặt</button>
                 <button class="control-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
-                <button class="control-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #ef4444, #dc2626); border-color: #991b1b; box-shadow: 0 2px #7f1d1d;">🚪 Thoát game</button>
+                <button class="control-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #ef4444, #dc2626); border-color: #991b1b; box-shadow: 0 2px #7f1d1d;">🚪 Thoát</button>
             </div>
         </div>
 
@@ -317,26 +319,26 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #66bb6a; font-size: 18px; margin-bottom: 4px; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI</h1>
-                    <p style="font-size: 11px; color: #d0d0d0; margin-bottom: 10px;">Bảo vệ khu vườn khỏi lũ zombie!</p>
+                    <h1 style="color: #66bb6a; margin-bottom: 6px; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI</h1>
+                    <p style="color: #d0d0d0; margin-bottom: 10px; font-size: 0.9em;">Bảo vệ khu vườn khỏi lũ zombie!</p>
                     
                     <div class="pvz-menu-btn" onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();">
-                        <span style="font-size: 13px;">MÀN 1</span>
-                        <span style="font-size: 10px; color: #ffeb3b;">Tiêu diệt hết zombie để thắng</span>
+                        <span>MÀN 1</span>
+                        <span style="font-size: 0.8em; color: #ffeb3b;">Tiêu diệt hết zombie để thắng</span>
                     </div>
 
                     <div class="pvz-menu-btn" onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #d97706, #b45309);">
-                        <span style="font-size: 13px;">MÀN 2</span>
-                        <span style="font-size: 10px; color: #ffeb3b;">Có Zombie đội nón</span>
+                        <span>MÀN 2</span>
+                        <span style="font-size: 0.8em; color: #ffeb3b;">Có Zombie đội nón</span>
                     </div>
 
                     <div class="pvz-menu-btn" onclick="startGame(3)" ontouchend="startGame(3); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b);">
-                        <span style="font-size: 13px;">MÀN 3</span>
-                        <span style="font-size: 10px; color: #ffeb3b;">Có Zombie đội xô sắt</span>
+                        <span>MÀN 3</span>
+                        <span style="font-size: 0.8em; color: #ffeb3b;">Có Zombie đội xô sắt</span>
                     </div>
 
                     <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); margin-top: 10px;">
-                        <span style="font-size: 12px;">⚙️ CÀI ĐẶT ÂM LƯỢNG</span>
+                        <span>⚙️ CÀI ĐẶT ÂM LƯỢNG</span>
                     </div>
                 </div>
             </div>
@@ -344,15 +346,15 @@
             <!-- Bảng Cài Đặt (Settings) -->
             <div id="settings-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.85);">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ffeb3b; font-size: 18px; margin-bottom: 12px; text-shadow: 2px 2px #000;">⚙️ CÀI ĐẶT</h1>
+                    <h1 style="color: #ffeb3b; margin-bottom: 14px; text-shadow: 2px 2px #000;">⚙️ CÀI ĐẶT</h1>
                     
-                    <div style="margin: 12px 0; text-align: left; font-size: 11px;">
-                        <label style="color: #4ade80; font-weight: bold;">🎵 Âm lượng nhạc nền (BGM): <span id="bgm-val">50%</span></label>
+                    <div style="margin: 10px 0; text-align: left;">
+                        <label style="color: #4ade80; font-weight: bold;">🎵 Nhạc nền (BGM): <span id="bgm-val">50%</span></label>
                         <input type="range" id="bgm-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 5px;" oninput="updateBgmVolume(this.value)">
                     </div>
 
-                    <div style="margin: 12px 0; text-align: left; font-size: 11px;">
-                        <label style="color: #60a5fa; font-weight: bold;">🔊 Âm lượng hiệu ứng (SFX): <span id="sfx-val">50%</span></label>
+                    <div style="margin: 10px 0; text-align: left;">
+                        <label style="color: #60a5fa; font-weight: bold;">🔊 Hiệu ứng (SFX): <span id="sfx-val">50%</span></label>
                         <input type="range" id="sfx-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 5px;" oninput="updateSfxVolume(this.value)">
                     </div>
 
@@ -365,15 +367,15 @@
             <!-- Màn hình Tạm Dừng -->
             <div id="pause-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.75);">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ffeb3b; font-size: 18px; margin-bottom: 3px; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
-                    <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Trò chơi đang dừng lại.</p>
+                    <h1 style="color: #ffeb3b; margin-bottom: 6px; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
+                    <p style="color: #ccc; margin-bottom: 10px; font-size: 0.9em;">Trò chơi đang dừng lại.</p>
                     <div class="pvz-menu-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d);">
                         <span>▶️ TIẾP TỤC CHƠI</span>
                     </div>
-                    <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); margin-top: 5px;">
+                    <div class="pvz-menu-btn" onclick="openSettings()" ontouchend="openSettings(); event.preventDefault();" style="background: linear-gradient(to bottom, #4b5563, #374151); margin-top: 6px;">
                         <span>⚙️ CÀI ĐẶT</span>
                     </div>
-                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b); margin-top: 5px;">
+                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b); margin-top: 6px;">
                         <span>🚪 THOÁT RA MENU</span>
                     </div>
                 </div>
@@ -382,8 +384,8 @@
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ff5252; font-size: 18px; margin-bottom: 3px; text-shadow: 2px 2px #000;">GAME OVER</h1>
-                    <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
+                    <h1 style="color: #ff5252; margin-bottom: 6px; text-shadow: 2px 2px #000;">GAME OVER</h1>
+                    <p style="color: #ccc; margin-bottom: 10px; font-size: 0.9em;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
                     <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();">
                         <span>VỀ MENU CHÍNH</span>
                     </div>
@@ -393,8 +395,8 @@
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board" style="position: relative; z-index: 22;">
-                    <h1 style="color: #00e676; font-size: 18px; margin-bottom: 3px; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
-                    <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Bạn đã bảo vệ khu vườn thành công xuất sắc!</p>
+                    <h1 style="color: #00e676; margin-bottom: 6px; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
+                    <p style="color: #ccc; margin-bottom: 10px; font-size: 0.9em;">Bạn đã bảo vệ khu vườn thành công xuất sắc!</p>
                     <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d);">
                         <span>VỀ MENU CHÍNH</span>
                     </div>
@@ -402,7 +404,7 @@
                 <canvas id="fireworks-canvas" width="800" height="400" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
             </div>
         </div>
-        <div style="font-size: 9px; color: #888; margin-top: 2px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
+        <div style="font-size: 0.85em; color: #888; margin-top: 3px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
     </div>
 
     <script>
@@ -483,11 +485,11 @@
             let btn = document.getElementById('pause-btn');
             let pauseOverlay = document.getElementById('pause-overlay');
             if(isPaused) {
-                btn.innerHTML = '▶️ Tiếp tục';
+                btn.innerHTML = '▶️ Tiếp';
                 if(pauseOverlay) pauseOverlay.classList.remove('hidden');
                 if(bgm) bgm.pause();
             } else {
-                btn.innerHTML = '⏸️ Tạm dừng';
+                btn.innerHTML = '⏸️ Dừng';
                 if(pauseOverlay) pauseOverlay.classList.add('hidden');
                 if(bgm) bgm.play().catch(e => {});
                 lastTime = performance.now();
@@ -634,7 +636,7 @@
         function showMenu() {
             stopBGM();
             isPaused = false;
-            document.getElementById('pause-btn').innerHTML = '⏸️ Tạm dừng';
+            document.getElementById('pause-btn').innerHTML = '⏸️ Dừng';
             if(gameUI) gameUI.classList.add('hidden');
             pauseOverlay.classList.add('hidden');
             gameoverScreen.classList.add('hidden');
@@ -661,7 +663,7 @@
             zombiesSpawnedCount = 0;
             finalWaveTriggered = false;
             isPaused = false;
-            document.getElementById('pause-btn').innerHTML = '⏸️ Tạm dừng';
+            document.getElementById('pause-btn').innerHTML = '⏸️ Dừng';
             
             if(gameUI) gameUI.classList.remove('hidden');
             pauseOverlay.classList.add('hidden');
@@ -720,7 +722,7 @@
             let banner = document.createElement('div');
             banner.className = 'screen-overlay';
             banner.style.background = 'rgba(180, 0, 0, 0.4)';
-            banner.innerHTML = `<h1 style="color: #ffeb3b; font-size: 18px; text-shadow: 2px 2px #000;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 10px;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
+            banner.innerHTML = `<h1 style="color: #ffeb3b; text-shadow: 2px 2px #000;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 0.9em;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
             container.appendChild(banner);
 
             for (let r = 0; r < gridRows; r++) {
@@ -1175,6 +1177,8 @@
                     div.className = 'lawnmower';
                     div.style.left = (0 * cellW + cellW * 0.1) + 'px';
                     div.style.top = (r * cellH + cellH * 0.25) + 'px';
+                    div.style.width = (cellW * 0.8) + 'px';
+                    div.style.height = (cellH * 0.6) + 'px';
                     
                     let img = document.createElement('img');
                     img.src = LAWNMOWER_SVG;
@@ -1223,6 +1227,8 @@
                 div.className = 'active-mower';
                 div.style.left = (m.col * cellW) + 'px';
                 div.style.top = (m.row * cellH + cellH * 0.25) + 'px';
+                div.style.width = (cellW * 0.85) + 'px';
+                div.style.height = (cellH * 0.65) + 'px';
                 
                 let img = document.createElement('img');
                 img.src = LAWNMOWER_SVG;
@@ -1261,6 +1267,9 @@
             bullets.forEach(b => {
                 let div = document.createElement('div');
                 div.className = 'bullet';
+                let bulletSize = window.innerWidth > 768 ? '12px' : '7px';
+                div.style.width = bulletSize;
+                div.style.height = bulletSize;
                 div.style.left = (b.col * cellW) + 'px';
                 div.style.top = (b.row * cellH + cellH * 0.4) + 'px';
                 container.appendChild(div);
