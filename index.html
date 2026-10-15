@@ -557,7 +557,7 @@
         let sunSpawner = null;
         let finalWaveTriggered = false;
         let zombiesSpawnedCount = 0;
-        let totalZombiesForLevel = 15;
+        let totalZombiesForLevel = 20;
 
         const container = document.getElementById('game-container');
         const menuScreen = document.getElementById('menu-screen');
@@ -604,7 +604,7 @@
             initAudio(); 
             startBGM(); 
             currentLevel = level;
-            totalZombiesForLevel = (currentLevel === 1) ? 15 : (currentLevel === 2 ? 25 : 35);
+            totalZombiesForLevel = (currentLevel === 1) ? 20 : (currentLevel === 2 ? 30 : 40);
             zombiesSpawnedCount = 0;
             finalWaveTriggered = false;
             isPaused = false;
@@ -653,7 +653,7 @@
                     targetY: targetY,
                     life: 400
                 });
-            }, 9500);
+            }, 10000);
 
             renderStaticElements();
             lastTime = performance.now();
@@ -705,7 +705,9 @@
             if(!gameStarted || gameOver || gameWon) return;
             if(zombiesSpawnedCount >= totalZombiesForLevel) return;
 
-            let delay = (currentLevel === 1) ? 4500 : (currentLevel === 2 ? 3500 : 2600);
+            // Nhịp độ giãn cách chuẩn game gốc (chậm rãi ở đầu, nhanh dần về sau)
+            let progressRatio = zombiesSpawnedCount / totalZombiesForLevel;
+            let delay = (currentLevel === 1) ? (8000 - progressRatio * 3000) : (currentLevel === 2 ? (7000 - progressRatio * 2500) : (5500 - progressRatio * 2000));
 
             zombieTimeout = setTimeout(() => {
                 if(!gameStarted || gameOver || gameWon) return;
@@ -737,7 +739,7 @@
                     if(zombiesSpawnedCount >= totalZombiesForLevel && !finalWaveTriggered) {
                         finalWaveTriggered = true;
                         triggerFinalWaveBanner();
-                        return; // Dừng sinh zombie lẻ để đánh đợt cuối
+                        return;
                     }
                 }
                 scheduleNextZombie();
