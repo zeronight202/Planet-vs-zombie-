@@ -261,7 +261,7 @@
 <body>
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
-        <div class="ui">
+        <div class="ui hidden" id="game-ui">
             <div style="width: 100%; font-size: 11px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px;">
                 <span>☀️ <span id="sun-count" style="color: #ffeb3b;">50</span></span>
                 <span>Màn: <span id="level-display" style="color: #00ffff;">1</span></span>
@@ -560,6 +560,7 @@
         let totalZombiesForLevel = 20;
 
         const container = document.getElementById('game-container');
+        const gameUI = document.getElementById('game-ui');
         const menuScreen = document.getElementById('menu-screen');
         const pauseOverlay = document.getElementById('pause-overlay');
         const gameoverScreen = document.getElementById('gameover-screen');
@@ -584,6 +585,7 @@
             stopBGM();
             isPaused = false;
             document.getElementById('pause-btn').innerHTML = '⏸️ Tạm dừng';
+            if(gameUI) gameUI.classList.add('hidden');
             pauseOverlay.classList.add('hidden');
             gameoverScreen.classList.add('hidden');
             winScreen.classList.add('hidden');
@@ -609,6 +611,8 @@
             finalWaveTriggered = false;
             isPaused = false;
             document.getElementById('pause-btn').innerHTML = '⏸️ Tạm dừng';
+            
+            if(gameUI) gameUI.classList.remove('hidden');
             pauseOverlay.classList.add('hidden');
             document.getElementById('level-display').innerText = currentLevel;
             updateProgressBar();
@@ -705,7 +709,6 @@
             if(!gameStarted || gameOver || gameWon) return;
             if(zombiesSpawnedCount >= totalZombiesForLevel) return;
 
-            // Nhịp độ giãn cách chuẩn game gốc (chậm rãi ở đầu, nhanh dần về sau)
             let progressRatio = zombiesSpawnedCount / totalZombiesForLevel;
             let delay = (currentLevel === 1) ? (8000 - progressRatio * 3000) : (currentLevel === 2 ? (7000 - progressRatio * 2500) : (5500 - progressRatio * 2000));
 
