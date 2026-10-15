@@ -136,6 +136,7 @@
         }
 
         .bullet { background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; }
+        .bullet.ice-bullet { background: #63b3ed; border: 1px solid #3182ce; box-shadow: 0 0 6px #90cdf4; }
         
         @keyframes sunflowerGlow {
             0% { filter: drop-shadow(0 0 2px #ffeb3b) brightness(1); transform: scale(1); }
@@ -231,12 +232,12 @@
         /* --- RESPONSIVE CHO MOBILE & PC --- */
         @media (max-width: 768px) {
             .game-title { font-size: 11px; }
-            #game-wrapper { max-width: 520px; padding: 0 2px; }
+            #game-wrapper { max-width: 540px; padding: 0 2px; }
             #game-container { height: 44vh; max-height: 280px; min-height: 200px; }
-            .ui { padding: 2px 4px; font-size: 9px; gap: 2px; }
-            .seed-card { padding: 2px 3px; font-size: 7.5px; min-width: 38px; }
-            .seed-card img { width: 16px; height: 16px; }
-            .control-btn { padding: 2px 5px; font-size: 8.5px; }
+            .ui { padding: 2px 4px; font-size: 8.5px; gap: 2px; }
+            .seed-card { padding: 2px 2px; font-size: 7px; min-width: 34px; }
+            .seed-card img { width: 15px; height: 15px; }
+            .control-btn { padding: 2px 4px; font-size: 8px; }
             .sun-drop { font-size: 24px; padding: 8px; }
             .lawnmower { width: 26px; height: 26px; }
             .active-mower { width: 30px; height: 30px; }
@@ -251,9 +252,9 @@
             #game-wrapper { max-width: 1150px; }
             #game-container { height: 64vh; max-height: 560px; min-height: 380px; border-width: 4px; }
             .ui { padding: 8px 14px; font-size: 15px; gap: 8px; }
-            .seed-card { padding: 5px 10px; font-size: 12px; min-width: 75px; border-radius: 8px; }
-            .seed-card img { width: 36px; height: 36px; }
-            .control-btn { padding: 6px 14px; font-size: 14px; border-radius: 6px; }
+            .seed-card { padding: 5px 8px; font-size: 11px; min-width: 68px; border-radius: 8px; }
+            .seed-card img { width: 32px; height: 32px; }
+            .control-btn { padding: 6px 12px; font-size: 13px; border-radius: 6px; }
             .sun-drop { font-size: 42px; padding: 16px; }
             .lawnmower { width: 48px; height: 48px; }
             .active-mower { width: 54px; height: 54px; }
@@ -279,11 +280,16 @@
                 </div>
             </div>
             
-            <div style="display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; width: 100%;">
+            <div style="display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; width: 100%;">
                 <div class="seed-card" onclick="selectPlant('peashooter')" ontouchend="selectPlant('peashooter'); event.preventDefault();" id="btn-peashooter">
                     <div class="cooldown-overlay" id="cd-peashooter"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
                     <span>Đậu</span><span style="color:#ffeb3b; font-size:0.8em;">100☀️</span>
+                </div>
+                <div class="seed-card" onclick="selectPlant('snowpea')" ontouchend="selectPlant('snowpea'); event.preventDefault();" id="btn-snowpea">
+                    <div class="cooldown-overlay" id="cd-snowpea"></div>
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2363b3ed'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%233182ce'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%231a202c'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Snow Pea">
+                    <span>Đậu Băng</span><span style="color:#ffeb3b; font-size:0.8em;">175☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('sunflower')" ontouchend="selectPlant('sunflower'); event.preventDefault();" id="btn-sunflower">
                     <div class="cooldown-overlay" id="cd-sunflower"></div>
@@ -306,7 +312,7 @@
                     <span>Bom</span><span style="color:#ffeb3b; font-size:0.8em;">150☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
-                    <span style="font-size: 1.3em;">⛏️</span>
+                    <span style="font-size: 1.2em;">⛏️</span>
                     <span>Xẻng</span>
                 </div>
             </div>
@@ -414,6 +420,7 @@
     <script>
         const PLANT_IMAGES = {
             peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%2338a169"/><path d="M45 75 L50 60 L55 75" fill="%2338a169"/><circle cx="45" cy="45" r="25" fill="%2348bb78"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%2338a169"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2338a169"/></svg>',
+            snowpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%233182ce"/><path d="M45 75 L50 60 L55 75" fill="%233182ce"/><circle cx="45" cy="45" r="25" fill="%2363b3ed"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%233182ce"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2363b3ed"/></svg>',
             sunflower: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M47 65 Q47 80 50 90" fill="none" stroke="%2338a169" stroke-width="6" stroke-linecap="round"/><path d="M35 80 Q25 75 35 70 Z" fill="%2338a169"/><path d="M65 80 Q75 75 65 70 Z" fill="%2338a169"/><g fill="%23ecc94b"><ellipse cx="50" cy="18" rx="8" ry="16"/><ellipse cx="75" cy="28" rx="12" ry="12" transform="rotate(30 75 28)"/><ellipse cx="87" cy="52" rx="16" ry="8" transform="rotate(15 87 52)"/><ellipse cx="78" cy="77" rx="12" ry="12" transform="rotate(60 78 77)"/><ellipse cx="50" cy="85" rx="8" ry="16"/><ellipse cx="22" cy="77" rx="12" ry="12" transform="rotate(30 22 77)"/><ellipse cx="13" cy="52" rx="16" ry="8" transform="rotate(15 13 52)"/><ellipse cx="25" cy="28" rx="12" ry="12" transform="rotate(60 25 28)"/></g><circle cx="50" cy="52" r="24" fill="%23b7791f"/><circle cx="50" cy="52" r="20" fill="%23d69e2e"/><circle cx="42" cy="48" r="4.5" fill="%23fff"/><circle cx="42" cy="48" r="2" fill="%23000"/><circle cx="58" cy="48" r="4.5" fill="%23fff"/><circle cx="58" cy="48" r="2" fill="%23000"/><path d="M44 58 Q50 64 56 58" fill="none" stroke="%23000" stroke-width="2.5" stroke-linecap="round"/></svg>',
             wallnut: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="52" rx="32" ry="38" fill="%23d69e2e"/><ellipse cx="50" cy="52" rx="27" ry="33" fill="%23b7791f"/><path d="M30 40 Q35 50 30 65" fill="none" stroke="%23975a16" stroke-width="3" stroke-linecap="round"/><path d="M70 40 Q65 50 70 65" fill="none" stroke="%23975a16" stroke-width="3" stroke-linecap="round"/><circle cx="41" cy="46" r="8" fill="%23fff"/><circle cx="41" cy="46" r="3.5" fill="%23000"/><circle cx="61" cy="46" r="8" fill="%23fff"/><circle cx="61" cy="46" r="3.5" fill="%23000"/><path d="M44 64 Q50 60 56 64" fill="none" stroke="%23744210" stroke-width="3" stroke-linecap="round"/></svg>',
             potatomine_unarmed: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="80" rx="16" ry="6" fill="%2354381e"/><path d="M47 80 L47 55 Q47 42 50 36 Q53 42 53 55 L53 80 Z" fill="%2348bb78"/><circle cx="50" cy="35" r="6" fill="%23e53e3e"/><path d="M50 45 Q42 43 44 52 Z" fill="%2338a169"/></svg>',
@@ -423,6 +430,7 @@
 
         const PLANT_DATA = {
             peashooter: { cost: 100, cooldown: 5000, lastUsed: 0 },
+            snowpea: { cost: 175, cooldown: 6000, lastUsed: 0 },
             sunflower: { cost: 50, cooldown: 5000, lastUsed: 0 },
             wallnut: { cost: 50, cooldown: 15000, lastUsed: 0 },
             potatomine: { cost: 25, cooldown: 12000, lastUsed: 0 },
@@ -753,7 +761,8 @@
                     hp: hp,
                     maxHp: hp,
                     type: type,
-                    hitFlash: 0
+                    hitFlash: 0,
+                    slowTimer: 0
                 });
             }
 
@@ -790,7 +799,8 @@
                         hp: hp, 
                         maxHp: hp,
                         type: type,
-                        hitFlash: 0
+                        hitFlash: 0,
+                        slowTimer: 0
                     });
 
                     zombiesSpawnedCount++;
@@ -845,7 +855,7 @@
         }
 
         function updateButtonStyles() {
-            ['peashooter', 'sunflower', 'wallnut', 'potatomine', 'cherry', 'shovel'].forEach(t => {
+            ['peashooter', 'snowpea', 'sunflower', 'wallnut', 'potatomine', 'cherry', 'shovel'].forEach(t => {
                 let btn = document.getElementById('btn-' + t);
                 if(btn) {
                     if(selectedType === t) btn.classList.add('active-btn');
@@ -904,6 +914,9 @@
                             playSound('plant');
                         } else if(selectedType === 'peashooter') {
                             plants.push({type: 'peashooter', row: row, col: plantCol, hp: 100, shootTimer: 0});
+                            playSound('plant');
+                        } else if(selectedType === 'snowpea') {
+                            plants.push({type: 'snowpea', row: row, col: plantCol, hp: 100, shootTimer: 0});
                             playSound('plant');
                         } else if(selectedType === 'sunflower') {
                             plants.push({type: 'sunflower', row: row, col: plantCol, hp: 80, sunTimer: 0});
@@ -1039,6 +1052,8 @@
 
             zombies.forEach(z => {
                 if(z.hitFlash > 0) z.hitFlash--;
+                if(z.slowTimer > 0) z.slowTimer -= dt;
+
                 let hitPlant = plants.find(p => p.row === z.row && Math.abs((p.col + 1) - z.col) < 0.45);
                 
                 if(hitPlant) {
@@ -1065,8 +1080,9 @@
                         }
                     }
                 } else {
-                    let speed = (z.type === 'buckethead') ? 0.002 : (z.type === 'conehead' ? 0.0024 : 0.0034);
-                    z.col -= speed * dt;
+                    let baseSpeed = (z.type === 'buckethead') ? 0.002 : (z.type === 'conehead' ? 0.0024 : 0.0034);
+                    let actualSpeed = z.slowTimer > 0 ? baseSpeed * 0.5 : baseSpeed;
+                    z.col -= actualSpeed * dt;
                 }
             });
 
@@ -1082,12 +1098,16 @@
             }
 
             plants.forEach(p => {
-                if(p.type === 'peashooter') {
+                if(p.type === 'peashooter' || p.type === 'snowpea') {
                     let hasZombie = zombies.some(z => z.row === p.row && z.col > (p.col + 1));
                     if(hasZombie) {
                         p.shootTimer += dt;
                         if(p.shootTimer > 45) {
-                            bullets.push({row: p.row, col: p.col + 1.1});
+                            bullets.push({
+                                row: p.row, 
+                                col: p.col + 1.1, 
+                                isIce: (p.type === 'snowpea')
+                            });
                             playSound('shoot');
                             p.shootTimer = 0;
                         }
@@ -1129,6 +1149,9 @@
                     if(!destroyedZombies.has(zi) && b.row === z.row && Math.abs(b.col - z.col) < 0.35) {
                         z.hp -= 12;
                         z.hitFlash = 6;
+                        if(b.isIce) {
+                            z.slowTimer = 220; // Làm chậm trong khoảng thời gian
+                        }
                         playSound('hit');
                         hit = true;
                         if(z.hp <= 0) {
@@ -1251,6 +1274,8 @@
                 
                 if(z.hitFlash > 0) {
                     div.style.filter = 'brightness(3) sepia(1) hue-rotate(-50deg)';
+                } else if(z.slowTimer > 0) {
+                    div.style.filter = 'drop-shadow(0 0 6px #63b3ed) brightness(0.9)';
                 } else {
                     div.style.filter = 'none';
                 }
@@ -1270,7 +1295,7 @@
 
             bullets.forEach(b => {
                 let div = document.createElement('div');
-                div.className = 'bullet';
+                div.className = b.isIce ? 'bullet ice-bullet' : 'bullet';
                 let bulletSize = window.innerWidth > 768 ? '12px' : '6px';
                 div.style.width = bulletSize;
                 div.style.height = bulletSize;
