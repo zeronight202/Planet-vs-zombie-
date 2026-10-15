@@ -21,13 +21,13 @@
         }
         
         .game-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
             background: linear-gradient(45deg, #00ff87, #60efff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 6px rgba(0, 255, 135, 0.3);
-            margin: 2px 0;
+            margin: 1px 0;
             letter-spacing: 1px;
             text-align: center;
         }
@@ -35,7 +35,7 @@
         #game-wrapper { 
             position: relative; 
             width: 98vw; 
-            max-width: 1150px; 
+            max-width: 1100px; 
             text-align: center; 
             padding: 0 2px;
             display: flex;
@@ -46,9 +46,9 @@
         #game-container { 
             position: relative; 
             width: 100%; 
-            height: 62vh; 
-            max-height: 480px; 
-            min-height: 250px;
+            height: 52vh; 
+            max-height: 350px; 
+            min-height: 240px;
             background: linear-gradient(to bottom, #4a7c36, #3b6329); 
             margin: 2px auto; 
             border: 2px solid #333; 
@@ -72,10 +72,10 @@
 
         .ui { 
             margin: 2px 0; 
-            font-size: 12px; 
+            font-size: 11px; 
             font-weight: bold; 
             background: #1e1e1e; 
-            padding: 4px 6px; 
+            padding: 3px 6px; 
             border-radius: 6px; 
             width: 100%;
             border: 1px solid #333; 
@@ -83,11 +83,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
         .seed-card { 
-            padding: 2px 6px; 
+            padding: 2px 5px; 
             font-size: 10px; 
             background: linear-gradient(to bottom, #fff385, #e0a800); 
             border: 1px solid #553300; 
@@ -100,7 +100,7 @@
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            min-width: 52px;
+            min-width: 50px;
         }
         .seed-card img {
             width: 22px;
@@ -115,8 +115,8 @@
             background: linear-gradient(to bottom, #42a5f5, #1565c0); 
             color: white; 
             border: 1px solid #0d47a1; 
-            padding: 4px 10px; 
-            border-radius: 5px; 
+            padding: 3px 8px; 
+            border-radius: 4px; 
             font-weight: bold; 
             cursor: pointer; 
             font-size: 10px; 
@@ -151,18 +151,21 @@
 
         .sun-drop { 
             position: absolute; 
-            font-size: 30px; 
+            font-size: 28px; 
             cursor: pointer; 
             z-index: 10; 
-            padding: 14px; 
+            padding: 12px; 
             transform: translate(-50%, -50%);
             animation: bounce 0.6s infinite alternate; 
             filter: drop-shadow(0 2px 6px rgba(255, 235, 59, 0.8));
         }
         
-        .lawnmower { position: absolute; font-size: 22px; z-index: 4; transform: scaleX(-1); pointer-events: none; }
-        .active-mower { position: absolute; font-size: 24px; z-index: 6; transform: scaleX(-1); pointer-events: none; }
+        .lawnmower { position: absolute; z-index: 4; pointer-events: none; width: 32px; height: 32px; }
+        .lawnmower img { width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); }
         
+        .active-mower { position: absolute; z-index: 6; pointer-events: none; width: 36px; height: 36px; }
+        .active-mower img { width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); }
+
         @keyframes explodeAnim {
             0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; filter: brightness(2); }
             50% { transform: translate(-50%, -50%) scale(2.5); opacity: 0.9; filter: brightness(1.5); }
@@ -170,7 +173,7 @@
         }
         .explosion-fx {
             position: absolute;
-            font-size: 50px;
+            font-size: 45px;
             z-index: 25;
             pointer-events: none;
             animation: explodeAnim 0.5s ease-out forwards;
@@ -199,9 +202,9 @@
             background: linear-gradient(to bottom, rgba(50, 25, 10, 0.95), rgba(30, 12, 4, 0.95));
             border: 3px solid #5c3a21;
             border-radius: 12px;
-            padding: 15px 25px;
+            padding: 12px 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.9), inset 0 2px 5px rgba(255,255,255,0.1);
-            max-width: 380px;
+            max-width: 360px;
             width: 90%;
             text-align: center;
         }
@@ -211,8 +214,8 @@
             border: 2px solid #3d1c07;
             border-radius: 8px;
             color: #fff;
-            padding: 8px 16px;
-            font-size: 13px;
+            padding: 7px 14px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 3px #2b1304;
@@ -223,7 +226,7 @@
             gap: 2px;
             text-shadow: 1px 1px #000;
             width: 100%;
-            margin-top: 8px;
+            margin-top: 6px;
         }
         .pvz-menu-btn:active {
             transform: translateY(2px);
@@ -237,7 +240,7 @@
     <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
     <div id="game-wrapper">
         <div class="ui">
-            <div style="width: 100%; font-size: 12px;">
+            <div style="width: 100%; font-size: 11px;">
                 ☀️ <span id="sun-count" style="color: #ffeb3b;">50</span> | Màn: <span id="level-display" style="color: #00ffff;">1</span> | Sống sót: <span id="timer-display" style="color: #00e676;">03:00</span>
             </div>
             
@@ -259,12 +262,12 @@
                     <span>Bom</span><span style="font-size:8px; color:#ffeb3b;">125☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('shovel')" ontouchend="selectPlant('shovel'); event.preventDefault();" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
-                    <span style="font-size:15px;">⛏️</span>
+                    <span style="font-size:14px;">⛏️</span>
                     <span>Xẻng</span>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 6px; justify-content: center; width: 100%; margin-top: 2px;">
+            <div style="display: flex; gap: 5px; justify-content: center; width: 100%; margin-top: 1px;">
                 <button class="control-btn" id="pause-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #f59e0b, #d97706); border-color: #b45309; box-shadow: 0 2px #92400e;">⏸️ Tạm dừng</button>
                 <button class="control-btn" onclick="toggleFullScreen()" ontouchend="toggleFullScreen(); event.preventDefault();">🛜 Toàn màn hình</button>
                 <button class="control-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #ef4444, #dc2626); border-color: #991b1b; box-shadow: 0 2px #7f1d1d;">🚪 Thoát game</button>
@@ -275,16 +278,16 @@
             <!-- Menu Chọn Màn -->
             <div id="menu-screen" class="screen-overlay">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #66bb6a; font-size: 18px; margin-bottom: 2px; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI</h1>
-                    <p style="font-size: 10px; color: #d0d0d0; margin-bottom: 10px;">Bảo vệ khu vườn khỏi lũ zombie!</p>
+                    <h1 style="color: #66bb6a; font-size: 16px; margin-bottom: 2px; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI</h1>
+                    <p style="font-size: 10px; color: #d0d0d0; margin-bottom: 8px;">Bảo vệ khu vườn khỏi lũ zombie!</p>
                     
                     <div class="pvz-menu-btn" onclick="startGame(1)" ontouchend="startGame(1); event.preventDefault();">
-                        <span style="font-size: 13px;">🌻 MÀN 1: DỄ</span>
+                        <span style="font-size: 12px;">🌻 MÀN 1: DỄ</span>
                         <span style="font-size: 9px; color: #ffeb3b;">Sống sót 3 phút</span>
                     </div>
 
                     <div class="pvz-menu-btn" onclick="startGame(2)" ontouchend="startGame(2); event.preventDefault();" style="background: linear-gradient(to bottom, #d97706, #b45309);">
-                        <span style="font-size: 13px;">🔥 MÀN 2: KHÓ</span>
+                        <span style="font-size: 12px;">🔥 MÀN 2: KHÓ</span>
                         <span style="font-size: 9px; color: #ffeb3b;">Sống sót 5 phút</span>
                     </div>
                 </div>
@@ -293,12 +296,12 @@
             <!-- Màn hình Tạm Dừng -->
             <div id="pause-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.75);">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ffeb3b; font-size: 20px; margin-bottom: 4px; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
-                    <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Trò chơi đang dừng lại.</p>
+                    <h1 style="color: #ffeb3b; font-size: 18px; margin-bottom: 3px; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
+                    <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Trò chơi đang dừng lại.</p>
                     <div class="pvz-menu-btn" onclick="togglePause()" ontouchend="togglePause(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d);">
                         <span>▶️ TIẾP TỤC CHƠI</span>
                     </div>
-                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b); margin-top: 6px;">
+                    <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b); margin-top: 5px;">
                         <span>🚪 THOÁT RA MENU</span>
                     </div>
                 </div>
@@ -307,8 +310,8 @@
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ff5252; font-size: 20px; margin-bottom: 4px; text-shadow: 2px 2px #000;">GAME OVER</h1>
-                    <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
+                    <h1 style="color: #ff5252; font-size: 18px; margin-bottom: 3px; text-shadow: 2px 2px #000;">GAME OVER</h1>
+                    <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
                     <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #dc2626, #991b1b);">
                         <span>VỀ MENU CHÍNH</span>
                     </div>
@@ -318,8 +321,8 @@
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board" style="position: relative; z-index: 22;">
-                    <h1 style="color: #00e676; font-size: 20px; margin-bottom: 4px; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
-                    <p style="font-size: 11px; color: #ccc; margin-bottom: 10px;">Bạn đã bảo vệ khu vườn thành công xuất sắc!</p>
+                    <h1 style="color: #00e676; font-size: 18px; margin-bottom: 3px; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
+                    <p style="font-size: 10px; color: #ccc; margin-bottom: 8px;">Bạn đã bảo vệ khu vườn thành công xuất sắc!</p>
                     <div class="pvz-menu-btn" onclick="showMenu()" ontouchend="showMenu(); event.preventDefault();" style="background: linear-gradient(to bottom, #16a34a, #15803d);">
                         <span>VỀ MENU CHÍNH</span>
                     </div>
@@ -327,21 +330,23 @@
                 <canvas id="fireworks-canvas" width="800" height="400" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
             </div>
         </div>
-        <div style="font-size: 9px; color: #888; margin-top: 2px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
+        <div style="font-size: 8px; color: #888; margin-top: 1px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
     </div>
 
     <script>
         const PLANT_IMAGES = {
-            peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="45" cy="55" r="30" fill="%2368d391"/><ellipse cx="75" cy="50" rx="18" ry="14" fill="%2368d391"/><ellipse cx="78" cy="50" rx="10" ry="7" fill="%2322543d"/><circle cx="38" cy="48" r="5" fill="%23fff"/><circle cx="38" cy="48" r="2" fill="%23000"/></svg>',
-            sunflower: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="%23ecc94b"><circle cx="50" cy="20" r="12"/><circle cx="80" cy="32" r="12"/><circle cx="92" cy="60" r="12"/><circle cx="75" cy="85" r="12"/><circle cx="45" cy="90" r="12"/><circle cx="20" cy="80" r="12"/><circle cx="8" cy="55" r="12"/><circle cx="20" cy="30" r="12"/></g><circle cx="50" cy="55" r="28" fill="%23d69e2e"/><circle cx="40" cy="48" r="6" fill="%23fff"/><circle cx="40" cy="48" r="3" fill="%23000"/><circle cx="60" cy="48" r="6" fill="%23fff"/><circle cx="60" cy="48" r="3" fill="%23000"/></svg>',
-            wallnut: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="52" rx="32" ry="38" fill="%23d69e2e"/><ellipse cx="50" cy="52" rx="27" ry="33" fill="%23b7791f"/><ellipse cx="42" cy="46" rx="9" ry="12" fill="%23fff"/><circle cx="42" cy="46" r="4" fill="%23000"/><ellipse cx="62" cy="46" rx="9" ry="12" fill="%23fff"/><circle cx="62" cy="46" r="4" fill="%23000"/></svg>',
-            cherry: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M35 65 Q45 25 65 30" fill="none" stroke="%2338a169" stroke-width="5"/><circle cx="32" cy="68" r="22" fill="%23e53e3e"/><circle cx="68" cy="68" r="22" fill="%23e53e3e"/></svg>'
+            peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%2338a169"/><path d="M45 75 L50 60 L55 75" fill="%2338a169"/><circle cx="45" cy="45" r="25" fill="%2348bb78"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%2338a169"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2338a169"/></svg>',
+            sunflower: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M47 65 Q47 80 50 90" fill="none" stroke="%2338a169" stroke-width="6" stroke-linecap="round"/><path d="M35 80 Q25 75 35 70 Z" fill="%2338a169"/><path d="M65 80 Q75 75 65 70 Z" fill="%2338a169"/><g fill="%23ecc94b"><ellipse cx="50" cy="18" rx="8" ry="16"/><ellipse cx="75" cy="28" rx="12" ry="12" transform="rotate(30 75 28)"/><ellipse cx="87" cy="52" rx="16" ry="8" transform="rotate(15 87 52)"/><ellipse cx="78" cy="77" rx="12" ry="12" transform="rotate(60 78 77)"/><ellipse cx="50" cy="85" rx="8" ry="16"/><ellipse cx="22" cy="77" rx="12" ry="12" transform="rotate(30 22 77)"/><ellipse cx="13" cy="52" rx="16" ry="8" transform="rotate(15 13 52)"/><ellipse cx="25" cy="28" rx="12" ry="12" transform="rotate(60 25 28)"/></g><circle cx="50" cy="52" r="24" fill="%23b7791f"/><circle cx="50" cy="52" r="20" fill="%23d69e2e"/><circle cx="42" cy="48" r="4.5" fill="%23fff"/><circle cx="42" cy="48" r="2" fill="%23000"/><circle cx="58" cy="48" r="4.5" fill="%23fff"/><circle cx="58" cy="48" r="2" fill="%23000"/><path d="M44 58 Q50 64 56 58" fill="none" stroke="%23000" stroke-width="2.5" stroke-linecap="round"/></svg>',
+            wallnut: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="52" rx="32" ry="38" fill="%23d69e2e"/><ellipse cx="50" cy="52" rx="27" ry="33" fill="%23b7791f"/><path d="M30 40 Q35 50 30 65" fill="none" stroke="%23975a16" stroke-width="3" stroke-linecap="round"/><path d="M70 40 Q65 50 70 65" fill="none" stroke="%23975a16" stroke-width="3" stroke-linecap="round"/><circle cx="41" cy="46" r="8" fill="%23fff"/><circle cx="41" cy="46" r="3.5" fill="%23000"/><circle cx="61" cy="46" r="8" fill="%23fff"/><circle cx="61" cy="46" r="3.5" fill="%23000"/><path d="M44 64 Q50 60 56 64" fill="none" stroke="%23744210" stroke-width="3" stroke-linecap="round"/></svg>',
+            cherry: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 25 Q35 10 25 35" fill="none" stroke="%2338a169" stroke-width="4" stroke-linecap="round"/><path d="M50 25 Q65 10 75 35" fill="none" stroke="%2338a169" stroke-width="4" stroke-linecap="round"/><path d="M45 18 Q55 5 60 20 Q50 25 45 18 Z" fill="%2348bb78"/><circle cx="30" cy="65" r="22" fill="%23e53e3e"/><circle cx="30" cy="65" r="18" fill="%23fc8181"/><path d="M20 58 L30 62 L20 66" fill="none" stroke="%239b2c2c" stroke-width="3" stroke-linecap="round"/><circle cx="70" cy="65" r="22" fill="%23e53e3e"/><circle cx="70" cy="65" r="18" fill="%23fc8181"/><path d="M80 58 L70 62 L80 66" fill="none" stroke="%239b2c2c" stroke-width="3" stroke-linecap="round"/></svg>'
         };
 
         const ZOMBIE_IMAGES = {
-            normal: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="45" r="25" fill="%23a0aec0"/><rect x="42" y="65" width="16" height="25" fill="%233182ce"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23000"/><circle cx="58" cy="40" r="5" fill="%23fff"/><circle cx="58" cy="40" r="2" fill="%23000"/></svg>',
-            conehead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="45" r="25" fill="%23a0aec0"/><polygon points="50,5 30,35 70,35" fill="%23ed8936"/><rect x="42" y="65" width="16" height="25" fill="%233182ce"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23000"/><circle cx="58" cy="40" r="5" fill="%23fff"/><circle cx="58" cy="40" r="2" fill="%23000"/></svg>'
+            normal: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><path d="M30 35 Q40 20 55 25" fill="none" stroke="%234a5568" stroke-width="4" stroke-linecap="round"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/><path d="M44 52 Q50 58 56 52 Z" fill="%231a202c"/></svg>',
+            conehead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="45" r="22" fill="%23cbd5e0"/><polygon points="50,2 28,38 72,38" fill="%23dd6b20"/><path d="M34 26 L66 26" stroke="%23cbd5e0" stroke-width="4"/><circle cx="42" cy="43" r="5" fill="%23fff"/><circle cx="42" cy="43" r="2" fill="%23e53e3e"/><circle cx="56" cy="41" r="4" fill="%23fff"/><circle cx="56" cy="41" r="1.5" fill="%23e53e3e"/><path d="M44 55 Q50 60 56 55 Z" fill="%231a202c"/></svg>'
         };
+
+        const LAWNMOWER_SVG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="45" width="55" height="25" rx="6" fill="%23e53e3e"/><rect x="25" y="35" width="25" height="15" rx="3" fill="%23cbd5e0"/><circle cx="20" cy="70" r="12" fill="%232d3748"/><circle cx="20" cy="70" r="5" fill="%23cbd5e0"/><circle cx="65" cy="70" r="12" fill="%232d3748"/><circle cx="65" cy="70" r="5" fill="%23cbd5e0"/><path d="M75 50 L90 35 L95 38" fill="none" stroke="%23718096" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
         let bgm = new Audio('themesoundplntsv.mp3');
         bgm.loop = true;
@@ -618,7 +623,7 @@
             let banner = document.createElement('div');
             banner.className = 'screen-overlay';
             banner.style.background = 'rgba(180, 0, 0, 0.4)';
-            banner.innerHTML = `<h1 style="color: #ffeb3b; font-size: 20px; text-shadow: 2px 2px #000;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 11px;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
+            banner.innerHTML = `<h1 style="color: #ffeb3b; font-size: 18px; text-shadow: 2px 2px #000;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 10px;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
             container.appendChild(banner);
 
             for (let r = 0; r < gridRows; r++) {
@@ -982,9 +987,12 @@
                 if(hasMower) {
                     let div = document.createElement('div');
                     div.className = 'lawnmower';
-                    div.style.left = (0 * cellW + cellW * 0.12) + 'px';
-                    div.style.top = (r * cellH + cellH * 0.18) + 'px';
-                    div.innerText = '🚜';
+                    div.style.left = (0 * cellW + cellW * 0.1) + 'px';
+                    div.style.top = (r * cellH + cellH * 0.25) + 'px';
+                    
+                    let img = document.createElement('img');
+                    img.src = LAWNMOWER_SVG;
+                    div.appendChild(img);
                     container.appendChild(div);
                 }
             });
@@ -1022,8 +1030,11 @@
                 let div = document.createElement('div');
                 div.className = 'active-mower';
                 div.style.left = (m.col * cellW) + 'px';
-                div.style.top = (m.row * cellH + cellH * 0.18) + 'px';
-                div.innerText = '🚜💨';
+                div.style.top = (m.row * cellH + cellH * 0.25) + 'px';
+                
+                let img = document.createElement('img');
+                img.src = LAWNMOWER_SVG;
+                div.appendChild(img);
                 container.appendChild(div);
             });
 
