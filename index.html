@@ -174,12 +174,12 @@
         }
         .bonkchoy-punching { animation: bonkPunchAnim 0.2s infinite linear !important; }
 
-        @keyframes plantFoodGlow {
-            0% { filter: drop-shadow(0 0 5px #00ff87) brightness(1.2); }
-            50% { filter: drop-shadow(0 0 18px #00ff87) brightness(1.8); }
-            100% { filter: drop-shadow(0 0 5px #00ff87) brightness(1.2); }
+        @keyframes bonkUltAnim {
+            0% { transform: scale(1.2) rotate(0deg); filter: drop-shadow(0 0 10px #ff0); }
+            50% { transform: scale(1.4) rotate(180deg); filter: drop-shadow(0 0 20px #f00); }
+            100% { transform: scale(1.2) rotate(360deg); filter: drop-shadow(0 0 10px #ff0); }
         }
-        .plant-food-active { animation: plantFoodGlow 0.6s infinite ease-in-out; }
+        .bonkchoy-ult { animation: bonkUltAnim 0.3s infinite linear !important; }
 
         .sun-drop { 
             position: absolute; 
@@ -941,7 +941,7 @@
                 let plantCol = col - 1;
                 let now = performance.now();
 
-                // LÁ THẦN (PLANT FOOD)
+                // LÁ THẦN (PLANT FOOD) - ĐÃ FIX CHUẨN GỐC
                 if(selectedType === 'plantfood') {
                     let targetPlant = plants.find(p => p.row === row && p.col === plantCol);
                     if(targetPlant && plantFoodCount > 0) {
@@ -949,16 +949,18 @@
                         document.getElementById('plantfood-count').innerText = plantFoodCount;
                         playSound('plantfood');
 
-                        // CÂY ĐẬU THƯỜNG / ĐẬU BĂNG -> ĐẬU 6 NÒNG
+                        // 1. ĐẬU THƯỜNG / ĐẬU BĂNG -> ĐẬU 6 NÒNG (GIỮ NGUYÊN HIỆU ỨNG BĂNG NẾU LÀ ĐẬU BĂNG)
                         if(targetPlant.type === 'peashooter' || targetPlant.type === 'snowpea') {
+                            let wasIce = (targetPlant.type === 'snowpea');
                             targetPlant.type = 'gatlingpea';
+                            targetPlant.isIce = wasIce;
                             targetPlant.gatlingTimer = 180; // Bắn liên hồi trong 3 giây
                         } 
-                        // BONK CHOY
+                        // 2. BONK CHOY -> ĐẤM XOAY VÒNG DIỆN RỘNG TOÀN BỘ CÁC HÀNG XUNG QUANH
                         else if(targetPlant.type === 'bonkchoy') {
-                            targetPlant.ultTimer = 90; // Đấm xoay vòng cực mạnh
+                            targetPlant.ultTimer = 120; // 2 giây đấm quét diện rộng
                         } 
-                        // HOA MẶT TRỜI
+                        // 3. HOA MẶT TRỜI -> TẠO MƯA MẶT TRỜI
                         else if(targetPlant.type === 'sunflower') {
                             for(let i=0; i<6; i++) {
                                 sunDrops.push({
@@ -974,14 +976,34 @@
                                 });
                             }
                         } 
-                        // KHOAI TÂY
+                        // 4. KHOAI TÂY -> BỌC GIÁP SẮT
                         else if(targetPlant.type === 'wallnut') {
                             targetPlant.hp = 6000;
                             targetPlant.armored = true;
                         } 
-                        // MÌN KHOAI TÂY
+                        // 5. MÌN KHOAI TÂY -> KÍCH HOẠT NỔ NGAY VÀ VĂNG THÊM 2 MÌN PHỤ NGẪU NHIÊN
                         else if(targetPlant.type === 'potatomine') {
                             targetPlant.armed = true;
+                            // Thêm 2 quả mìn phụ vào các ô trống ngẫu nhiên
+                            let emptyCells = [];
+                            for(let r=0; r<gridRows; r++) {
+                                for(let c=0; c<gridCols-1; c++) {
+                                    if(!plants.some(pl => pl.row === r && pl.col === c)) {
+                                        emptyCells.push({row: r, col: c});
+                                    }
+                                }
+                            }
+                            emptyCells.sort(() => Math.random() - 0.5);
+                            for(let i=0; i<Math.min(2, emptyCells.length); i++) {
+                                plants.push({
+                                    type: 'potatomine',
+                                    row: emptyCells[i].row,
+                                    col: emptyCells[i].col,
+                                    hp: 80,
+                                    armed: true,
+                                    armTimer: 700
+                                });
+                            }
                         }
 
                         renderStaticElements();
@@ -1201,12 +1223,12 @@
                     p.gatlingTimer -= dt;
                     p.shootTimer = (p.shootTimer || 0) + dt;
                     if(p.shootTimer > 4) { // Bắn siêu nhanh
-                        bullets.push({ row: p.row, col: p.col + 1.1, isIce: false });
+                        bullets.push({ row: p.row, col: p.col + 1.1, isIce: !!p.isIce });
                         playSound('shoot');
                         p.shootTimer = 0;
                     }
                     if(p.gatlingTimer <= 0) {
-                        p.type = 'peashooter';
+                        p.type = p.isIce ? 'snowpea' : 'peashooter';
                         plantsChanged = true;
                     }
                 } else if(p.type === 'peashooter' || p.type === 'snowpea') {
@@ -1224,16 +1246,20 @@
                         }
                     }
                 } else if(p.type === 'bonkchoy') {
-                    if(p.ultTimer > 0) { // Chiêu Lá Thần của Bonk Choy
+                    if(p.ultTimer > 0) { // Chiêu Lá Thần của Bonk Choy: Quét 3 hàng xung quanh
                         p.ultTimer -= dt;
                         p.isPunching = true;
                         zombies.forEach(z => {
-                            if(z.row === p.row && Math.abs(z.col - (p.col + 1)) <= 1.8) {
-                                z.hp -= 2.5 * dt;
+                            if(Math.abs(z.row - p.row) <= 1 && Math.abs(z.col - (p.col + 1)) <= 1.8) {
+                                z.hp -= 3.0 * dt;
                                 z.hitFlash = 2;
                                 playSound('punch');
                             }
                         });
+                        if(p.ultTimer <= 0) {
+                            p.isPunching = false;
+                            bonkStateChanged = true;
+                        }
                     } else {
                         let pCol = p.col + 1;
                         let targetZombie = zombies.find(z => z.row === p.row && Math.abs(z.col - pCol) <= 1.25);
@@ -1366,6 +1392,8 @@
                     div.classList.add('sunflower-glow');
                 } else if(p.type === 'cherry') {
                     div.classList.add('cherry-fuse');
+                } else if(p.type === 'bonkchoy' && p.ultTimer > 0) {
+                    div.classList.add('bonkchoy-ult');
                 } else if(p.type === 'bonkchoy' && p.isPunching) {
                     div.classList.add('bonkchoy-punching');
                 }
