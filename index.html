@@ -139,6 +139,7 @@
             align-items: center; 
             justify-content: center; 
             pointer-events: none; 
+            will-change: transform, left, top;
         }
         .entity img {
             width: 85%;
@@ -147,7 +148,7 @@
             pointer-events: none;
         }
 
-        .bullet { background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; }
+        .bullet { background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; will-change: left; }
         .bullet.ice-bullet { background: #63b3ed; border: 1px solid #3182ce; box-shadow: 0 0 6px #90cdf4; }
         
         @keyframes sunflowerGlow {
@@ -174,7 +175,6 @@
         }
         .bonkchoy-punching { animation: bonkPunchAnim 0.2s infinite linear !important; }
 
-        /* ANIMATION ĐẬU 6 NÒNG BẮN LIÊN HỒI */
         @keyframes gatlingFireAnim {
             0% { transform: scale(1.15) rotate(0deg); filter: drop-shadow(0 0 8px #00ff87); }
             25% { transform: scale(1.25) rotate(-4deg) translateX(3px); filter: drop-shadow(0 0 14px #00ff87); }
@@ -183,7 +183,14 @@
         }
         .gatling-firing { animation: gatlingFireAnim 0.15s infinite linear !important; }
 
-        /* ANIMATION HOA MẶT TRỜI DÙNG LÁ THẦN */
+        @keyframes snowGatlingFireAnim {
+            0% { transform: scale(1.15) rotate(0deg); filter: drop-shadow(0 0 8px #63b3ed); }
+            25% { transform: scale(1.25) rotate(-4deg) translateX(3px); filter: drop-shadow(0 0 14px #63b3ed); }
+            75% { transform: scale(1.25) rotate(4deg) translateX(-3px); filter: drop-shadow(0 0 14px #63b3ed); }
+            100% { transform: scale(1.15) rotate(0deg); filter: drop-shadow(0 0 8px #63b3ed); }
+        }
+        .snow-gatling-firing { animation: snowGatlingFireAnim 0.15s infinite linear !important; }
+
         @keyframes sunflowerUltAnim {
             0% { transform: scale(1.2) rotate(0deg); filter: drop-shadow(0 0 12px #ffeb3b); }
             25% { transform: scale(1.35) rotate(-12deg); filter: drop-shadow(0 0 20px #ffeb3b); }
@@ -192,7 +199,6 @@
         }
         .sunflower-ult { animation: sunflowerUltAnim 0.4s infinite ease-in-out !important; }
 
-        /* ANIMATION KHOAI TÂY GIÁP SẮT */
         @keyframes wallnutArmorAnim {
             0% { transform: scale(1.1); filter: drop-shadow(0 0 10px #63b3ed); }
             50% { transform: scale(1.2); filter: drop-shadow(0 0 20px #3182ce); }
@@ -200,7 +206,6 @@
         }
         .wallnut-armored-fx { animation: wallnutArmorAnim 0.8s infinite ease-in-out !important; }
 
-        /* ANIMATION CẢI ĐẤM XOAY VÒNG QUÉT 3 HÀNG */
         @keyframes bonkUltAnim {
             0% { transform: scale(1.25) rotate(0deg); filter: drop-shadow(0 0 12px #ff5252); }
             50% { transform: scale(1.4) rotate(180deg); filter: drop-shadow(0 0 25px #ffeb3b); }
@@ -208,7 +213,6 @@
         }
         .bonkchoy-ult { animation: bonkUltAnim 0.25s infinite linear !important; }
 
-        /* HIỆU ỨNG KHI MỚI THẢ LÁ THẦN */
         @keyframes plantFoodBurst {
             0% { transform: scale(0.5); opacity: 0; filter: brightness(3); }
             50% { transform: scale(1.4); opacity: 1; filter: brightness(2) drop-shadow(0 0 20px #00ff87); }
@@ -223,12 +227,13 @@
             transform: translate(-50%, -50%);
             animation: bounce 0.6s infinite alternate; 
             filter: drop-shadow(0 2px 6px rgba(255, 235, 59, 0.8));
+            will-change: left, top;
         }
         
         .lawnmower { position: absolute; z-index: 4; pointer-events: none; }
         .lawnmower img { width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); }
         
-        .active-mower { position: absolute; z-index: 6; pointer-events: none; }
+        .active-mower { position: absolute; z-index: 6; pointer-events: none; will-change: left; }
         .active-mower img { width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); }
 
         @keyframes explodeAnim {
@@ -492,6 +497,7 @@
             peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%2338a169"/><path d="M45 75 L50 60 L55 75" fill="%2338a169"/><circle cx="45" cy="45" r="25" fill="%2348bb78"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%2338a169"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2338a169"/></svg>',
             gatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%2338a169"/><circle cx="45" cy="45" r="26" fill="%23276749"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%232f855a"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/></svg>',
             snowpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%233182ce"/><path d="M45 75 L50 60 L55 75" fill="%233182ce"/><circle cx="45" cy="45" r="25" fill="%2363b3ed"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%233182ce"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2363b3ed"/></svg>',
+            snowgatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%233182ce"/><circle cx="45" cy="45" r="26" fill="%232b6cb0"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%234299e1"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/></svg>',
             bonkchoy: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="55" r="25" fill="%2348bb78"/><ellipse cx="26" cy="45" rx="14" ry="18" fill="%2338a169"/><ellipse cx="74" cy="45" rx="14" ry="18" fill="%2338a169"/><circle cx="42" cy="50" r="4" fill="%23fff"/><circle cx="42" cy="50" r="2" fill="%23000"/><circle cx="58" cy="50" r="4" fill="%23fff"/><circle cx="58" cy="50" r="2" fill="%23000"/><path d="M45 62 Q50 66 55 62" fill="none" stroke="%231a202c" stroke-width="2.5"/><circle cx="18" cy="35" r="12" fill="%23276749"/><circle cx="82" cy="35" r="12" fill="%23276749"/></svg>',
             bonkchoy_punching: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="55" r="25" fill="%2348bb78"/><ellipse cx="26" cy="45" rx="14" ry="18" fill="%2338a169"/><ellipse cx="74" cy="45" rx="14" ry="18" fill="%2338a169"/><circle cx="42" cy="50" r="4" fill="%23fff"/><circle cx="42" cy="50" r="2" fill="%23000"/><circle cx="58" cy="50" r="4" fill="%23fff"/><circle cx="58" cy="50" r="2" fill="%23000"/><path d="M45 62 Q50 66 55 62" fill="none" stroke="%231a202c" stroke-width="2.5"/><circle cx="95" cy="30" r="15" fill="%23276749"/><circle cx="5" cy="40" r="12" fill="%23276749"/></svg>',
             sunflower: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M47 65 Q47 80 50 90" fill="none" stroke="%2338a169" stroke-width="6" stroke-linecap="round"/><path d="M35 80 Q25 75 35 70 Z" fill="%2338a169"/><path d="M65 80 Q75 75 65 70 Z" fill="%2338a169"/><g fill="%23ecc94b"><circle cx="50" cy="20" r="12"/><circle cx="80" cy="32" r="12"/><circle cx="92" cy="60" r="12"/><circle cx="75" cy="85" r="12"/><circle cx="45" cy="90" r="12"/><circle cx="20" cy="80" r="12"/><circle cx="8" cy="55" r="12"/><circle cx="20" cy="30" r="12"/></g><circle cx="50" cy="52" r="24" fill="%23b7791f"/><circle cx="50" cy="52" r="20" fill="%23d69e2e"/><circle cx="42" cy="48" r="4.5" fill="%23fff"/><circle cx="42" cy="48" r="2" fill="%23000"/><circle cx="58" cy="48" r="4.5" fill="%23fff"/><circle cx="58" cy="48" r="2" fill="%23000"/><path d="M44 58 Q50 64 56 58" fill="none" stroke="%23000" stroke-width="2.5" stroke-linecap="round"/></svg>',
@@ -732,9 +738,21 @@
         }
         createGridCells();
 
+        function clearAllDynamicElements() {
+            zombies.forEach(z => { if(z.el) z.el.remove(); });
+            bullets.forEach(b => { if(b.el) b.el.remove(); });
+            sunDrops.forEach(s => { if(s.el) s.el.remove(); });
+            activeMowers.forEach(m => { if(m.el) m.el.remove(); });
+            zombies = [];
+            bullets = [];
+            sunDrops = [];
+            activeMowers = [];
+        }
+
         function showMenu() {
             stopBGM();
             isPaused = false;
+            clearAllDynamicElements();
             if(gameUI) gameUI.classList.add('hidden');
             pauseOverlay.classList.add('hidden');
             gameoverScreen.classList.add('hidden');
@@ -777,11 +795,8 @@
             gameOver = false;
             gameWon = false;
             suns = 50;
+            clearAllDynamicElements();
             plants = [];
-            zombies = [];
-            bullets = [];
-            sunDrops = [];
-            activeMowers = [];
             lawnmowers = [true, true, true, true, true];
             selectedType = null;
             
@@ -803,12 +818,31 @@
                 let cWidth = container.clientWidth || 800;
                 let randomX = Math.random() * (cWidth - 100) + 50;
                 let targetY = Math.random() * (container.clientHeight * 0.5) + (container.clientHeight * 0.25);
-                sunDrops.push({
+                
+                let sDiv = document.createElement('div');
+                sDiv.className = 'sun-drop';
+                sDiv.innerText = '☀️';
+                container.appendChild(sDiv);
+
+                let sObj = {
                     x: randomX,
                     y: -30,
                     targetY: targetY,
-                    life: 400
-                });
+                    life: 400,
+                    el: sDiv
+                };
+                sDiv.onmousedown = (e) => {
+                    e.stopPropagation();
+                    let idx = sunDrops.indexOf(sObj);
+                    if(idx !== -1) {
+                        sunDrops.splice(idx, 1);
+                        sObj.el.remove();
+                        suns = Math.min(999, suns + 25);
+                        document.getElementById('sun-count').innerText = suns;
+                        playSound('collect');
+                    }
+                };
+                sunDrops.push(sObj);
             }, 10000);
 
             renderStaticElements();
@@ -842,6 +876,14 @@
                     }
                 }
 
+                let zDiv = document.createElement('div');
+                zDiv.className = 'entity dynamic-entity';
+                zDiv.style.zIndex = '2';
+                let zImg = document.createElement('img');
+                zImg.src = (type === 'buckethead') ? ZOMBIE_IMAGES.buckethead : (type === 'conehead' ? ZOMBIE_IMAGES.conehead : ZOMBIE_IMAGES.normal);
+                zDiv.appendChild(zImg);
+                container.appendChild(zDiv);
+
                 zombies.push({
                     row: r,
                     col: 10.5,
@@ -849,7 +891,8 @@
                     maxHp: hp,
                     type: type,
                     hitFlash: 0,
-                    slowTimer: 0
+                    slowTimer: 0,
+                    el: zDiv
                 });
             }
 
@@ -880,6 +923,14 @@
                         else if(rand < 0.65) { type = 'conehead'; hp = 420; }
                     }
 
+                    let zDiv = document.createElement('div');
+                    zDiv.className = 'entity dynamic-entity';
+                    zDiv.style.zIndex = '2';
+                    let zImg = document.createElement('img');
+                    zImg.src = (type === 'buckethead') ? ZOMBIE_IMAGES.buckethead : (type === 'conehead' ? ZOMBIE_IMAGES.conehead : ZOMBIE_IMAGES.normal);
+                    zDiv.appendChild(zImg);
+                    container.appendChild(zDiv);
+
                     zombies.push({
                         row: row, 
                         col: 10.5, 
@@ -887,7 +938,8 @@
                         maxHp: hp,
                         type: type,
                         hitFlash: 0,
-                        slowTimer: 0
+                        slowTimer: 0,
+                        el: zDiv
                     });
 
                     zombiesSpawnedCount++;
@@ -976,7 +1028,7 @@
                 let plantCol = col - 1;
                 let now = performance.now();
 
-                // LÁ THẦN (PLANT FOOD) VỚI HIỆU ỨNG ANIMATION BÙM SÁNG
+                // LÁ THẦN (PLANT FOOD) - TỐI ƯU HIỆU ỨNG VÀ ĐẬU BĂNG 6 NÒNG
                 if(selectedType === 'plantfood') {
                     let targetPlant = plants.find(p => p.row === row && p.col === plantCol);
                     if(targetPlant && plantFoodCount > 0) {
@@ -984,7 +1036,6 @@
                         document.getElementById('plantfood-count').innerText = plantFoodCount;
                         playSound('plantfood');
 
-                        // Hiệu ứng burst sáng tại ô cây được dùng lá thần
                         let burstDiv = document.createElement('div');
                         burstDiv.className = 'plant-food-burst';
                         burstDiv.style.position = 'absolute';
@@ -998,23 +1049,28 @@
                         container.appendChild(burstDiv);
                         setTimeout(() => burstDiv.remove(), 400);
 
-                        // 1. ĐẬU THƯỜNG / ĐẬU BĂNG -> ĐẬU 6 NÒNG
+                        // 1. ĐẬU THƯỜNG / ĐẬU BĂNG -> ĐẬU 6 NÒNG (CHUẨN MÀU XANH BĂNG NẾU LÀ ĐẬU BĂNG)
                         if(targetPlant.type === 'peashooter' || targetPlant.type === 'snowpea') {
                             let wasIce = (targetPlant.type === 'snowpea');
-                            targetPlant.type = 'gatlingpea';
+                            targetPlant.type = wasIce ? 'snowgatlingpea' : 'gatlingpea';
                             targetPlant.isIce = wasIce;
                             targetPlant.gatlingTimer = 180; 
                         } 
-                        // 2. BONK CHOY -> QUÉT 3 HÀNG XOAY VÒNG
+                        // 2. BONK CHOY -> QUÉT 3 HÀNG
                         else if(targetPlant.type === 'bonkchoy') {
                             targetPlant.ultTimer = 120; 
                         } 
-                        // 3. HOA MẶT TRỜI -> TẠO MƯA MẶT TRỜI NHÚN NHẢY
+                        // 3. HOA MẶT TRỜI -> MƯA MẶT TRỜI
                         else if(targetPlant.type === 'sunflower') {
                             targetPlant.sunUltTimer = 150;
                             for(let i=0; i<6; i++) {
-                                sunDrops.push({
-                                    x: (plantCol + 1.5) * cellW + (Math.random()*40 - 20),
+                                let sDiv = document.createElement('div');
+                                sDiv.className = 'sun-drop';
+                                sDiv.innerText = '☀️';
+                                container.appendChild(sDiv);
+
+                                let sObj = {
+                                    x: (plantCol + 1.5) * cellW,
                                     y: (row + 0.5) * cellH,
                                     startX: (plantCol + 1.5) * cellW,
                                     startY: (row + 0.5) * cellH,
@@ -1022,16 +1078,29 @@
                                     vy: -40 - Math.random() * 40,
                                     animProgress: 0,
                                     isSunflowerSun: true,
-                                    life: 400
-                                });
+                                    life: 400,
+                                    el: sDiv
+                                };
+                                sDiv.onmousedown = (e) => {
+                                    e.stopPropagation();
+                                    let idx = sunDrops.indexOf(sObj);
+                                    if(idx !== -1) {
+                                        sunDrops.splice(idx, 1);
+                                        sObj.el.remove();
+                                        suns = Math.min(999, suns + 25);
+                                        document.getElementById('sun-count').innerText = suns;
+                                        playSound('collect');
+                                    }
+                                };
+                                sunDrops.push(sObj);
                             }
                         } 
-                        // 4. KHOAI TÂY -> BỌC GIÁP SẮT PHÁT SÁNG
+                        // 4. KHOAI TÂY -> GIÁP SẮT
                         else if(targetPlant.type === 'wallnut') {
                             targetPlant.hp = 6000;
                             targetPlant.armored = true;
                         } 
-                        // 5. MÌN KHOAI TÂY -> NỔ VÀ VĂNG 2 MÌN PHỤ
+                        // 5. MÌN KHOAI TÂY -> NỔ & VĂNG 2 MÌN PHỤ
                         else if(targetPlant.type === 'potatomine') {
                             targetPlant.armed = true;
                             let emptyCells = [];
@@ -1157,20 +1226,36 @@
             let cellW = cWidth / gridCols;
             let cellH = cHeight / gridRows;
 
+            // Cập nhật Xe cắt cỏ kích hoạt (tối ưu DOM)
             activeMowers.forEach(m => {
                 m.col += 0.22 * dt;
-                zombies = zombies.filter(z => !(z.row === m.row && Math.abs(z.col - m.col) < 0.8));
+                m.el.style.left = (m.col * cellW) + 'px';
+                zombies = zombies.filter(z => {
+                    let hit = (z.row === m.row && Math.abs(z.col - m.col) < 0.8);
+                    if(hit && z.el) z.el.remove();
+                    return !hit;
+                });
+            });
+            activeMowers.forEach(m => {
+                if(m.col >= gridCols) m.el.remove();
             });
             activeMowers = activeMowers.filter(m => m.col < gridCols);
 
-            bullets.forEach(b => b.col += 0.14 * dt);
-            bullets = bullets.filter(b => b.col < gridCols);
+            // Cập nhật Đạn bay (tối ưu DOM)
+            bullets.forEach(b => {
+                b.col += 0.14 * dt;
+                b.el.style.left = (b.col * cellW) + 'px';
+            });
+            bullets.forEach(b => {
+                if(b.col >= gridCols || b.hitDone) b.el.remove();
+            });
+            bullets = bullets.filter(b => b.col < gridCols && !b.hitDone);
 
+            // Cập nhật Mặt trời rơi
             sunDrops.forEach(s => {
                 if (s.isSunflowerSun && s.animProgress < 1) {
                     s.animProgress += 0.04 * dt;
                     if (s.animProgress > 1) s.animProgress = 1;
-                    
                     let p = s.animProgress;
                     s.x = s.startX + s.vx * p;
                     s.y = s.startY + s.vy * p - 35 * Math.sin(p * Math.PI);
@@ -1180,6 +1265,11 @@
                 } else {
                     s.life -= dt;
                 }
+                s.el.style.left = s.x + 'px';
+                s.el.style.top = s.y + 'px';
+            });
+            sunDrops.forEach(s => {
+                if(s.life <= 0) s.el.remove();
             });
             sunDrops = sunDrops.filter(s => s.life > 0);
 
@@ -1216,6 +1306,7 @@
 
                     zombies = zombies.filter(z => {
                         let inRange = (z.row >= cherry.row - 1 && z.row <= cherry.row + 1 && Math.abs(z.col - (cherry.col + 1)) <= 1.2);
+                        if(inRange && z.el) z.el.remove();
                         return !inRange;
                     });
                 });
@@ -1223,6 +1314,7 @@
                 plantsChanged = true;
             }
 
+            // Cập nhật vị trí và trạng thái Zombie (tối ưu hóa DOM mượt mà)
             zombies.forEach(z => {
                 if(z.hitFlash > 0) z.hitFlash--;
                 if(z.slowTimer > 0) z.slowTimer -= dt;
@@ -1257,6 +1349,18 @@
                     let actualSpeed = z.slowTimer > 0 ? baseSpeed * 0.5 : baseSpeed;
                     z.col -= actualSpeed * dt;
                 }
+
+                // Cập nhật trực tiếp style left/top cho zombie (siêu nhẹ, không giật lag)
+                z.el.style.left = (z.col * cellW) + 'px';
+                z.el.style.top = (z.row * cellH) + 'px';
+
+                if(z.hitFlash > 0) {
+                    z.el.style.filter = 'brightness(3) sepia(1) hue-rotate(-50deg)';
+                } else if(z.slowTimer > 0) {
+                    z.el.style.filter = 'drop-shadow(0 0 6px #63b3ed) brightness(0.9)';
+                } else {
+                    z.el.style.filter = 'none';
+                }
             });
 
             if (explodedMines.length > 0) {
@@ -1264,15 +1368,29 @@
                 plantsChanged = true;
             }
 
+            zombies.forEach(z => {
+                if(z.col <= -1 || z.hp <= 0) {
+                    if(z.el) z.el.remove();
+                }
+            });
             zombies = zombies.filter(z => z.col > -1 && z.hp > 0);
 
             let plantStateChanged = false;
             plants.forEach(p => {
-                if(p.type === 'gatlingpea') {
+                if(p.type === 'gatlingpea' || p.type === 'snowgatlingpea') {
                     p.gatlingTimer -= dt;
                     p.shootTimer = (p.shootTimer || 0) + dt;
                     if(p.shootTimer > 4) { 
-                        bullets.push({ row: p.row, col: p.col + 1.1, isIce: !!p.isIce });
+                        let bDiv = document.createElement('div');
+                        bDiv.className = p.isIce ? 'bullet ice-bullet' : 'bullet';
+                        let bulletSize = window.innerWidth > 768 ? '12px' : '6px';
+                        bDiv.style.width = bulletSize;
+                        bDiv.style.height = bulletSize;
+                        bDiv.style.left = ((p.col + 1.1) * cellW) + 'px';
+                        bDiv.style.top = (p.row * cellH + cellH * 0.4) + 'px';
+                        container.appendChild(bDiv);
+
+                        bullets.push({ row: p.row, col: p.col + 1.1, isIce: !!p.isIce, el: bDiv });
                         playSound('shoot');
                         p.shootTimer = 0;
                     }
@@ -1285,10 +1403,20 @@
                     if(hasZombie) {
                         p.shootTimer += dt;
                         if(p.shootTimer > 45) {
+                            let bDiv = document.createElement('div');
+                            bDiv.className = (p.type === 'snowpea') ? 'bullet ice-bullet' : 'bullet';
+                            let bulletSize = window.innerWidth > 768 ? '12px' : '6px';
+                            bDiv.style.width = bulletSize;
+                            bDiv.style.height = bulletSize;
+                            bDiv.style.left = ((p.col + 1.1) * cellW) + 'px';
+                            bDiv.style.top = (p.row * cellH + cellH * 0.4) + 'px';
+                            container.appendChild(bDiv);
+
                             bullets.push({
                                 row: p.row, 
                                 col: p.col + 1.1, 
-                                isIce: (p.type === 'snowpea')
+                                isIce: (p.type === 'snowpea'),
+                                el: bDiv
                             });
                             playSound('shoot');
                             p.shootTimer = 0;
@@ -1344,7 +1472,12 @@
                         let vx = Math.cos(angle) * dist;
                         let vy = Math.sin(angle) * dist;
 
-                        sunDrops.push({
+                        let sDiv = document.createElement('div');
+                        sDiv.className = 'sun-drop';
+                        sDiv.innerText = '☀️';
+                        container.appendChild(sDiv);
+
+                        let sObj = {
                             x: startX,
                             y: startY,
                             startX: startX,
@@ -1353,8 +1486,21 @@
                             vy: vy,
                             animProgress: 0,
                             isSunflowerSun: true,
-                            life: 400
-                        });
+                            life: 400,
+                            el: sDiv
+                        };
+                        sDiv.onmousedown = (e) => {
+                            e.stopPropagation();
+                            let idx = sunDrops.indexOf(sObj);
+                            if(idx !== -1) {
+                                sunDrops.splice(idx, 1);
+                                sObj.el.remove();
+                                suns = Math.min(999, suns + 25);
+                                document.getElementById('sun-count').innerText = suns;
+                                playSound('collect');
+                            }
+                        };
+                        sunDrops.push(sObj);
                         p.sunTimer = 0;
                     }
                 }
@@ -1364,53 +1510,56 @@
                 renderStaticElements();
             }
 
-            let survivingBullets = [];
-            let destroyedZombies = new Set();
-
-            bullets.forEach((b, bi) => {
-                let hit = false;
-                zombies.forEach((z, zi) => {
-                    if(!destroyedZombies.has(zi) && b.row === z.row && Math.abs(b.col - z.col) < 0.35) {
+            // Kiểm tra va chạm đạn với zombie
+            bullets.forEach(b => {
+                if(b.hitDone) return;
+                zombies.forEach(z => {
+                    if(!b.hitDone && b.row === z.row && Math.abs(b.col - z.col) < 0.35) {
                         z.hp -= 12;
                         z.hitFlash = 6;
                         if(b.isIce) {
                             z.slowTimer = 220;
                         }
                         playSound('hit');
-                        hit = true;
-                        if(z.hp <= 0) {
-                            destroyedZombies.add(zi);
-                        }
+                        b.hitDone = true;
+                        if(z.el && z.hp <= 0) z.el.remove();
                     }
                 });
-                if(!hit && b.col < gridCols) {
-                    survivingBullets.push(b);
-                }
             });
 
-            bullets = survivingBullets;
-            zombies = zombies.filter((z, zi) => !destroyedZombies.has(zi));
+            zombies = zombies.filter(z => z.hp > 0);
 
             if(finalWaveTriggered && zombiesSpawnedCount >= totalZombiesForLevel && zombies.length === 0) {
                 triggerWin();
                 return;
             }
 
-            zombies.forEach((z, zi) => {
+            zombies.forEach(z => {
                 if(z.col <= 0.6) {
                     if(lawnmowers[z.row]) {
                         lawnmowers[z.row] = false;
-                        activeMowers.push({row: z.row, col: 0});
+                        let mDiv = document.createElement('div');
+                        mDiv.className = 'active-mower';
+                        mDiv.style.top = (z.row * cellH + cellH * 0.25) + 'px';
+                        mDiv.style.width = (cellW * 0.85) + 'px';
+                        mDiv.style.height = (cellH * 0.65) + 'px';
+                        let mImg = document.createElement('img');
+                        mImg.src = LAWNMOWER_SVG;
+                        mDiv.appendChild(mImg);
+                        container.appendChild(mDiv);
+
+                        activeMowers.push({row: z.row, col: 0, el: mDiv});
                         playSound('mower');
-                        zombies.splice(zi, 1);
+                        if(z.el) z.el.remove();
+                        z.col = -99;
                         renderStaticElements();
                     } else if(!activeMowers.some(m => m.row === z.row)) {
                         triggerGameOver();
                     }
                 }
             });
+            zombies = zombies.filter(z => z.col > 0);
 
-            renderDynamicElements();
             animationFrameId = requestAnimationFrame(gameLoop);
         }
 
@@ -1442,7 +1591,6 @@
                 let div = document.createElement('div');
                 div.className = 'entity static-entity';
                 
-                // Thêm các class animation chuyên biệt khi dùng Lá Thần
                 if(p.type === 'sunflower') {
                     if(p.sunUltTimer > 0) div.classList.add('sunflower-ult');
                     else div.classList.add('sunflower-glow');
@@ -1450,6 +1598,8 @@
                     div.classList.add('cherry-fuse');
                 } else if(p.type === 'gatlingpea') {
                     div.classList.add('gatling-firing');
+                } else if(p.type === 'snowgatlingpea') {
+                    div.classList.add('snow-gatling-firing');
                 } else if(p.type === 'bonkchoy') {
                     if(p.ultTimer > 0) div.classList.add('bonkchoy-ult');
                     else if(p.isPunching) div.classList.add('bonkchoy-punching');
@@ -1476,91 +1626,6 @@
                 }
                 div.appendChild(img);
 
-                container.appendChild(div);
-            });
-        }
-
-        function renderDynamicElements() {
-            container.querySelectorAll('.dynamic-entity, .bullet, .sun-drop, .active-mower').forEach(el => el.remove());
-
-            let cWidth = container.clientWidth;
-            let cHeight = container.clientHeight;
-            let cellW = cWidth / gridCols;
-            let cellH = cHeight / gridRows;
-
-            activeMowers.forEach(m => {
-                let div = document.createElement('div');
-                div.className = 'active-mower';
-                div.style.left = (m.col * cellW) + 'px';
-                div.style.top = (m.row * cellH + cellH * 0.25) + 'px';
-                div.style.width = (cellW * 0.85) + 'px';
-                div.style.height = (cellH * 0.65) + 'px';
-                
-                let img = document.createElement('img');
-                img.src = LAWNMOWER_SVG;
-                div.appendChild(img);
-                container.appendChild(div);
-            });
-
-            zombies.forEach(z => {
-                let div = document.createElement('div');
-                div.className = 'entity dynamic-entity';
-                div.style.left = (z.col * cellW) + 'px';
-                div.style.top = (z.row * cellH) + 'px';
-                div.style.width = cellW + 'px';
-                div.style.height = cellH + 'px';
-                div.style.zIndex = '2';
-                
-                if(z.hitFlash > 0) {
-                    div.style.filter = 'brightness(3) sepia(1) hue-rotate(-50deg)';
-                } else if(z.slowTimer > 0) {
-                    div.style.filter = 'drop-shadow(0 0 6px #63b3ed) brightness(0.9)';
-                } else {
-                    div.style.filter = 'none';
-                }
-
-                let img = document.createElement('img');
-                if(z.type === 'buckethead') {
-                    img.src = ZOMBIE_IMAGES.buckethead;
-                } else if(z.type === 'conehead') {
-                    img.src = ZOMBIE_IMAGES.conehead;
-                } else {
-                    img.src = ZOMBIE_IMAGES.normal;
-                }
-                div.appendChild(img);
-
-                container.appendChild(div);
-            });
-
-            bullets.forEach(b => {
-                let div = document.createElement('div');
-                div.className = b.isIce ? 'bullet ice-bullet' : 'bullet';
-                let bulletSize = window.innerWidth > 768 ? '12px' : '6px';
-                div.style.width = bulletSize;
-                div.style.height = bulletSize;
-                div.style.left = (b.col * cellW) + 'px';
-                div.style.top = (b.row * cellH + cellH * 0.4) + 'px';
-                container.appendChild(div);
-            });
-
-            sunDrops.forEach(s => {
-                let div = document.createElement('div');
-                div.className = 'sun-drop';
-                div.style.left = s.x + 'px';
-                div.style.top = s.y + 'px';
-                div.innerText = '☀️';
-                
-                let collectAction = (e) => {
-                    e.stopPropagation();
-                    let idx = sunDrops.indexOf(s);
-                    if(idx !== -1) {
-                        sunDrops.splice(idx, 1);
-                        suns = Math.min(999, suns + 25);
-                        document.getElementById('sun-count').innerText = suns;
-                        playSound('collect');
-                    }
-                };
-                div.onmousedown = collectAction;
                 container.appendChild(div);
             });
         }
