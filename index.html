@@ -139,7 +139,7 @@
             align-items: center; 
             justify-content: center; 
             pointer-events: none; 
-            will-change: transform, left, top;
+            will-change: left, top;
         }
         .entity img {
             width: 85%;
@@ -850,6 +850,25 @@
             animationFrameId = requestAnimationFrame(gameLoop);
         }
 
+        function createZombieElement(type) {
+            let cWidth = container.clientWidth;
+            let cHeight = container.clientHeight;
+            let cellW = cWidth / gridCols;
+            let cellH = cHeight / gridRows;
+
+            let zDiv = document.createElement('div');
+            zDiv.className = 'entity dynamic-entity';
+            zDiv.style.width = cellW + 'px';
+            zDiv.style.height = cellH + 'px';
+            zDiv.style.zIndex = '2';
+            
+            let zImg = document.createElement('img');
+            zImg.src = (type === 'buckethead') ? ZOMBIE_IMAGES.buckethead : (type === 'conehead' ? ZOMBIE_IMAGES.conehead : ZOMBIE_IMAGES.normal);
+            zDiv.appendChild(zImg);
+            container.appendChild(zDiv);
+            return zDiv;
+        }
+
         function triggerFinalWaveBanner() {
             playSound('boom');
             let banner = document.createElement('div');
@@ -876,13 +895,7 @@
                     }
                 }
 
-                let zDiv = document.createElement('div');
-                zDiv.className = 'entity dynamic-entity';
-                zDiv.style.zIndex = '2';
-                let zImg = document.createElement('img');
-                zImg.src = (type === 'buckethead') ? ZOMBIE_IMAGES.buckethead : (type === 'conehead' ? ZOMBIE_IMAGES.conehead : ZOMBIE_IMAGES.normal);
-                zDiv.appendChild(zImg);
-                container.appendChild(zDiv);
+                let zDiv = createZombieElement(type);
 
                 zombies.push({
                     row: r,
@@ -923,13 +936,7 @@
                         else if(rand < 0.65) { type = 'conehead'; hp = 420; }
                     }
 
-                    let zDiv = document.createElement('div');
-                    zDiv.className = 'entity dynamic-entity';
-                    zDiv.style.zIndex = '2';
-                    let zImg = document.createElement('img');
-                    zImg.src = (type === 'buckethead') ? ZOMBIE_IMAGES.buckethead : (type === 'conehead' ? ZOMBIE_IMAGES.conehead : ZOMBIE_IMAGES.normal);
-                    zDiv.appendChild(zImg);
-                    container.appendChild(zDiv);
+                    let zDiv = createZombieElement(type);
 
                     zombies.push({
                         row: row, 
@@ -1028,7 +1035,7 @@
                 let plantCol = col - 1;
                 let now = performance.now();
 
-                // LÁ THẦN (PLANT FOOD) - TỐI ƯU HIỆU ỨNG VÀ ĐẬU BĂNG 6 NÒNG
+                // LÁ THẦN (PLANT FOOD)
                 if(selectedType === 'plantfood') {
                     let targetPlant = plants.find(p => p.row === row && p.col === plantCol);
                     if(targetPlant && plantFoodCount > 0) {
@@ -1049,18 +1056,15 @@
                         container.appendChild(burstDiv);
                         setTimeout(() => burstDiv.remove(), 400);
 
-                        // 1. ĐẬU THƯỜNG / ĐẬU BĂNG -> ĐẬU 6 NÒNG (CHUẨN MÀU XANH BĂNG NẾU LÀ ĐẬU BĂNG)
                         if(targetPlant.type === 'peashooter' || targetPlant.type === 'snowpea') {
                             let wasIce = (targetPlant.type === 'snowpea');
                             targetPlant.type = wasIce ? 'snowgatlingpea' : 'gatlingpea';
                             targetPlant.isIce = wasIce;
                             targetPlant.gatlingTimer = 180; 
                         } 
-                        // 2. BONK CHOY -> QUÉT 3 HÀNG
                         else if(targetPlant.type === 'bonkchoy') {
                             targetPlant.ultTimer = 120; 
                         } 
-                        // 3. HOA MẶT TRỜI -> MƯA MẶT TRỜI
                         else if(targetPlant.type === 'sunflower') {
                             targetPlant.sunUltTimer = 150;
                             for(let i=0; i<6; i++) {
@@ -1095,12 +1099,10 @@
                                 sunDrops.push(sObj);
                             }
                         } 
-                        // 4. KHOAI TÂY -> GIÁP SẮT
                         else if(targetPlant.type === 'wallnut') {
                             targetPlant.hp = 6000;
                             targetPlant.armored = true;
                         } 
-                        // 5. MÌN KHOAI TÂY -> NỔ & VĂNG 2 MÌN PHỤ
                         else if(targetPlant.type === 'potatomine') {
                             targetPlant.armed = true;
                             let emptyCells = [];
@@ -1226,7 +1228,7 @@
             let cellW = cWidth / gridCols;
             let cellH = cHeight / gridRows;
 
-            // Cập nhật Xe cắt cỏ kích hoạt (tối ưu DOM)
+            // Cập nhật Xe cắt cỏ
             activeMowers.forEach(m => {
                 m.col += 0.22 * dt;
                 m.el.style.left = (m.col * cellW) + 'px';
@@ -1241,7 +1243,7 @@
             });
             activeMowers = activeMowers.filter(m => m.col < gridCols);
 
-            // Cập nhật Đạn bay (tối ưu DOM)
+            // Cập nhật Đạn
             bullets.forEach(b => {
                 b.col += 0.14 * dt;
                 b.el.style.left = (b.col * cellW) + 'px';
@@ -1251,7 +1253,7 @@
             });
             bullets = bullets.filter(b => b.col < gridCols && !b.hitDone);
 
-            // Cập nhật Mặt trời rơi
+            // Cập nhật Mặt trời
             sunDrops.forEach(s => {
                 if (s.isSunflowerSun && s.animProgress < 1) {
                     s.animProgress += 0.04 * dt;
@@ -1314,7 +1316,7 @@
                 plantsChanged = true;
             }
 
-            // Cập nhật vị trí và trạng thái Zombie (tối ưu hóa DOM mượt mà)
+            // Cập nhật vị trí Zombie (Gán kích thước chuẩn để tránh bị phóng to)
             zombies.forEach(z => {
                 if(z.hitFlash > 0) z.hitFlash--;
                 if(z.slowTimer > 0) z.slowTimer -= dt;
@@ -1350,7 +1352,9 @@
                     z.col -= actualSpeed * dt;
                 }
 
-                // Cập nhật trực tiếp style left/top cho zombie (siêu nhẹ, không giật lag)
+                // KHẮC PHỤC LỖI PHÓNG TO: Đặt chính xác tọa độ lẫn kích thước khung ô
+                z.el.style.width = cellW + 'px';
+                z.el.style.height = cellH + 'px';
                 z.el.style.left = (z.col * cellW) + 'px';
                 z.el.style.top = (z.row * cellH) + 'px';
 
@@ -1510,7 +1514,7 @@
                 renderStaticElements();
             }
 
-            // Kiểm tra va chạm đạn với zombie
+            // Va chạm đạn
             bullets.forEach(b => {
                 if(b.hitDone) return;
                 zombies.forEach(z => {
