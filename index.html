@@ -31,7 +31,6 @@
             justify-content: flex-start;
         }
 
-        /* MAP CỎ SINH ĐỘNG GIỐNG GAME GỐC */
         #game-container { 
             position: relative; 
             width: 100vw; 
@@ -46,7 +45,6 @@
             box-shadow: inset 0 0 25px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.8); 
         }
 
-        /* TITLE SCREEN DESIGN */
         #title-screen {
             background: radial-gradient(circle, #388e3c 0%, #1b5e20 100%);
             z-index: 50;
@@ -123,7 +121,6 @@
             box-shadow: 0 4px 0 #231004, 0 5px 10px rgba(0,0,0,0.5);
         }
 
-        /* LOADING BAR */
         .loading-container {
             width: 80%;
             max-width: 280px;
@@ -164,13 +161,8 @@
             border: 1px solid rgba(255, 255, 255, 0.12); 
             box-sizing: border-box; 
         }
-        .grid-cell.row-even {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .grid-cell.mower-lane {
-            background: rgba(0, 0, 0, 0.18);
-            border-right: 2px solid rgba(255, 255, 255, 0.25);
-        }
+        .grid-cell.row-even { background: rgba(255, 255, 255, 0.05); }
+        .grid-cell.mower-lane { background: rgba(0, 0, 0, 0.18); border-right: 2px solid rgba(255, 255, 255, 0.25); }
 
         .ui { 
             margin: 0; 
@@ -184,6 +176,14 @@
             align-items: center;
             justify-content: center;
             z-index: 10;
+        }
+
+        .seed-card-wrapper {
+            display: flex;
+            gap: 2px;
+            overflow-x: auto;
+            max-width: 100vw;
+            padding: 1px 2px;
         }
 
         .seed-card { 
@@ -202,6 +202,7 @@
             justify-content: center;
             overflow: hidden;
             padding: 1px 3px;
+            flex-shrink: 0;
         }
         .seed-card img { object-fit: contain; pointer-events: none; }
         .seed-card:active { transform: translateY(1px); }
@@ -266,9 +267,34 @@
         }
         .newspaper-angry { animation: angryShake 0.15s infinite linear !important; filter: drop-shadow(0 0 8px #ff0000) !important; }
 
+        /* ĐẠN VÀ ĐẠN LỬA */
         .bullet { background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 5px #a5d6a7; pointer-events: none; will-change: left; }
         .bullet.ice-bullet { background: #63b3ed; border: 1px solid #3182ce; box-shadow: 0 0 5px #90cdf4; }
-        
+        .bullet.fire-bullet { background: #ff7043; border: 1px solid #d84315; box-shadow: 0 0 8px #ff3d00, 0 0 12px #ff9100; border-radius: 40%; }
+        .bullet.blue-fire-bullet { background: #29b6f6; border: 1px solid #0288d1; box-shadow: 0 0 10px #00e5ff, 0 0 15px #00b0ff; border-radius: 40%; }
+
+        /* HIỆU ỨNG CÂY MỚI */
+        @keyframes torchwoodFlame {
+            0% { filter: drop-shadow(0 -3px 6px #ff6d00) brightness(1.1); }
+            50% { filter: drop-shadow(0 -6px 12px #ff3d00) brightness(1.3); }
+            100% { filter: drop-shadow(0 -3px 6px #ff6d00) brightness(1.1); }
+        }
+        .torchwood-flame { animation: torchwoodFlame 0.6s infinite ease-in-out; }
+
+        @keyframes torchwoodBlueFlame {
+            0% { filter: drop-shadow(0 -4px 10px #00e5ff) brightness(1.3); }
+            50% { filter: drop-shadow(0 -8px 16px #00b0ff) brightness(1.6); }
+            100% { filter: drop-shadow(0 -4px 10px #00e5ff) brightness(1.3); }
+        }
+        .torchwood-blue-flame { animation: torchwoodBlueFlame 0.4s infinite ease-in-out !important; }
+
+        @keyframes chomperChew {
+            0% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.08) translateY(-3px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+        .chomper-chewing { animation: chomperChew 0.5s infinite ease-in-out; filter: drop-shadow(0 0 4px #8e24aa); }
+
         @keyframes sunflowerGlow {
             0% { filter: drop-shadow(0 0 2px #ffeb3b) brightness(1); transform: scale(1); }
             50% { filter: drop-shadow(0 0 8px #ffeb3b) brightness(1.3); transform: scale(1.05); }
@@ -458,7 +484,7 @@
                 </div>
             </div>
             
-            <div style="display: flex; gap: 3px; justify-content: center; width: 100%; padding: 1px 0;">
+            <div class="seed-card-wrapper">
                 <div class="seed-card" onclick="selectPlant('peashooter')" id="btn-peashooter">
                     <div class="cooldown-overlay" id="cd-peashooter"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
@@ -468,6 +494,16 @@
                     <div class="cooldown-overlay" id="cd-snowpea"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2363b3ed'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%233182ce'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%231a202c'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Snow Pea">
                     <span>Đậu Băng</span><span style="color:#ffeb3b; font-size:0.75em;">175☀️</span>
+                </div>
+                <div class="seed-card" onclick="selectPlant('torchwood')" id="btn-torchwood">
+                    <div class="cooldown-overlay" id="cd-torchwood"></div>
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='30' y='45' width='40' height='45' rx='8' fill='%23795548'/><polygon points='50,5 30,45 70,45' fill='%23ff5722'/><polygon points='50,15 38,45 62,45' fill='%23ffeb3b'/><circle cx='42' cy='60' r='4' fill='%23fff'/><circle cx='42' cy='60' r='2' fill='%23000'/><circle cx='58' cy='60' r='4' fill='%23fff'/><circle cx='58' cy='60' r='2' fill='%23000'/></svg>" alt="Torchwood">
+                    <span>Đuốc</span><span style="color:#ffeb3b; font-size:0.75em;">175☀️</span>
+                </div>
+                <div class="seed-card" onclick="selectPlant('chomper')" id="btn-chomper">
+                    <div class="cooldown-overlay" id="cd-chomper"></div>
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M47 65 L50 90 L53 65' fill='none' stroke='%2338a169' stroke-width='6'/><circle cx='50' cy='45' r='30' fill='%239c27b0'/><ellipse cx='68' cy='45' rx='16' ry='12' fill='%234a148c'/><polygon points='52,30 60,40 50,42' fill='%23fff'/><polygon points='52,60 60,50 50,48' fill='%23fff'/><circle cx='38' cy='35' r='4' fill='%23fff'/><circle cx='38' cy='35' r='2' fill='%23000'/></svg>" alt="Chomper">
+                    <span>Ăn Thịt</span><span style="color:#ffeb3b; font-size:0.75em;">150☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('bonkchoy')" id="btn-bonkchoy">
                     <div class="cooldown-overlay" id="cd-bonkchoy"></div>
@@ -663,6 +699,9 @@
             gatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%2338a169"/><circle cx="45" cy="45" r="26" fill="%23276749"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%232f855a"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/></svg>',
             snowpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%233182ce"/><path d="M45 75 L50 60 L55 75" fill="%233182ce"/><circle cx="45" cy="45" r="25" fill="%2363b3ed"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%233182ce"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2363b3ed"/></svg>',
             snowgatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%233182ce"/><circle cx="45" cy="45" r="26" fill="%232b6cb0"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%234299e1"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="38" cy="38" r="2" fill="%23000"/></svg>',
+            torchwood: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="25" y="40" width="50" height="50" rx="10" fill="%236d4c41"/><polygon points="50,2 25,45 75,45" fill="%23ff3d00"/><polygon points="50,12 35,45 65,45" fill="%23ffc107"/><circle cx="40" cy="62" r="5" fill="%23fff"/><circle cx="40" cy="62" r="2.5" fill="%23000"/><circle cx="60" cy="62" r="5" fill="%23fff"/><circle cx="60" cy="62" r="2.5" fill="%23000"/><path d="M42 75 Q50 82 58 75" fill="none" stroke="%233e2723" stroke-width="3"/></svg>',
+            chomper: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M47 65 L50 90 L53 65" fill="none" stroke="%2338a169" stroke-width="6"/><circle cx="50" cy="45" r="32" fill="%238e24aa"/><ellipse cx="72" cy="45" rx="18" ry="14" fill="%234a148c"/><polygon points="52,28 62,40 50,42" fill="%23fff"/><polygon points="52,62 62,50 50,48" fill="%23fff"/><circle cx="36" cy="32" r="5" fill="%23fff"/><circle cx="36" cy="32" r="2" fill="%23000"/></svg>',
+            chomper_chewing: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M47 65 L50 90 L53 65" fill="none" stroke="%2338a169" stroke-width="6"/><ellipse cx="50" cy="50" rx="30" ry="25" fill="%238e24aa"/><circle cx="38" cy="42" r="4" fill="%23fff"/><circle cx="38" cy="42" r="2" fill="%23000"/><circle cx="62" cy="42" r="4" fill="%23fff"/><circle cx="62" cy="42" r="2" fill="%23000"/><path d="M40 60 Q50 65 60 60" fill="none" stroke="%23fff" stroke-width="3"/></svg>',
             bonkchoy: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="55" r="25" fill="%2348bb78"/><ellipse cx="26" cy="45" rx="14" ry="18" fill="%2338a169"/><ellipse cx="74" cy="45" rx="14" ry="18" fill="%2338a169"/><circle cx="42" cy="50" r="4" fill="%23fff"/><circle cx="42" cy="50" r="2" fill="%23000"/><circle cx="58" cy="50" r="4" fill="%23fff"/><circle cx="58" cy="50" r="2" fill="%23000"/><path d="M45 62 Q50 66 55 62" fill="none" stroke="%231a202c" stroke-width="2.5"/><circle cx="18" cy="35" r="12" fill="%23276749"/><circle cx="82" cy="35" r="12" fill="%23276749"/></svg>',
             bonkchoy_punching: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="55" r="25" fill="%2348bb78"/><ellipse cx="26" cy="45" rx="14" ry="18" fill="%2338a169"/><ellipse cx="74" cy="45" rx="14" ry="18" fill="%2338a169"/><circle cx="42" cy="50" r="4" fill="%23fff"/><circle cx="42" cy="50" r="2" fill="%23000"/><circle cx="58" cy="50" r="4" fill="%23fff"/><circle cx="58" cy="50" r="2" fill="%23000"/><path d="M45 62 Q50 66 55 62" fill="none" stroke="%231a202c" stroke-width="2.5"/><circle cx="95" cy="30" r="15" fill="%23276749"/><circle cx="5" cy="40" r="12" fill="%23276749"/></svg>',
             sunflower: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M47 65 Q47 80 50 90" fill="none" stroke="%2338a169" stroke-width="6" stroke-linecap="round"/><path d="M35 80 Q25 75 35 70 Z" fill="%2338a169"/><path d="M65 80 Q75 75 65 70 Z" fill="%2338a169"/><g fill="%23ecc94b"><circle cx="50" cy="20" r="12"/><circle cx="80" cy="32" r="12"/><circle cx="92" cy="60" r="12"/><circle cx="75" cy="85" r="12"/><circle cx="45" cy="90" r="12"/><circle cx="20" cy="80" r="12"/><circle cx="8" cy="55" r="12"/><circle cx="20" cy="30" r="12"/></g><circle cx="50" cy="52" r="24" fill="%23b7791f"/><circle cx="50" cy="52" r="20" fill="%23d69e2e"/><circle cx="42" cy="48" r="4.5" fill="%23fff"/><circle cx="42" cy="48" r="2" fill="%23000"/><circle cx="58" cy="48" r="4.5" fill="%23fff"/><circle cx="58" cy="48" r="2" fill="%23000"/><path d="M44 58 Q50 64 56 58" fill="none" stroke="%23000" stroke-width="2.5" stroke-linecap="round"/></svg>',
@@ -676,6 +715,8 @@
         const PLANT_DATA = {
             peashooter: { cost: 100, cooldown: 5000, lastUsed: 0 },
             snowpea: { cost: 175, cooldown: 6000, lastUsed: 0 },
+            torchwood: { cost: 175, cooldown: 7500, lastUsed: 0 },
+            chomper: { cost: 150, cooldown: 7500, lastUsed: 0 },
             bonkchoy: { cost: 150, cooldown: 6000, lastUsed: 0 },
             sunflower: { cost: 50, cooldown: 5000, lastUsed: 0 },
             wallnut: { cost: 50, cooldown: 15000, lastUsed: 0 },
@@ -938,6 +979,13 @@
                     gain.gain.setValueAtTime(0.6 * sfxVolume, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+                } else if(type === 'chomper') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(110, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.5 * sfxVolume, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
                 } else if(type === 'mower') {
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(250, audioCtx.currentTime);
@@ -1409,7 +1457,7 @@
         }
 
         function updateButtonStyles() {
-            ['peashooter', 'snowpea', 'bonkchoy', 'sunflower', 'wallnut', 'potatomine', 'cherry', 'shovel'].forEach(t => {
+            ['peashooter', 'snowpea', 'torchwood', 'chomper', 'bonkchoy', 'sunflower', 'wallnut', 'potatomine', 'cherry', 'shovel'].forEach(t => {
                 let btn = document.getElementById('btn-' + t);
                 if(btn) {
                     if(selectedType === t) btn.classList.add('active-btn');
@@ -1470,6 +1518,20 @@
                             targetPlant.isIce = wasIce;
                             targetPlant.gatlingTimer = 180; 
                         } 
+                        else if(targetPlant.type === 'torchwood') {
+                            targetPlant.isBlueFlame = true;
+                        }
+                        else if(targetPlant.type === 'chomper') {
+                            playSound('chomper');
+                            let rowZombies = zombies.filter(z => z.row === targetPlant.row && z.col > targetPlant.col + 1).slice(0, 3);
+                            rowZombies.forEach(z => {
+                                if(z.hasPlantFood) spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
+                                if(z.el) z.el.remove();
+                                z.hp = -1;
+                            });
+                            targetPlant.chewTimer = 0;
+                            targetPlant.isChewing = false;
+                        }
                         else if(targetPlant.type === 'bonkchoy') {
                             targetPlant.ultTimer = 140; 
                         } 
@@ -1481,7 +1543,6 @@
                                 sDiv.innerText = '☀️';
                                 container.appendChild(sDiv);
 
-                                // SỬA TỌA ĐỘ TẠO MẶT TRỜI CHUẨN XÁC VỊ TRÍ CÂY
                                 let startX = (targetPlant.col + 1.5) * cellW;
                                 let startY = (targetPlant.row + 0.5) * cellH;
 
@@ -1576,27 +1637,25 @@
 
                         if(selectedType === 'cherry') {
                             plants.push({type: 'cherry', row: row, col: plantCol, hp: 999, fuseTimer: 0});
-                            playSound('plant');
                         } else if(selectedType === 'peashooter') {
                             plants.push({type: 'peashooter', row: row, col: plantCol, hp: 100, shootTimer: 0});
-                            playSound('plant');
                         } else if(selectedType === 'snowpea') {
                             plants.push({type: 'snowpea', row: row, col: plantCol, hp: 100, shootTimer: 0});
-                            playSound('plant');
+                        } else if(selectedType === 'torchwood') {
+                            plants.push({type: 'torchwood', row: row, col: plantCol, hp: 300, isBlueFlame: false});
+                        } else if(selectedType === 'chomper') {
+                            plants.push({type: 'chomper', row: row, col: plantCol, hp: 150, isChewing: false, chewTimer: 0});
                         } else if(selectedType === 'bonkchoy') {
                             plants.push({type: 'bonkchoy', row: row, col: plantCol, hp: 300, punchTimer: 0, isPunching: false});
-                            playSound('plant');
                         } else if(selectedType === 'sunflower') {
                             plants.push({type: 'sunflower', row: row, col: plantCol, hp: 80, sunTimer: 0});
-                            playSound('plant');
                         } else if(selectedType === 'wallnut') {
                             plants.push({type: 'wallnut', row: row, col: plantCol, hp: 3000});
-                            playSound('plant');
                         } else if(selectedType === 'potatomine') {
                             plants.push({type: 'potatomine', row: row, col: plantCol, hp: 80, armed: false, armTimer: 0});
-                            playSound('plant');
                         }
 
+                        playSound('plant');
                         selectedType = null;
                         updateButtonStyles();
                         renderStaticElements();
@@ -1663,10 +1722,28 @@
             });
             activeMowers = activeMowers.filter(m => m.col < gridCols);
 
+            // CƠ CHẾ BẮN ĐẠN & BẮN XUYÊN CÂY ĐUỐC LỬA (TORCHWOOD)
             bullets.forEach(b => {
                 b.col += 0.14 * dt;
+
+                // Tác động với Cây Đuốc Lửa
+                let torchwood = plants.find(p => p.type === 'torchwood' && p.row === b.row && Math.abs((p.col + 1) - b.col) < 0.3);
+                if (torchwood) {
+                    if (torchwood.isBlueFlame) {
+                        b.isFire = true;
+                        b.isBlue = true;
+                        b.isIce = false;
+                        b.el.className = 'bullet blue-fire-bullet';
+                    } else if (!b.isFire) {
+                        b.isFire = true;
+                        b.isIce = false;
+                        b.el.className = 'bullet fire-bullet';
+                    }
+                }
+
                 b.el.style.left = (b.col * cellW) + 'px';
             });
+
             bullets.forEach(b => {
                 if(b.col >= gridCols || b.hitDone) b.el.remove();
             });
@@ -1716,6 +1793,28 @@
                     p.fuseTimer += dt;
                     if (p.fuseTimer > 60) {
                         explodedCherries.push(p);
+                    }
+                } else if (p.type === 'chomper') {
+                    if (p.isChewing) {
+                        p.chewTimer += dt;
+                        if (p.chewTimer > 720) { // 12 giây nhai xong
+                            p.isChewing = false;
+                            p.chewTimer = 0;
+                            plantsChanged = true;
+                        }
+                    } else {
+                        // Tìm zombie ngay phía trước mặt để nuốt
+                        let pCol = p.col + 1;
+                        let targetZombie = zombies.find(z => z.row === p.row && z.col >= pCol && (z.col - pCol) <= 1.2);
+                        if (targetZombie) {
+                            playSound('chomper');
+                            if (targetZombie.hasPlantFood) spawnPlantFoodDrop(targetZombie.col * cellW, targetZombie.row * cellH + cellH * 0.5);
+                            if (targetZombie.el) targetZombie.el.remove();
+                            targetZombie.hp = -1;
+                            p.isChewing = true;
+                            p.chewTimer = 0;
+                            plantsChanged = true;
+                        }
                     }
                 }
             });
@@ -1931,7 +2030,6 @@
                     }
                     p.sunTimer += dt;
                     if(p.sunTimer > 480) {
-                        // SỬA TỌA ĐỘ RỚT MẶT TRỜI ĐỊNH KỲ TỪ HOA HƯỚNG DƯƠNG
                         let startX = (p.col + 1.5) * cellW;
                         let startY = (p.row + 0.5) * cellH;
                         
@@ -1983,15 +2081,21 @@
                 renderStaticElements();
             }
 
+            // XỬ LÝ SÁT THƯƠNG ĐẠN LỬA / ĐẠN THƯỜNG / ĐẠN BĂNG
             bullets.forEach(b => {
                 if(b.hitDone) return;
                 zombies.forEach(z => {
                     if(!b.hitDone && b.row === z.row && Math.abs(b.col - z.col) < 0.35) {
-                        z.hp -= 12;
-                        z.hitFlash = 6;
-                        if(b.isIce) {
+                        let damage = 12;
+                        if (b.isFire) {
+                            damage = b.isBlue ? 36 : 24; // Lửa xanh x3, Lửa thường x2
+                            z.slowTimer = 0; // Đạn lửa giải hiệu ứng làm chậm của băng
+                        } else if (b.isIce) {
                             z.slowTimer = 220;
                         }
+
+                        z.hp -= damage;
+                        z.hitFlash = 6;
                         playSound('hit');
                         b.hitDone = true;
                     }
@@ -2064,6 +2168,11 @@
                 if(p.type === 'sunflower') {
                     if(p.sunUltTimer > 0) div.classList.add('sunflower-ult');
                     else div.classList.add('sunflower-glow');
+                } else if(p.type === 'torchwood') {
+                    if(p.isBlueFlame) div.classList.add('torchwood-blue-flame');
+                    else div.classList.add('torchwood-flame');
+                } else if(p.type === 'chomper') {
+                    if(p.isChewing) div.classList.add('chomper-chewing');
                 } else if(p.type === 'cherry') {
                     div.classList.add('cherry-fuse');
                 } else if(p.type === 'gatlingpea') {
@@ -2087,6 +2196,8 @@
                 let img = document.createElement('img');
                 if (p.type === 'potatomine') {
                     img.src = p.armed ? PLANT_IMAGES.potatomine_armed : PLANT_IMAGES.potatomine_unarmed;
+                } else if (p.type === 'chomper') {
+                    img.src = p.isChewing ? PLANT_IMAGES.chomper_chewing : PLANT_IMAGES.chomper;
                 } else if (p.type === 'bonkchoy') {
                     img.src = p.isPunching ? PLANT_IMAGES.bonkchoy_punching : PLANT_IMAGES.bonkchoy;
                 } else if (p.type === 'wallnut' && p.armored) {
