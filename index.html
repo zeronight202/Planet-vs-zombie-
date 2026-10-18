@@ -31,7 +31,6 @@
             justify-content: flex-start;
         }
 
-        /* KHUNG CHƠI GAME TỰ ĐỘNG VỪA VẶN TRỌN VẸN 5 HÀNG MÀN HÌNH */
         #game-container { 
             position: relative; 
             width: 99vw; 
@@ -89,10 +88,7 @@
             overflow: hidden;
             padding: 1px 3px;
         }
-        .seed-card img {
-            object-fit: contain;
-            pointer-events: none;
-        }
+        .seed-card img { object-fit: contain; pointer-events: none; }
         .seed-card:active { transform: translateY(1px); }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
 
@@ -126,47 +122,24 @@
 
         .cooldown-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.65);
-            z-index: 5;
-            display: none;
+            z-index: 5; display: none;
         }
 
         .control-btn { 
             background: linear-gradient(to bottom, #42a5f5, #1565c0); 
-            color: white; 
-            border: 1px solid #0d47a1; 
-            border-radius: 4px; 
-            font-weight: bold; 
-            cursor: pointer; 
+            color: white; border: 1px solid #0d47a1; border-radius: 4px; font-weight: bold; cursor: pointer; 
         }
         .menu-btn-game {
             background: linear-gradient(to bottom, #a0522d, #6b3012);
-            border: 1px solid #3d1c07;
-            border-radius: 4px;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            text-shadow: 1px 1px #000;
+            border: 1px solid #3d1c07; border-radius: 4px; color: #fff; font-weight: bold; cursor: pointer; text-shadow: 1px 1px #000;
         }
 
         .entity { 
-            position: absolute; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            pointer-events: none; 
-            will-change: left, top;
+            position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; will-change: left, top;
         }
-        .entity img {
-            width: 85%;
-            height: 85%;
-            object-fit: contain;
-            pointer-events: none;
-        }
+        .entity img { width: 85%; height: 85%; object-fit: contain; pointer-events: none; }
 
         @keyframes redAuraGlow {
             0% { filter: drop-shadow(0 0 4px #ff0033) brightness(1.1); }
@@ -174,6 +147,14 @@
             100% { filter: drop-shadow(0 0 4px #ff0033) brightness(1.1); }
         }
         .zombie-red-aura { animation: redAuraGlow 0.9s infinite ease-in-out !important; }
+
+        @keyframes angryShake {
+            0% { transform: scale(1.05) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-4deg); }
+            75% { transform: scale(1.1) rotate(4deg); }
+            100% { transform: scale(1.05) rotate(0deg); }
+        }
+        .newspaper-angry { animation: angryShake 0.15s infinite linear !important; filter: drop-shadow(0 0 8px #ff0000) !important; }
 
         .bullet { background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 5px #a5d6a7; pointer-events: none; will-change: left; }
         .bullet.ice-bullet { background: #63b3ed; border: 1px solid #3182ce; box-shadow: 0 0 5px #90cdf4; }
@@ -238,24 +219,13 @@
         .plant-food-burst { animation: plantFoodBurst 0.4s ease-out; }
 
         .sun-drop { 
-            position: absolute; 
-            cursor: pointer; 
-            z-index: 10; 
-            transform: translate(-50%, -50%);
-            animation: bounce 0.6s infinite alternate; 
-            filter: drop-shadow(0 2px 5px rgba(255, 235, 59, 0.8));
-            will-change: left, top;
+            position: absolute; cursor: pointer; z-index: 10; transform: translate(-50%, -50%);
+            animation: bounce 0.6s infinite alternate; filter: drop-shadow(0 2px 5px rgba(255, 235, 59, 0.8)); will-change: left, top;
         }
 
         .plantfood-drop {
-            position: absolute;
-            cursor: pointer;
-            z-index: 11;
-            transform: translate(-50%, -50%);
-            animation: bounce 0.5s infinite alternate;
-            filter: drop-shadow(0 0 8px #00ff87);
-            font-size: 1.6em;
-            will-change: left, top;
+            position: absolute; cursor: pointer; z-index: 11; transform: translate(-50%, -50%);
+            animation: bounce 0.5s infinite alternate; filter: drop-shadow(0 0 8px #00ff87); font-size: 1.6em; will-change: left, top;
         }
         
         .lawnmower { position: absolute; z-index: 4; pointer-events: none; }
@@ -269,102 +239,44 @@
             50% { transform: translate(-50%, -50%) scale(2); opacity: 0.9; filter: brightness(1.5); }
             100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
         }
-        .explosion-fx {
-            position: absolute;
-            z-index: 25;
-            pointer-events: none;
-            animation: explodeAnim 0.5s ease-out forwards;
-        }
+        .explosion-fx { position: absolute; z-index: 25; pointer-events: none; animation: explodeAnim 0.5s ease-out forwards; }
 
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
         
         .screen-overlay { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background: radial-gradient(circle, #22441a 0%, #0d1a0a 100%); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            z-index: 20; 
-            text-align: center; 
-            padding: 4px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            z-index: 20; text-align: center; padding: 4px;
         }
 
         .pvz-menu-board {
             background: linear-gradient(to bottom, rgba(50, 25, 10, 0.98), rgba(30, 12, 4, 0.98));
-            border: 2px solid #5c3a21;
-            border-radius: 8px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.9);
-            width: 95%;
-            max-width: 480px;
-            max-height: 94vh;
-            overflow-y: auto;
-            padding: 6px 10px;
-            text-align: center;
+            border: 2px solid #5c3a21; border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.9);
+            width: 95%; max-width: 480px; max-height: 94vh; overflow-y: auto; padding: 6px 10px; text-align: center;
         }
 
         .pvz-menu-btn {
             background: linear-gradient(to bottom, #a0522d, #6b3012);
-            border: 1.5px solid #3d1c07;
-            border-radius: 5px;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px #2b1304;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-shadow: 1px 1px #000;
-            width: 100%;
+            border: 1.5px solid #3d1c07; border-radius: 5px; color: #fff; font-weight: bold; cursor: pointer;
+            box-shadow: 0 2px #2b1304; display: flex; flex-direction: column; align-items: center; text-shadow: 1px 1px #000; width: 100%;
         }
         .pvz-menu-btn:active { transform: translateY(1px); }
         .hidden { display: none !important; }
 
         .level-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
-            max-height: 55vh;
-            overflow-y: auto;
-            padding: 4px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 6px;
-            border: 1px solid #442200;
-            margin: 4px 0;
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; max-height: 55vh;
+            overflow-y: auto; padding: 4px; background: rgba(0,0,0,0.4); border-radius: 6px; border: 1px solid #442200; margin: 4px 0;
         }
         
         .level-card {
-            background: linear-gradient(to bottom, #15803d, #166534);
-            border: 1.5px solid #22c55e;
-            border-radius: 5px;
-            color: #fff;
-            font-weight: bold;
-            font-size: 0.8em;
-            padding: 5px 1px;
-            cursor: pointer;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            background: linear-gradient(to bottom, #15803d, #166534); border: 1.5px solid #22c55e;
+            border-radius: 5px; color: #fff; font-weight: bold; font-size: 0.8em; padding: 5px 1px;
+            cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .level-card.boss-level {
-            background: linear-gradient(to bottom, #dc2626, #991b1b);
-            border-color: #f87171;
-        }
-        .level-card.locked {
-            background: linear-gradient(to bottom, #374151, #1f2937);
-            border-color: #4b5563;
-            color: #9ca3af;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
+        .level-card.boss-level { background: linear-gradient(to bottom, #dc2626, #991b1b); border-color: #f87171; }
+        .level-card.locked { background: linear-gradient(to bottom, #374151, #1f2937); border-color: #4b5563; color: #9ca3af; cursor: not-allowed; opacity: 0.6; }
 
-        /* ĐIỀU CHỈNH UI MỎNG VÀ VỪA KHÍT MÀN HÌNH XOAY NGANG MOBILE */
         @media (max-width: 768px) {
             .ui { padding: 1px 2px; font-size: 8px; gap: 1px; }
             .seed-card { padding: 1px 2px; font-size: 7.5px; min-width: 30px; height: 32px; }
@@ -572,11 +484,13 @@
                 level: levelNum,
                 isBoss: isBoss,
                 totalZombies: isBoss ? (25 + levelNum * 2) : (12 + levelNum * 2),
-                spawnDelay: isBoss ? 2800 : Math.max(2200, 7500 - levelNum * 110),
+                spawnDelay: isBoss ? 2600 : Math.max(2000, 7500 - levelNum * 110),
                 zombieRatio: {
-                    normal: isBoss ? 0.2 : Math.max(0.15, 1 - levelNum * 0.02),
-                    conehead: isBoss ? 0.4 : Math.min(0.5, levelNum * 0.015),
-                    buckethead: isBoss ? 0.4 : Math.min(0.45, Math.max(0, (levelNum - 3) * 0.012))
+                    normal: isBoss ? 0.15 : Math.max(0.1, 1 - levelNum * 0.025),
+                    conehead: isBoss ? 0.25 : Math.min(0.35, levelNum * 0.015),
+                    buckethead: isBoss ? 0.25 : Math.min(0.3, Math.max(0, (levelNum - 3) * 0.012)),
+                    newspaper: (levelNum >= 5) ? (isBoss ? 0.2 : Math.min(0.25, Math.max(0, (levelNum - 4) * 0.015))) : 0,
+                    polevaulting: (levelNum >= 11) ? (isBoss ? 0.15 : Math.min(0.2, Math.max(0, (levelNum - 10) * 0.015))) : 0
                 },
                 plantFoodRatio: 0.08,
                 hasPresetMines: isBoss
@@ -611,7 +525,11 @@
         const ZOMBIE_IMAGES = {
             normal: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><path d="M30 35 Q40 20 55 25" fill="none" stroke="%234a5568" stroke-width="4" stroke-linecap="round"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/><path d="M44 52 Q50 58 56 52 Z" fill="%231a202c"/></svg>',
             conehead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="45" r="22" fill="%23cbd5e0"/><polygon points="50,2 28,38 72,38" fill="%23dd6b20"/><path d="M34 26 L66 26" stroke="%23cbd5e0" stroke-width="4"/><circle cx="42" cy="43" r="5" fill="%23fff"/><circle cx="42" cy="43" r="2" fill="%23e53e3e"/><circle cx="56" cy="41" r="4" fill="%23fff"/><circle cx="56" cy="41" r="1.5" fill="%23e53e3e"/><path d="M44 55 Q50 60 56 55 Z" fill="%231a202c"/></svg>',
-            buckethead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="45" r="22" fill="%23cbd5e0"/><polygon points="28,34 72,34 62,4 38,4" fill="%23a0aec0"/><ellipse cx="50" cy="4" rx="12" ry="2.5" fill="%23cbd5e0"/><path d="M24 20 Q50 -5 76 20" fill="none" stroke="%23718096" stroke-width="4"/><circle cx="42" cy="43" r="5" fill="%23fff"/><circle cx="42" cy="43" r="2" fill="%23e53e3e"/><circle cx="56" cy="41" r="4" fill="%23fff"/><circle cx="56" cy="41" r="1.5" fill="%23e53e3e"/><path d="M44 55 Q50 60 56 55 Z" fill="%231a202c"/></svg>'
+            buckethead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="45" r="22" fill="%23cbd5e0"/><polygon points="28,34 72,34 62,4 38,4" fill="%23a0aec0"/><ellipse cx="50" cy="4" rx="12" ry="2.5" fill="%23cbd5e0"/><path d="M24 20 Q50 -5 76 20" fill="none" stroke="%23718096" stroke-width="4"/><circle cx="42" cy="43" r="5" fill="%23fff"/><circle cx="42" cy="43" r="2" fill="%23e53e3e"/><circle cx="56" cy="41" r="4" fill="%23fff"/><circle cx="56" cy="41" r="1.5" fill="%23e53e3e"/><path d="M44 55 Q50 60 56 55 Z" fill="%231a202c"/></svg>',
+            newspaper_paper: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%234a5568"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><rect x="20" y="38" width="40" height="30" rx="3" fill="%23e2e8f0" stroke="%23a0aec0" stroke-width="2"/><line x1="25" y1="45" x2="55" y2="45" stroke="%23718096" stroke-width="2"/><line x1="25" y1="52" x2="55" y2="52" stroke="%23718096" stroke-width="2"/><circle cx="58" cy="38" r="4" fill="%23fff"/><circle cx="58" cy="38" r="1.5" fill="%23000"/></svg>',
+            newspaper_angry: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%23742a2a"/><circle cx="50" cy="42" r="22" fill="%23feb2b2"/><circle cx="42" cy="40" r="6" fill="%23fff"/><circle cx="42" cy="40" r="3" fill="%23e53e3e"/><circle cx="56" cy="38" r="6" fill="%23fff"/><circle cx="56" cy="38" r="3" fill="%23e53e3e"/><path d="M38 32 L48 36" stroke="%23742a2a" stroke-width="3"/><path d="M60 32 L50 36" stroke="%23742a2a" stroke-width="3"/><path d="M42 54 Q50 48 58 54" fill="none" stroke="%231a202c" stroke-width="3"/></svg>',
+            polevaulting_pole: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%232b6cb0"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><line x1="10" y1="90" x2="85" y2="15" stroke="%23d69e2e" stroke-width="5" stroke-linecap="round"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/></svg>',
+            polevaulting_nopole: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%232b6cb0"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/><path d="M44 52 Q50 58 56 52 Z" fill="%231a202c"/></svg>'
         };
 
         const LAWNMOWER_SVG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="45" width="55" height="25" rx="6" fill="%23e53e3e"/><rect x="25" y="35" width="25" height="15" rx="3" fill="%23cbd5e0"/><circle cx="20" cy="70" r="12" fill="%232d3748"/><circle cx="20" cy="70" r="5" fill="%23cbd5e0"/><circle cx="65" cy="70" r="12" fill="%232d3748"/><circle cx="65" cy="70" r="5" fill="%23cbd5e0"/><path d="M75 50 L90 35 L95 38" fill="none" stroke="%23718096" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -1062,7 +980,12 @@
             zDiv.style.zIndex = '2';
             
             let zImg = document.createElement('img');
-            zImg.src = (type === 'buckethead') ? ZOMBIE_IMAGES.buckethead : (type === 'conehead' ? ZOMBIE_IMAGES.conehead : ZOMBIE_IMAGES.normal);
+            if(type === 'buckethead') zImg.src = ZOMBIE_IMAGES.buckethead;
+            else if(type === 'conehead') zImg.src = ZOMBIE_IMAGES.conehead;
+            else if(type === 'newspaper') zImg.src = ZOMBIE_IMAGES.newspaper_paper;
+            else if(type === 'polevaulting') zImg.src = ZOMBIE_IMAGES.polevaulting_pole;
+            else zImg.src = ZOMBIE_IMAGES.normal;
+
             zDiv.appendChild(zImg);
             container.appendChild(zDiv);
             return zDiv;
@@ -1113,7 +1036,12 @@
 
             for (let r = 0; r < gridRows; r++) {
                 let type = getRandomZombieType(currentLevelConfig);
-                let hp = (type === 'buckethead') ? 1100 : (type === 'conehead' ? 420 : 180);
+                let hp = 180;
+                if(type === 'buckethead') hp = 1100;
+                else if(type === 'conehead') hp = 420;
+                else if(type === 'newspaper') hp = 340;
+                else if(type === 'polevaulting') hp = 320;
+
                 let hasPlantFood = (r === 2);
                 let zDiv = createZombieElement(type, hasPlantFood);
 
@@ -1126,6 +1054,8 @@
                     hasPlantFood: hasPlantFood,
                     hitFlash: 0,
                     slowTimer: 0,
+                    hasPole: (type === 'polevaulting'),
+                    isAngry: false,
                     el: zDiv
                 });
             }
@@ -1137,8 +1067,20 @@
 
         function getRandomZombieType(config) {
             let rand = Math.random();
-            if (rand < config.zombieRatio.buckethead) return 'buckethead';
-            if (rand < config.zombieRatio.buckethead + config.zombieRatio.conehead) return 'conehead';
+            let cum = 0;
+
+            cum += config.zombieRatio.polevaulting;
+            if (rand < cum) return 'polevaulting';
+
+            cum += config.zombieRatio.newspaper;
+            if (rand < cum) return 'newspaper';
+
+            cum += config.zombieRatio.buckethead;
+            if (rand < cum) return 'buckethead';
+
+            cum += config.zombieRatio.conehead;
+            if (rand < cum) return 'conehead';
+
             return 'normal';
         }
 
@@ -1153,7 +1095,11 @@
                 if(!isPaused) {
                     let row = Math.floor(Math.random() * gridRows);
                     let type = getRandomZombieType(currentLevelConfig);
-                    let hp = (type === 'buckethead') ? 1100 : (type === 'conehead' ? 420 : 180);
+                    let hp = 180;
+                    if(type === 'buckethead') hp = 1100;
+                    else if(type === 'conehead') hp = 420;
+                    else if(type === 'newspaper') hp = 340;
+                    else if(type === 'polevaulting') hp = 320;
 
                     let hasPlantFood = Math.random() < currentLevelConfig.plantFoodRatio;
                     let zDiv = createZombieElement(type, hasPlantFood);
@@ -1167,6 +1113,8 @@
                         hasPlantFood: hasPlantFood,
                         hitFlash: 0,
                         slowTimer: 0,
+                        hasPole: (type === 'polevaulting'),
+                        isAngry: false,
                         el: zDiv
                     });
 
@@ -1583,7 +1531,13 @@
                 let hitPlant = plants.find(p => p.row === z.row && Math.abs((p.col + 1) - z.col) < 0.45);
                 
                 if(hitPlant) {
-                    if (hitPlant.type === 'potatomine' && hitPlant.armed) {
+                    if (z.type === 'polevaulting' && z.hasPole) {
+                        z.hasPole = false;
+                        z.col -= 1.35; 
+                        playSound('mower');
+                        let imgEl = z.el.querySelector('img');
+                        if(imgEl) imgEl.src = ZOMBIE_IMAGES.polevaulting_nopole;
+                    } else if (hitPlant.type === 'potatomine' && hitPlant.armed) {
                         playSound('boom');
                         explodedMines.push(hitPlant);
                         z.hp = -1; 
@@ -1606,9 +1560,22 @@
                         }
                     }
                 } else {
-                    let baseSpeed = (z.type === 'buckethead') ? 0.002 : (z.type === 'conehead' ? 0.0024 : 0.0034);
+                    let baseSpeed = 0.0034;
+                    if(z.type === 'buckethead') baseSpeed = 0.002;
+                    else if(z.type === 'conehead') baseSpeed = 0.0024;
+                    else if(z.type === 'polevaulting') baseSpeed = z.hasPole ? 0.0068 : 0.0032;
+                    else if(z.type === 'newspaper') baseSpeed = z.isAngry ? 0.0085 : 0.0022;
+
                     let actualSpeed = z.slowTimer > 0 ? baseSpeed * 0.5 : baseSpeed;
                     z.col -= actualSpeed * dt;
+                }
+
+                if (z.type === 'newspaper' && !z.isAngry && z.hp < 150) {
+                    z.isAngry = true;
+                    z.el.classList.add('newspaper-angry');
+                    let imgEl = z.el.querySelector('img');
+                    if(imgEl) imgEl.src = ZOMBIE_IMAGES.newspaper_angry;
+                    playSound('mower');
                 }
 
                 z.el.style.width = cellW + 'px';
