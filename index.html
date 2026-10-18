@@ -637,7 +637,6 @@
     </div>
 
     <script>
-        // CÂN BẰNG LẠI ĐỘ KHÓ GIÚP GAME DỄ THỞ HƠN
         const LEVEL_CONFIGS = Array.from({ length: 50 }, (_, i) => {
             let levelNum = i + 1;
             let isBoss = (levelNum % 10 === 0);
@@ -645,8 +644,8 @@
             return {
                 level: levelNum,
                 isBoss: isBoss,
-                totalZombies: isBoss ? (18 + levelNum * 1.2) : (8 + levelNum * 1.2), // Giảm số lượng Zombie mỗi màn
-                spawnDelay: isBoss ? 3200 : Math.max(3000, 8500 - levelNum * 100), // Tăng thời gian giãn cách xuất hiện Zombie
+                totalZombies: isBoss ? (18 + levelNum * 1.2) : (8 + levelNum * 1.2),
+                spawnDelay: isBoss ? 3200 : Math.max(3000, 8500 - levelNum * 100),
                 zombieRatio: {
                     normal: isBoss ? 0.2 : Math.max(0.15, 1 - levelNum * 0.02),
                     conehead: isBoss ? 0.25 : Math.min(0.3, levelNum * 0.012),
@@ -654,7 +653,7 @@
                     newspaper: (levelNum >= 5) ? (isBoss ? 0.15 : Math.min(0.2, Math.max(0, (levelNum - 4) * 0.012))) : 0,
                     polevaulting: (levelNum >= 11) ? (isBoss ? 0.15 : Math.min(0.15, Math.max(0, (levelNum - 10) * 0.01))) : 0
                 },
-                plantFoodRatio: 0.1, // Tăng tỷ lệ rớt Lá Thần từ Zombie
+                plantFoodRatio: 0.1,
                 hasPresetMines: isBoss
             };
         });
@@ -663,7 +662,7 @@
             peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%2338a169"/><path d="M45 75 L50 60 L55 75" fill="%2338a169"/><circle cx="45" cy="45" r="25" fill="%2348bb78"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%2338a169"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2338a169"/></svg>',
             gatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%2338a169"/><circle cx="45" cy="45" r="26" fill="%23276749"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%232f855a"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/></svg>',
             snowpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%233182ce"/><path d="M45 75 L50 60 L55 75" fill="%233182ce"/><circle cx="45" cy="45" r="25" fill="%2363b3ed"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%233182ce"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2363b3ed"/></svg>',
-            snowgatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%233182ce"/><circle cx="45" cy="45" r="26" fill="%232b6cb0"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%234299e1"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/></svg>',
+            snowgatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%233182ce"/><circle cx="45" cy="45" r="26" fill="%232b6cb0"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%234299e1"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="38" cy="38" r="2" fill="%23000"/></svg>',
             bonkchoy: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="55" r="25" fill="%2348bb78"/><ellipse cx="26" cy="45" rx="14" ry="18" fill="%2338a169"/><ellipse cx="74" cy="45" rx="14" ry="18" fill="%2338a169"/><circle cx="42" cy="50" r="4" fill="%23fff"/><circle cx="42" cy="50" r="2" fill="%23000"/><circle cx="58" cy="50" r="4" fill="%23fff"/><circle cx="58" cy="50" r="2" fill="%23000"/><path d="M45 62 Q50 66 55 62" fill="none" stroke="%231a202c" stroke-width="2.5"/><circle cx="18" cy="35" r="12" fill="%23276749"/><circle cx="82" cy="35" r="12" fill="%23276749"/></svg>',
             bonkchoy_punching: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="55" r="25" fill="%2348bb78"/><ellipse cx="26" cy="45" rx="14" ry="18" fill="%2338a169"/><ellipse cx="74" cy="45" rx="14" ry="18" fill="%2338a169"/><circle cx="42" cy="50" r="4" fill="%23fff"/><circle cx="42" cy="50" r="2" fill="%23000"/><circle cx="58" cy="50" r="4" fill="%23fff"/><circle cx="58" cy="50" r="2" fill="%23000"/><path d="M45 62 Q50 66 55 62" fill="none" stroke="%231a202c" stroke-width="2.5"/><circle cx="95" cy="30" r="15" fill="%23276749"/><circle cx="5" cy="40" r="12" fill="%23276749"/></svg>',
             sunflower: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M47 65 Q47 80 50 90" fill="none" stroke="%2338a169" stroke-width="6" stroke-linecap="round"/><path d="M35 80 Q25 75 35 70 Z" fill="%2338a169"/><path d="M65 80 Q75 75 65 70 Z" fill="%2338a169"/><g fill="%23ecc94b"><circle cx="50" cy="20" r="12"/><circle cx="80" cy="32" r="12"/><circle cx="92" cy="60" r="12"/><circle cx="75" cy="85" r="12"/><circle cx="45" cy="90" r="12"/><circle cx="20" cy="80" r="12"/><circle cx="8" cy="55" r="12"/><circle cx="20" cy="30" r="12"/></g><circle cx="50" cy="52" r="24" fill="%23b7791f"/><circle cx="50" cy="52" r="20" fill="%23d69e2e"/><circle cx="42" cy="48" r="4.5" fill="%23fff"/><circle cx="42" cy="48" r="2" fill="%23000"/><circle cx="58" cy="48" r="4.5" fill="%23fff"/><circle cx="58" cy="48" r="2" fill="%23000"/><path d="M44 58 Q50 64 56 58" fill="none" stroke="%23000" stroke-width="2.5" stroke-linecap="round"/></svg>',
@@ -696,7 +695,6 @@
 
         const LAWNMOWER_SVG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="45" width="55" height="25" rx="6" fill="%23e53e3e"/><rect x="25" y="35" width="25" height="15" rx="3" fill="%23cbd5e0"/><circle cx="20" cy="70" r="12" fill="%232d3748"/><circle cx="20" cy="70" r="5" fill="%23cbd5e0"/><circle cx="65" cy="70" r="12" fill="%232d3748"/><circle cx="65" cy="70" r="5" fill="%23cbd5e0"/><path d="M75 50 L90 35 L95 38" fill="none" stroke="%23718096" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-        // ĐỌC VÀ LƯU GAME TỰ ĐỘNG
         let maxUnlockedLevel = parseInt(localStorage.getItem('pvz2_unlocked_level')) || 1;
         let bgm = new Audio('themesoundplntsv.mp3');
         bgm.loop = true;
@@ -1145,7 +1143,6 @@
 
             scheduleNextZombie();
 
-            // TĂNG TỐC TỰ ĐỘNG RỚT MẶT TRỜI GIÚP PLAYER DỄ DÀNG HƠN (6 GIÂY / LẦN)
             sunSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon || isPaused) return;
                 let cWidth = container.clientWidth || 800;
@@ -1360,7 +1357,6 @@
             gameoverScreen.classList.remove('hidden');
         }
 
-        // TỰ ĐỘNG LƯU MÀN CHƠI LÊN LOCALSTORAGE KHI THẮNG
         function triggerWin() {
             stopBGM();
             gameWon = true;
@@ -1485,8 +1481,9 @@
                                 sDiv.innerText = '☀️';
                                 container.appendChild(sDiv);
 
+                                // SỬA TỌA ĐỘ TẠO MẶT TRỜI CHUẨN XÁC VỊ TRÍ CÂY
                                 let startX = (targetPlant.col + 1.5) * cellW;
-                                let startY = (row + 0.5) * cellH;
+                                let startY = (targetPlant.row + 0.5) * cellH;
 
                                 let targetSunY = startY + (-30 - Math.random() * 30);
                                 if (targetSunY < 20) targetSunY = 20;
@@ -1934,6 +1931,7 @@
                     }
                     p.sunTimer += dt;
                     if(p.sunTimer > 480) {
+                        // SỬA TỌA ĐỘ RỚT MẶT TRỜI ĐỊNH KỲ TỪ HOA HƯỚNG DƯƠNG
                         let startX = (p.col + 1.5) * cellW;
                         let startY = (p.row + 0.5) * cellH;
                         
