@@ -31,23 +31,24 @@
             justify-content: flex-start;
         }
 
+        /* MAP CỎ SINH ĐỘNG GIỐNG GAME GỐC */
         #game-container { 
             position: relative; 
             width: 100vw; 
             flex-grow: 1;
             height: calc(100vh - 44px);
-            background: linear-gradient(to bottom, #4a7c36, #3b6329); 
+            background: linear-gradient(to bottom, #5cb85c, #3d8b3d); 
             margin: 0 auto; 
-            border: 2px solid #333; 
+            border: 2px solid #2d6a2d; 
             overflow: hidden; 
             touch-action: manipulation; 
             border-radius: 0; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.8); 
+            box-shadow: inset 0 0 25px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.8); 
         }
 
         /* TITLE SCREEN DESIGN */
         #title-screen {
-            background: radial-gradient(circle, #2d5a1e 0%, #0f230a 100%);
+            background: radial-gradient(circle, #388e3c 0%, #1b5e20 100%);
             z-index: 50;
             display: flex;
             flex-direction: column;
@@ -160,12 +161,15 @@
             position: absolute; 
             width: 9.09%; 
             height: 20%; 
-            border: 1px dashed rgba(255,255,255,0.15); 
+            border: 1px solid rgba(255, 255, 255, 0.12); 
             box-sizing: border-box; 
         }
+        .grid-cell.row-even {
+            background: rgba(255, 255, 255, 0.05);
+        }
         .grid-cell.mower-lane {
-            background: rgba(0, 0, 0, 0.15);
-            border-right: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.18);
+            border-right: 2px solid rgba(255, 255, 255, 0.25);
         }
 
         .ui { 
@@ -371,7 +375,7 @@
         
         .screen-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            background: radial-gradient(circle, #22441a 0%, #0d1a0a 100%); 
+            background: radial-gradient(circle, #2e7d32 0%, #0d2810 100%); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             z-index: 20; text-align: center; padding: 4px;
         }
@@ -502,7 +506,7 @@
         <div id="dragged-plantfood">🌿</div>
 
         <div id="game-container" onclick="handleGridClick(event)">
-            <!-- MÀN HÌNH MỞ ĐẦU TITLE SCREEN STANDARD PVZ -->
+            <!-- MÀN HÌNH MỞ ĐẦU TITLE SCREEN (ĐÃ THÊM NÚT FULLSCREEN) -->
             <div id="title-screen" class="screen-overlay">
                 <div class="pvz-logo-container">
                     <h1 class="pvz-title-main">PLANTS vs ZOMBIES</h1>
@@ -516,10 +520,13 @@
                     <button class="title-btn secondary" onclick="openLevelSelect()">
                         <span>📜</span> CHỌN MÀN CHƠI
                     </button>
+                    <button class="title-btn secondary" onclick="toggleFullScreen()" style="background: linear-gradient(to bottom, #0284c7, #0369a1); border-color: #03588a;">
+                        <span>🛜</span> TOÀN MÀN HÌNH
+                    </button>
                     <button class="title-btn secondary" onclick="openSettings()">
                         <span>⚙️</span> CÀI ĐẶT ÂM LƯỢNG
                     </button>
-                    <button class="title-btn secondary" onclick="openResetModal()" style="background: linear-gradient(to bottom, #b91c1c, #991b1b); border-color: #7f1d1d;">
+                    <button class="title-btn secondary" onclick="openResetModal()" style="background: linear-gradient(to bottom, #b91c1c, #991b1b); border-color: #7f1d1d; grid-column: span 2;">
                         <span>🔄</span> CHƠI LẠI TỪ ĐẦU
                     </button>
                 </div>
@@ -614,7 +621,7 @@
                 </div>
             </div>
 
-            <!-- Màn hình Chiến Thắng (Đã thêm nút Về Menu Chính) -->
+            <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board" style="position: relative; z-index: 22;">
                     <h1 style="color: #00e676; margin-bottom: 2px; font-size: 1.1em; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
@@ -1000,6 +1007,7 @@
                 for(let c=0; c<gridCols; c++) {
                     let div = document.createElement('div');
                     div.className = 'grid-cell';
+                    if(r % 2 === 1) div.classList.add('row-even');
                     if(c === 0) div.classList.add('mower-lane');
                     div.style.left = (c * (100 / gridCols)) + '%';
                     div.style.top = (r * 20) + '%';
@@ -1864,7 +1872,6 @@
                         p.ultTimer -= dt;
                         p.isPunching = true;
 
-                        // Tạo hiệu ứng Sóng Xung Kích 360 độ cho chiêu Lá Thần
                         if(Math.floor(p.ultTimer) % 12 === 0) {
                             let wave = document.createElement('div');
                             wave.className = 'bonk-shockwave';
