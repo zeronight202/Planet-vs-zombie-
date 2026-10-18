@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Plants vs Zombies 2</title>
+    <title>Plants vs Zombies 2 - 50 Levels</title>
     <style>
         * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -321,8 +321,8 @@
             border: 2px solid #5c3a21;
             border-radius: 10px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.9), inset 0 2px 5px rgba(255,255,255,0.1);
-            width: 90%;
-            max-width: 320px;
+            width: 92%;
+            max-width: 480px;
             max-height: 94vh;
             overflow-y: auto;
             padding: 8px 12px;
@@ -347,6 +347,52 @@
         .pvz-menu-btn:active { transform: translateY(2px); box-shadow: 0 1px #2b1304; }
         .hidden { display: none !important; }
 
+        /* LƯỚI CHỌN 50 MÀN CHƠI */
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            max-height: 52vh;
+            overflow-y: auto;
+            padding: 6px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 8px;
+            border: 1px solid #442200;
+            margin: 6px 0;
+        }
+        
+        .level-card {
+            background: linear-gradient(to bottom, #15803d, #166534);
+            border: 2px solid #22c55e;
+            border-radius: 6px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.9em;
+            padding: 8px 2px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 2px #0f391b;
+            transition: transform 0.1s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .level-card:active { transform: scale(0.95); }
+        .level-card.boss-level {
+            background: linear-gradient(to bottom, #dc2626, #991b1b);
+            border-color: #f87171;
+            box-shadow: 0 0 6px #ef4444;
+        }
+        .level-card.locked {
+            background: linear-gradient(to bottom, #374151, #1f2937);
+            border-color: #4b5563;
+            color: #9ca3af;
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.6;
+        }
+
         @media (max-width: 768px) {
             .game-title { font-size: 11px; }
             #game-wrapper { max-width: 540px; padding: 0 2px; }
@@ -360,8 +406,10 @@
             .active-mower { width: 30px; height: 30px; }
             .bullet { width: 6px; height: 6px; }
             .explosion-fx { font-size: 34px; }
-            .pvz-menu-board { max-width: 290px; padding: 6px 10px; }
+            .pvz-menu-board { max-width: 330px; padding: 6px 8px; }
             .pvz-menu-btn { padding: 4px 8px; font-size: 10px; margin-top: 4px; }
+            .level-grid { grid-template-columns: repeat(5, 1fr); max-height: 48vh; gap: 4px; }
+            .level-card { padding: 6px 1px; font-size: 0.75em; }
         }
 
         @media (min-width: 769px) {
@@ -377,13 +425,13 @@
             .active-mower { width: 54px; height: 54px; }
             .bullet { width: 12px; height: 12px; }
             .explosion-fx { font-size: 65px; }
-            .pvz-menu-board { max-width: 450px; padding: 20px 25px; max-height: 85vh; }
-            .pvz-menu-btn { padding: 10px 16px; font-size: 15px; margin-top: 8px; border-radius: 8px; }
+            .pvz-menu-board { max-width: 480px; padding: 14px 20px; max-height: 88vh; }
+            .pvz-menu-btn { padding: 8px 14px; font-size: 14px; margin-top: 6px; border-radius: 8px; }
         }
     </style>
 </head>
 <body>
-    <div class="game-title">🌱 PLANTS VS ZOMBIES 2 🧟</div>
+    <div class="game-title">🌱 PLANTS VS ZOMBIES 2 - 50 LEVELS 🧟</div>
     <div id="game-wrapper">
         <div class="ui hidden" id="game-ui">
             <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2px 8px;">
@@ -453,29 +501,23 @@
         <div id="dragged-plantfood">🌿</div>
 
         <div id="game-container" onclick="handleGridClick(event)">
-            <!-- Menu Chọn Màn -->
+            <!-- MENU CHỌN 50 MÀN CHƠI DẠNG LƯỚI -->
             <div id="menu-screen" class="screen-overlay">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #66bb6a; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI</h1>
-                    <p style="color: #d0d0d0; margin-bottom: 6px; font-size: 0.85em;">Bảo vệ khu vườn khỏi lũ zombie!</p>
+                    <h1 style="color: #66bb6a; margin-bottom: 2px; font-size: 1.2em; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI (1-50)</h1>
+                    <p style="color: #d0d0d0; margin-bottom: 4px; font-size: 0.8em;">🔴 Màn màu đỏ = BOSS MÙA VỤ!</p>
                     
-                    <div class="pvz-menu-btn" onclick="startGame(1)" style="padding: 6px 10px; margin-top: 4px;">
-                        <span style="font-size: 1em;">MÀN 1</span>
-                        <span style="font-size: 0.75em; color: #ffeb3b;">Tiêu diệt hết zombie để thắng</span>
+                    <div class="level-grid" id="level-grid-container">
+                        <!-- Danh sách 50 level được sinh tự động bằng Javascript -->
                     </div>
 
-                    <div class="pvz-menu-btn" onclick="startGame(2)" style="background: linear-gradient(to bottom, #d97706, #b45309); padding: 6px 10px; margin-top: 4px;">
-                        <span style="font-size: 1em;">MÀN 2</span>
-                        <span style="font-size: 0.75em; color: #ffeb3b;">Có Zombie đội nón</span>
-                    </div>
-
-                    <div class="pvz-menu-btn" onclick="startGame(3)" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 6px 10px; margin-top: 4px;">
-                        <span style="font-size: 1em;">MÀN 3</span>
-                        <span style="font-size: 0.75em; color: #ffeb3b;">Có Zombie đội xô sắt</span>
-                    </div>
-
-                    <div class="pvz-menu-btn" onclick="openSettings()" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 6px 10px; margin-top: 6px;">
-                        <span style="font-size: 0.95em;">⚙️ CÀI ĐẶT ÂM LƯỢNG</span>
+                    <div style="display: flex; gap: 6px; margin-top: 4px;">
+                        <div class="pvz-menu-btn" onclick="openSettings()" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 5px 8px;">
+                            <span style="font-size: 0.85em;">⚙️ ÂM LƯỢNG</span>
+                        </div>
+                        <div class="pvz-menu-btn" onclick="resetProgress()" style="background: linear-gradient(to bottom, #b91c1c, #991b1b); padding: 5px 8px;">
+                            <span style="font-size: 0.85em;">🔄 CHƠI LẠI TỪ ĐẦU</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -483,7 +525,7 @@
             <!-- Bảng Cài Đặt (Settings) -->
             <div id="settings-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.85); z-index: 30;">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ffeb3b; margin-bottom: 8px; font-size: 1.25em; text-shadow: 2px 2px #000;">⚙️ CÀI ĐẶT</h1>
+                    <h1 style="color: #ffeb3b; margin-bottom: 8px; font-size: 1.2em; text-shadow: 2px 2px #000;">⚙️ CÀI ĐẶT</h1>
                     
                     <div style="margin: 6px 0; text-align: left; font-size: 0.9em;">
                         <label style="color: #4ade80; font-weight: bold;">🎵 Nhạc nền (BGM): <span id="bgm-val">50%</span></label>
@@ -504,7 +546,7 @@
             <!-- BẢNG TẠM DỪNG -->
             <div id="pause-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.75);">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ffeb3b; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
+                    <h1 style="color: #ffeb3b; margin-bottom: 4px; font-size: 1.2em; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
                     <p style="color: #ccc; margin-bottom: 6px; font-size: 0.85em;">Trò chơi đang tạm dừng</p>
                     <div class="pvz-menu-btn" onclick="togglePause()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 6px 10px; margin-top: 4px;">
                         <span>▶️ TIẾP TỤC CHƠI</span>
@@ -521,7 +563,7 @@
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #ff5252; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">GAME OVER</h1>
+                    <h1 style="color: #ff5252; margin-bottom: 4px; font-size: 1.2em; text-shadow: 2px 2px #000;">GAME OVER</h1>
                     <p style="color: #ccc; margin-bottom: 6px; font-size: 0.85em;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
                     <div class="pvz-menu-btn" onclick="showMenu()" style="padding: 6px 10px; margin-top: 6px;">
                         <span>VỀ MENU CHÍNH</span>
@@ -532,10 +574,10 @@
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board" style="position: relative; z-index: 22;">
-                    <h1 style="color: #00e676; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
-                    <p style="color: #ccc; margin-bottom: 6px; font-size: 0.85em;">Bạn đã bảo vệ khu vườn thành công xuất sắc!</p>
-                    <div class="pvz-menu-btn" onclick="showMenu()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 6px 10px; margin-top: 6px;">
-                        <span>VỀ MENU CHÍNH</span>
+                    <h1 style="color: #00e676; margin-bottom: 4px; font-size: 1.2em; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
+                    <p style="color: #ccc; margin-bottom: 6px; font-size: 0.85em;" id="win-message">Bạn đã hoàn thành màn chơi!</p>
+                    <div class="pvz-menu-btn" onclick="nextLevelOrMenu()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 6px 10px; margin-top: 6px;">
+                        <span id="win-btn-text">MÀN TIẾP THEO ▶️</span>
                     </div>
                 </div>
                 <canvas id="fireworks-canvas" width="800" height="400" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
@@ -544,6 +586,26 @@
     </div>
 
     <script>
+        // TỰ ĐỘNG BẢNG CẤU HÌNH 50 LEVEL (CÁCH 2: CÓ BOSS & SỰ KIỆN MẪU)
+        const LEVEL_CONFIGS = Array.from({ length: 50 }, (_, i) => {
+            let levelNum = i + 1;
+            let isBoss = (levelNum % 10 === 0); // Các màn 10, 20, 30, 40, 50 là Màn Boss
+            
+            return {
+                level: levelNum,
+                isBoss: isBoss,
+                totalZombies: isBoss ? (25 + levelNum * 2) : (12 + levelNum * 2),
+                spawnDelay: isBoss ? 2800 : Math.max(2200, 7500 - levelNum * 110),
+                zombieRatio: {
+                    normal: isBoss ? 0.2 : Math.max(0.15, 1 - levelNum * 0.02),
+                    conehead: isBoss ? 0.4 : Math.min(0.5, levelNum * 0.015),
+                    buckethead: isBoss ? 0.4 : Math.min(0.45, Math.max(0, (levelNum - 3) * 0.012))
+                },
+                plantFoodRatio: 0.08,
+                hasPresetMines: isBoss // CÁC MÀN BOSS SẼ ĐƯỢC CẤP SẴN MÌN KHOAI TÂY ĐẦU GAME
+            };
+        });
+
         const PLANT_IMAGES = {
             peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%2338a169"/><path d="M45 75 L50 60 L55 75" fill="%2338a169"/><circle cx="45" cy="45" r="25" fill="%2348bb78"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%2338a169"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2338a169"/></svg>',
             gatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%2338a169"/><circle cx="45" cy="45" r="26" fill="%23276749"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%232f855a"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/></svg>',
@@ -577,6 +639,7 @@
 
         const LAWNMOWER_SVG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="45" width="55" height="25" rx="6" fill="%23e53e3e"/><rect x="25" y="35" width="25" height="15" rx="3" fill="%23cbd5e0"/><circle cx="20" cy="70" r="12" fill="%232d3748"/><circle cx="20" cy="70" r="5" fill="%23cbd5e0"/><circle cx="65" cy="70" r="12" fill="%232d3748"/><circle cx="65" cy="70" r="5" fill="%23cbd5e0"/><path d="M75 50 L90 35 L95 38" fill="none" stroke="%23718096" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+        let maxUnlockedLevel = parseInt(localStorage.getItem('pvz2_unlocked_level')) || 1;
         let bgm = new Audio('themesoundplntsv.mp3');
         bgm.loop = true;
         bgm.volume = 0.5;
@@ -584,6 +647,38 @@
         let plantFoodCount = 3;
         let plantFoodDrops = []; 
         let isDraggingPlantFood = false;
+
+        function renderLevelGrid() {
+            let container = document.getElementById('level-grid-container');
+            container.innerHTML = '';
+            for(let i=1; i<=50; i++) {
+                let card = document.createElement('div');
+                card.className = 'level-card';
+                if(i % 10 === 0) card.classList.add('boss-level');
+                if(i > maxUnlockedLevel) card.classList.add('locked');
+
+                card.innerHTML = `<span style="font-size:1.1em; font-weight:900;">${i}</span>`;
+                if(i % 10 === 0) card.innerHTML += `<span style="font-size:0.65em; color:#ffeb3b;">BOSS</span>`;
+                else if(i > maxUnlockedLevel) card.innerHTML += `<span style="font-size:0.65em;">🔒</span>`;
+
+                card.onclick = () => {
+                    if(i <= maxUnlockedLevel) {
+                        startGame(i);
+                    } else {
+                        triggerRedFlash();
+                    }
+                };
+                container.appendChild(card);
+            }
+        }
+
+        function resetProgress() {
+            if(confirm("Bạn có chắc chắn muốn xóa tiến trình và chơi lại từ Màn 1?")) {
+                localStorage.setItem('pvz2_unlocked_level', 1);
+                maxUnlockedLevel = 1;
+                renderLevelGrid();
+            }
+        }
 
         function updateBgmVolume(val) {
             bgm.volume = val;
@@ -749,6 +844,7 @@
         let gameOver = false;
         let gameWon = false;
         let currentLevel = 1;
+        let currentLevelConfig = null;
         let suns = 50;
         let selectedType = null; 
         const gridRows = 5;
@@ -852,6 +948,7 @@
             stopBGM();
             isPaused = false;
             clearAllDynamicElements();
+            renderLevelGrid();
             if(gameUI) gameUI.classList.add('hidden');
             pauseOverlay.classList.add('hidden');
             gameoverScreen.classList.add('hidden');
@@ -874,7 +971,9 @@
             initAudio(); 
             startBGM(); 
             currentLevel = level;
-            totalZombiesForLevel = (currentLevel === 1) ? 20 : (currentLevel === 2 ? 30 : 40);
+            currentLevelConfig = LEVEL_CONFIGS[currentLevel - 1];
+            
+            totalZombiesForLevel = currentLevelConfig.totalZombies;
             zombiesSpawnedCount = 0;
             finalWaveTriggered = false;
             isPaused = false;
@@ -898,6 +997,20 @@
             plants = [];
             lawnmowers = [true, true, true, true, true];
             selectedType = null;
+
+            // NẾU LÀ MÀN BOSS SẼ ĐƯỢC TẶNG SẴN 1 BÃI MÌN KHOAI TÂY Ở CỘT 2
+            if(currentLevelConfig.hasPresetMines) {
+                for(let r=0; r<gridRows; r++) {
+                    plants.push({
+                        type: 'potatomine',
+                        row: r,
+                        col: 1, // Cột 2
+                        hp: 80,
+                        armed: true,
+                        armTimer: 700
+                    });
+                }
+            }
             
             for(let k in PLANT_DATA) {
                 PLANT_DATA[k].lastUsed = 0;
@@ -973,7 +1086,6 @@
 
         function spawnPlantFoodDrop(x, y) {
             let cHeight = container.clientHeight;
-            // FIX: Giới hạn tọa độ y của lá thần không bị rớt ra ngoài khung màn hình phía trên hoặc dưới
             let minY = 30;
             let maxY = cHeight - 30;
             if (y < minY) y = minY;
@@ -1016,23 +1128,8 @@
             container.appendChild(banner);
 
             for (let r = 0; r < gridRows; r++) {
-                let type = 'normal';
-                let hp = 180;
-                let rand = Math.random();
-
-                if(currentLevel === 2 && rand < 0.6) {
-                    type = 'conehead';
-                    hp = 420;
-                } else if(currentLevel === 3) {
-                    if(rand < 0.45) {
-                        type = 'buckethead';
-                        hp = 1100;
-                    } else if(rand < 0.85) {
-                        type = 'conehead';
-                        hp = 420;
-                    }
-                }
-
+                let type = getRandomZombieType(currentLevelConfig);
+                let hp = (type === 'buckethead') ? 1100 : (type === 'conehead' ? 420 : 180);
                 let hasPlantFood = (r === 2);
                 let zDiv = createZombieElement(type, hasPlantFood);
 
@@ -1054,29 +1151,27 @@
             }, 3000);
         }
 
+        function getRandomZombieType(config) {
+            let rand = Math.random();
+            if (rand < config.zombieRatio.buckethead) return 'buckethead';
+            if (rand < config.zombieRatio.buckethead + config.zombieRatio.conehead) return 'conehead';
+            return 'normal';
+        }
+
         function scheduleNextZombie() {
             if(!gameStarted || gameOver || gameWon) return;
             if(zombiesSpawnedCount >= totalZombiesForLevel) return;
 
-            let progressRatio = zombiesSpawnedCount / totalZombiesForLevel;
-            let delay = (currentLevel === 1) ? (8000 - progressRatio * 3000) : (currentLevel === 2 ? (7000 - progressRatio * 2500) : (5500 - progressRatio * 2000));
+            let delay = currentLevelConfig.spawnDelay;
 
             zombieTimeout = setTimeout(() => {
                 if(!gameStarted || gameOver || gameWon) return;
                 if(!isPaused) {
                     let row = Math.floor(Math.random() * gridRows);
-                    let rand = Math.random();
-                    let type = 'normal';
-                    let hp = 180;
+                    let type = getRandomZombieType(currentLevelConfig);
+                    let hp = (type === 'buckethead') ? 1100 : (type === 'conehead' ? 420 : 180);
 
-                    if(currentLevel === 2) {
-                        if(rand < 0.35) { type = 'conehead'; hp = 420; }
-                    } else if(currentLevel === 3) {
-                        if(rand < 0.3) { type = 'buckethead'; hp = 1100; }
-                        else if(rand < 0.65) { type = 'conehead'; hp = 420; }
-                    }
-
-                    let hasPlantFood = Math.random() < 0.08;
+                    let hasPlantFood = Math.random() < currentLevelConfig.plantFoodRatio;
                     let zDiv = createZombieElement(type, hasPlantFood);
 
                     zombies.push({
@@ -1121,8 +1216,25 @@
             cancelAnimationFrame(animationFrameId);
             if(zombieTimeout) clearTimeout(zombieTimeout);
             clearInterval(sunSpawner);
+
+            if(currentLevel >= maxUnlockedLevel && currentLevel < 50) {
+                maxUnlockedLevel = currentLevel + 1;
+                localStorage.setItem('pvz2_unlocked_level', maxUnlockedLevel);
+            }
+
+            document.getElementById('win-message').innerText = `Bạn đã hoàn thành Màn ${currentLevel}!`;
+            document.getElementById('win-btn-text').innerText = (currentLevel < 50) ? `MÀN TIẾP THEO (${currentLevel + 1}) ▶️` : `VỀ MENU CHÍNH 🚪`;
+
             winScreen.classList.remove('hidden');
             startFireworks();
+        }
+
+        function nextLevelOrMenu() {
+            if(currentLevel < 50) {
+                startGame(currentLevel + 1);
+            } else {
+                showMenu();
+            }
         }
 
         function selectPlant(type) {
@@ -1220,7 +1332,6 @@
                                 sDiv.innerText = '☀️';
                                 container.appendChild(sDiv);
 
-                                // FIX: Giới hạn góc văng mặt trời của hoa ở hàng đầu và hàng cuối không ra ngoài khung game
                                 let targetSunY = (row + 0.5) * cellH + (-40 - Math.random() * 40);
                                 if (targetSunY < 25) targetSunY = 25;
                                 if (targetSunY > container.clientHeight - 25) targetSunY = container.clientHeight - 25;
@@ -1642,7 +1753,6 @@
                         let vx = Math.cos(angle) * dist;
                         let vy = Math.sin(angle) * dist;
 
-                        // FIX: Giới hạn quỹ đạo văng mặt trời siêu tốc từ hoa (Plant Food)
                         let targetSunY = startY + vy;
                         if (targetSunY < 25) targetSunY = 25;
                         if (targetSunY > cHeight - 25) targetSunY = cHeight - 25;
@@ -1841,6 +1951,9 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
         }
+
+        // Khởi tạo bảng danh sách màn chơi ban đầu
+        renderLevelGrid();
     </script>
 </body>
 </html>
