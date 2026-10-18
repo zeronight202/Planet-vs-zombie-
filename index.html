@@ -99,7 +99,6 @@
         .seed-card:active { transform: translateY(2px); box-shadow: 0 0 #442200; }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
 
-        /* THANH LÁ THẦN CHUẨN PVZ (HỖ TRỢ KÉO THẢ) */
         .plantfood-container {
             display: flex;
             align-items: center;
@@ -119,7 +118,6 @@
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
         }
 
-        /* CON TRỎ BẮT CHUỘT/TAY KHI KÉO LÁ THẦN */
         #dragged-plantfood {
             position: fixed;
             pointer-events: none;
@@ -179,7 +177,6 @@
             pointer-events: none;
         }
 
-        /* AURA ĐỎ NHẸ CHO ZOMBIE LÁ THẦN */
         @keyframes redAuraGlow {
             0% { filter: drop-shadow(0 0 5px #ff0033) brightness(1.1); }
             50% { filter: drop-shadow(0 0 12px #ff0055) brightness(1.3); }
@@ -350,7 +347,6 @@
         .pvz-menu-btn:active { transform: translateY(2px); box-shadow: 0 1px #2b1304; }
         .hidden { display: none !important; }
 
-        /* RESPONSIVE CHO MOBILE & PC */
         @media (max-width: 768px) {
             .game-title { font-size: 11px; }
             #game-wrapper { max-width: 540px; padding: 0 2px; }
@@ -393,7 +389,6 @@
             <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2px 8px;">
                 <span>☀️ <span id="sun-count" style="color: #ffeb3b;">50</span></span>
                 
-                <!-- THANH LÁ THẦN HỖ TRỢ CẢ NHẤP CHỌN LẪN KÉO THẢ -->
                 <div class="plantfood-container" id="btn-plantfood" onclick="selectPlant('plantfood')">
                     <span style="font-size: 1.2em; margin-right: 4px;">🌿</span>
                     <span style="color: #fff; font-size: 0.9em; font-weight: bold;">x<span id="plantfood-count">3</span></span>
@@ -455,7 +450,6 @@
             </div>
         </div>
 
-        <!-- THẺ LÁ THẦN HIỂN THỊ KHI KÉO TAY/CHUỘT -->
         <div id="dragged-plantfood">🌿</div>
 
         <div id="game-container" onclick="handleGridClick(event)">
@@ -547,7 +541,6 @@
                 <canvas id="fireworks-canvas" width="800" height="400" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
             </div>
         </div>
-        <div style="font-size: 0.8em; color: #888; margin-top: 2px; text-align: center;">Chơi mượt mà trên Mobile & PC</div>
     </div>
 
     <script>
@@ -799,7 +792,6 @@
         }
         createGridCells();
 
-        // XỬ LÝ SỰ KIỆN KÉO - THẢ LÁ THẦN (DRAG & DROP)
         const btnPF = document.getElementById('btn-plantfood');
 
         function startDragPlantFood(e) {
@@ -966,7 +958,7 @@
             let zDiv = document.createElement('div');
             zDiv.className = 'entity dynamic-entity';
             if(hasPlantFood) {
-                zDiv.classList.add('zombie-red-aura'); // THÊM AURA ĐỎ CHO ZOMBIE LÁ THẦN
+                zDiv.classList.add('zombie-red-aura');
             }
             zDiv.style.width = cellW + 'px';
             zDiv.style.height = cellH + 'px';
@@ -980,6 +972,13 @@
         }
 
         function spawnPlantFoodDrop(x, y) {
+            let cHeight = container.clientHeight;
+            // FIX: Giới hạn tọa độ y của lá thần không bị rớt ra ngoài khung màn hình phía trên hoặc dưới
+            let minY = 30;
+            let maxY = cHeight - 30;
+            if (y < minY) y = minY;
+            if (y > maxY) y = maxY;
+
             let pfDiv = document.createElement('div');
             pfDiv.className = 'plantfood-drop';
             pfDiv.innerText = '🌿';
@@ -1034,7 +1033,7 @@
                     }
                 }
 
-                let hasPlantFood = (r === 2); // Chỉ 1 con duy nhất ở hàng giữa đợt cuối có lá thần
+                let hasPlantFood = (r === 2);
                 let zDiv = createZombieElement(type, hasPlantFood);
 
                 zombies.push({
@@ -1077,7 +1076,6 @@
                         else if(rand < 0.65) { type = 'conehead'; hp = 420; }
                     }
 
-                    // ĐÃ GIẢM TỶ LỆ SPAWN ZOMBIE ĐỎ MANG LÁ THẦN XUỐNG CHỈ CÒN 8%
                     let hasPlantFood = Math.random() < 0.08;
                     let zDiv = createZombieElement(type, hasPlantFood);
 
@@ -1185,7 +1183,6 @@
                 let plantCol = col - 1;
                 let now = performance.now();
 
-                // DÙNG LÁ THẦN (PLANT FOOD)
                 if(selectedType === 'plantfood') {
                     let targetPlant = plants.find(p => p.row === row && p.col === plantCol);
                     if(targetPlant && plantFoodCount > 0) {
@@ -1223,13 +1220,18 @@
                                 sDiv.innerText = '☀️';
                                 container.appendChild(sDiv);
 
+                                // FIX: Giới hạn góc văng mặt trời của hoa ở hàng đầu và hàng cuối không ra ngoài khung game
+                                let targetSunY = (row + 0.5) * cellH + (-40 - Math.random() * 40);
+                                if (targetSunY < 25) targetSunY = 25;
+                                if (targetSunY > container.clientHeight - 25) targetSunY = container.clientHeight - 25;
+
                                 let sObj = {
                                     x: (plantCol + 1.5) * cellW,
                                     y: (row + 0.5) * cellH,
                                     startX: (plantCol + 1.5) * cellW,
                                     startY: (row + 0.5) * cellH,
                                     vx: (Math.random() - 0.5) * 80,
-                                    vy: -40 - Math.random() * 40,
+                                    vy: targetSunY - ((row + 0.5) * cellH),
                                     animProgress: 0,
                                     isSunflowerSun: true,
                                     life: 400,
@@ -1378,7 +1380,6 @@
             let cellW = cWidth / gridCols;
             let cellH = cHeight / gridRows;
 
-            // Xe cắt cỏ
             activeMowers.forEach(m => {
                 m.col += 0.22 * dt;
                 m.el.style.left = (m.col * cellW) + 'px';
@@ -1398,7 +1399,6 @@
             });
             activeMowers = activeMowers.filter(m => m.col < gridCols);
 
-            // Đạn
             bullets.forEach(b => {
                 b.col += 0.14 * dt;
                 b.el.style.left = (b.col * cellW) + 'px';
@@ -1408,7 +1408,6 @@
             });
             bullets = bullets.filter(b => b.col < gridCols && !b.hitDone);
 
-            // Mặt trời
             sunDrops.forEach(s => {
                 if (s.isSunflowerSun && s.animProgress < 1) {
                     s.animProgress += 0.04 * dt;
@@ -1430,7 +1429,6 @@
             });
             sunDrops = sunDrops.filter(s => s.life > 0);
 
-            // Vật phẩm Lá Thần rơi ra
             plantFoodDrops.forEach(pf => {
                 pf.life -= dt;
             });
@@ -1483,7 +1481,6 @@
                 plantsChanged = true;
             }
 
-            // Zombie
             zombies.forEach(z => {
                 if(z.hitFlash > 0) z.hitFlash--;
                 if(z.slowTimer > 0) z.slowTimer -= dt;
@@ -1538,7 +1535,6 @@
                 plantsChanged = true;
             }
 
-            // Xử lý Zombie chết rơi Lá Thần
             zombies.forEach(z => {
                 if(z.hp <= 0 || z.col <= -1) {
                     if(z.hp <= 0 && z.hasPlantFood) {
@@ -1646,6 +1642,12 @@
                         let vx = Math.cos(angle) * dist;
                         let vy = Math.sin(angle) * dist;
 
+                        // FIX: Giới hạn quỹ đạo văng mặt trời siêu tốc từ hoa (Plant Food)
+                        let targetSunY = startY + vy;
+                        if (targetSunY < 25) targetSunY = 25;
+                        if (targetSunY > cHeight - 25) targetSunY = cHeight - 25;
+                        let fixedVy = targetSunY - startY;
+
                         let sDiv = document.createElement('div');
                         sDiv.className = 'sun-drop';
                         sDiv.innerText = '☀️';
@@ -1657,7 +1659,7 @@
                             startX: startX,
                             startY: startY,
                             vx: vx,
-                            vy: vy,
+                            vy: fixedVy,
                             animProgress: 0,
                             isSunflowerSun: true,
                             life: 400,
@@ -1684,7 +1686,6 @@
                 renderStaticElements();
             }
 
-            // Va chạm đạn
             bullets.forEach(b => {
                 if(b.hitDone) return;
                 zombies.forEach(z => {
