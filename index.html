@@ -99,7 +99,7 @@
         .seed-card:active { transform: translateY(2px); box-shadow: 0 0 #442200; }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
 
-        /* THANH LÁ THẦN CHUẨN PVZ */
+        /* THANH LÁ THẦN CHUẨN PVZ (HỖ TRỢ KÉO THẢ) */
         .plantfood-container {
             display: flex;
             align-items: center;
@@ -107,15 +107,27 @@
             border: 2px solid #22c55e;
             border-radius: 20px;
             padding: 2px 8px;
-            cursor: pointer;
+            cursor: grab;
             box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
             transition: transform 0.1s;
+            touch-action: none;
         }
-        .plantfood-container:active { transform: scale(0.95); }
+        .plantfood-container:active { cursor: grabbing; transform: scale(0.95); }
         .plantfood-container.active-btn {
             background: linear-gradient(to bottom, #ef4444, #991b1b);
             border-color: #f87171;
             box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+        }
+
+        /* CON TRỎ BẮT CHUỘT/TAY KHI KÉO LÁ THẦN */
+        #dragged-plantfood {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 2.2em;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(0 0 12px #00ff87);
+            display: none;
         }
 
         .cooldown-overlay {
@@ -167,14 +179,14 @@
             pointer-events: none;
         }
 
-        /* EFFET AURA ĐỎ CHO ZOMBIE LÁ THẦN */
+        /* AURA ĐỎ NHẸ CHO ZOMBIE LÁ THẦN */
         @keyframes redAuraGlow {
-            0% { filter: drop-shadow(0 0 6px #ff0033) brightness(1.2); }
-            50% { filter: drop-shadow(0 0 16px #ff0055) brightness(1.5); }
-            100% { filter: drop-shadow(0 0 6px #ff0033) brightness(1.2); }
+            0% { filter: drop-shadow(0 0 5px #ff0033) brightness(1.1); }
+            50% { filter: drop-shadow(0 0 12px #ff0055) brightness(1.3); }
+            100% { filter: drop-shadow(0 0 5px #ff0033) brightness(1.1); }
         }
         .zombie-red-aura {
-            animation: redAuraGlow 0.8s infinite ease-in-out !important;
+            animation: redAuraGlow 0.9s infinite ease-in-out !important;
         }
 
         .bullet { background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; will-change: left; }
@@ -338,7 +350,7 @@
         .pvz-menu-btn:active { transform: translateY(2px); box-shadow: 0 1px #2b1304; }
         .hidden { display: none !important; }
 
-        /* --- RESPONSIVE CHO MOBILE & PC --- */
+        /* RESPONSIVE CHO MOBILE & PC */
         @media (max-width: 768px) {
             .game-title { font-size: 11px; }
             #game-wrapper { max-width: 540px; padding: 0 2px; }
@@ -381,8 +393,8 @@
             <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2px 8px;">
                 <span>☀️ <span id="sun-count" style="color: #ffeb3b;">50</span></span>
                 
-                <!-- THANH LÁ THẦN DẠNG HŨ ĐẶC TRƯNG -->
-                <div class="plantfood-container" onclick="selectPlant('plantfood')" id="btn-plantfood">
+                <!-- THANH LÁ THẦN HỖ TRỢ CẢ NHẤP CHỌN LẪN KÉO THẢ -->
+                <div class="plantfood-container" id="btn-plantfood" onclick="selectPlant('plantfood')">
                     <span style="font-size: 1.2em; margin-right: 4px;">🌿</span>
                     <span style="color: #fff; font-size: 0.9em; font-weight: bold;">x<span id="plantfood-count">3</span></span>
                 </div>
@@ -442,6 +454,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- THẺ LÁ THẦN HIỂN THỊ KHI KÉO TAY/CHUỘT -->
+        <div id="dragged-plantfood">🌿</div>
 
         <div id="game-container" onclick="handleGridClick(event)">
             <!-- Menu Chọn Màn -->
@@ -575,6 +590,7 @@
         let sfxVolume = 0.5;
         let plantFoodCount = 3;
         let plantFoodDrops = []; 
+        let isDraggingPlantFood = false;
 
         function updateBgmVolume(val) {
             bgm.volume = val;
@@ -766,6 +782,7 @@
         const pauseOverlay = document.getElementById('pause-overlay');
         const gameoverScreen = document.getElementById('gameover-screen');
         const winScreen = document.getElementById('win-screen');
+        const draggedPlantFood = document.getElementById('dragged-plantfood');
 
         function createGridCells() {
             container.querySelectorAll('.grid-cell').forEach(el => el.remove());
@@ -781,6 +798,50 @@
             }
         }
         createGridCells();
+
+        // XỬ LÝ SỰ KIỆN KÉO - THẢ LÁ THẦN (DRAG & DROP)
+        const btnPF = document.getElementById('btn-plantfood');
+
+        function startDragPlantFood(e) {
+            if (!gameStarted || gameOver || gameWon || isPaused || plantFoodCount <= 0) return;
+            isDraggingPlantFood = true;
+            let pageX = e.touches ? e.touches[0].pageX : e.pageX;
+            let pageY = e.touches ? e.touches[0].pageY : e.pageY;
+            
+            draggedPlantFood.style.left = pageX + 'px';
+            draggedPlantFood.style.top = pageY + 'px';
+            draggedPlantFood.style.display = 'block';
+        }
+
+        function moveDragPlantFood(e) {
+            if (!isDraggingPlantFood) return;
+            let pageX = e.touches ? e.touches[0].pageX : e.pageX;
+            let pageY = e.touches ? e.touches[0].pageY : e.pageY;
+            
+            draggedPlantFood.style.left = pageX + 'px';
+            draggedPlantFood.style.top = pageY + 'px';
+        }
+
+        function endDragPlantFood(e) {
+            if (!isDraggingPlantFood) return;
+            isDraggingPlantFood = false;
+            draggedPlantFood.style.display = 'none';
+
+            let clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+            let clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+
+            selectedType = 'plantfood';
+            processInteraction(clientX, clientY);
+        }
+
+        btnPF.addEventListener('mousedown', startDragPlantFood);
+        btnPF.addEventListener('touchstart', startDragPlantFood, {passive: true});
+
+        window.addEventListener('mousemove', moveDragPlantFood);
+        window.addEventListener('touchmove', moveDragPlantFood, {passive: true});
+
+        window.addEventListener('mouseup', endDragPlantFood);
+        window.addEventListener('touchend', endDragPlantFood);
 
         function clearAllDynamicElements() {
             zombies.forEach(z => { if(z.el) z.el.remove(); });
@@ -973,7 +1034,7 @@
                     }
                 }
 
-                let hasPlantFood = (r === 2); // Zombie ở hàng giữa đợt cuối có lá thần
+                let hasPlantFood = (r === 2); // Chỉ 1 con duy nhất ở hàng giữa đợt cuối có lá thần
                 let zDiv = createZombieElement(type, hasPlantFood);
 
                 zombies.push({
@@ -1016,8 +1077,8 @@
                         else if(rand < 0.65) { type = 'conehead'; hp = 420; }
                     }
 
-                    // TỶ LỆ 20% SPAWN ZOMBIE CÓ AURA ĐỎ MANG LÁ THẦN
-                    let hasPlantFood = Math.random() < 0.22;
+                    // ĐÃ GIẢM TỶ LỆ SPAWN ZOMBIE ĐỎ MANG LÁ THẦN XUỐNG CHỈ CÒN 8%
+                    let hasPlantFood = Math.random() < 0.08;
                     let zDiv = createZombieElement(type, hasPlantFood);
 
                     zombies.push({
