@@ -289,6 +289,26 @@
         }
         .bonkchoy-punching { animation: bonkPunchAnim 0.2s infinite linear !important; }
 
+        /* ANIMATION LÁ THẦN CẢI ĐẤM (BONK CHOY ULT) */
+        @keyframes bonkChoyUltAnim {
+            0% { transform: scale(1.25) rotate(0deg); filter: drop-shadow(0 0 12px #22c55e) brightness(1.3); }
+            25% { transform: scale(1.35) rotate(15deg); filter: drop-shadow(0 0 20px #4ade80) brightness(1.6); }
+            50% { transform: scale(1.25) rotate(-15deg); filter: drop-shadow(0 0 20px #22c55e) brightness(1.6); }
+            75% { transform: scale(1.35) rotate(15deg); filter: drop-shadow(0 0 20px #4ade80) brightness(1.6); }
+            100% { transform: scale(1.25) rotate(0deg); filter: drop-shadow(0 0 12px #22c55e) brightness(1.3); }
+        }
+        .bonkchoy-ult { animation: bonkChoyUltAnim 0.12s infinite linear !important; }
+
+        @keyframes shockwaveAnim {
+            0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; border-color: #4ade80; }
+            100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; border-color: #22c55e; }
+        }
+        .bonk-shockwave {
+            position: absolute; z-index: 15; pointer-events: none; border-radius: 50%;
+            border: 4px solid #22c55e; box-shadow: 0 0 15px #4ade80, inset 0 0 15px #4ade80;
+            animation: shockwaveAnim 0.3s ease-out forwards;
+        }
+
         @keyframes gatlingFireAnim {
             0% { transform: scale(1.15) rotate(0deg); filter: drop-shadow(0 0 6px #00ff87); }
             50% { transform: scale(1.25) rotate(-4deg) translateX(2px); filter: drop-shadow(0 0 12px #00ff87); }
@@ -594,13 +614,16 @@
                 </div>
             </div>
 
-            <!-- Màn hình Chiến Thắng -->
+            <!-- Màn hình Chiến Thắng (Đã thêm nút Về Menu Chính) -->
             <div id="win-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board" style="position: relative; z-index: 22;">
                     <h1 style="color: #00e676; margin-bottom: 2px; font-size: 1.1em; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
                     <p style="color: #ccc; margin-bottom: 4px; font-size: 0.8em;" id="win-message">Bạn đã hoàn thành màn chơi!</p>
                     <div class="pvz-menu-btn" onclick="nextLevelOrMenu()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 5px 8px; margin-top: 4px;">
                         <span id="win-btn-text">MÀN TIẾP THEO ▶️</span>
+                    </div>
+                    <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #0284c7, #0369a1); padding: 5px 8px; margin-top: 5px;">
+                        <span>🏠 VỀ MENU CHÍNH</span>
                     </div>
                 </div>
                 <canvas id="fireworks-canvas" width="800" height="400" style="position: absolute; top:0; left:0; pointer-events:none; z-index:21; width:100%; height:100%;"></canvas>
@@ -1433,7 +1456,7 @@
                             targetPlant.gatlingTimer = 180; 
                         } 
                         else if(targetPlant.type === 'bonkchoy') {
-                            targetPlant.ultTimer = 120; 
+                            targetPlant.ultTimer = 140; 
                         } 
                         else if(targetPlant.type === 'sunflower') {
                             targetPlant.sunUltTimer = 150;
@@ -1840,9 +1863,25 @@
                     if(p.ultTimer > 0) { 
                         p.ultTimer -= dt;
                         p.isPunching = true;
+
+                        // Tạo hiệu ứng Sóng Xung Kích 360 độ cho chiêu Lá Thần
+                        if(Math.floor(p.ultTimer) % 12 === 0) {
+                            let wave = document.createElement('div');
+                            wave.className = 'bonk-shockwave';
+                            let centerX = (p.col + 1.5) * cellW;
+                            let centerY = (p.row + 0.5) * cellH;
+                            let waveSize = cellW * 1.8;
+                            wave.style.width = waveSize + 'px';
+                            wave.style.height = waveSize + 'px';
+                            wave.style.left = centerX + 'px';
+                            wave.style.top = centerY + 'px';
+                            container.appendChild(wave);
+                            setTimeout(() => wave.remove(), 300);
+                        }
+
                         zombies.forEach(z => {
                             if(Math.abs(z.row - p.row) <= 1 && Math.abs(z.col - (p.col + 1)) <= 1.8) {
-                                z.hp -= 3.0 * dt;
+                                z.hp -= 3.5 * dt;
                                 z.hitFlash = 2;
                                 playSound('punch');
                             }
@@ -1877,7 +1916,6 @@
                     }
                     p.sunTimer += dt;
                     if(p.sunTimer > 480) {
-                        // ĐÃ SỬA CÔNG THỨC: Xuất phát từ đúng ô đất trồng Hoa Hướng Dương
                         let startX = (p.col + 1.5) * cellW;
                         let startY = (p.row + 0.5) * cellH;
                         
