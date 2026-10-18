@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Plants vs Zombies 2 - 50 Levels</title>
+    <title>Plants vs Zombies 2 - Mobile Edition</title>
     <style>
         * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
         html, body { 
@@ -33,15 +33,15 @@
 
         #game-container { 
             position: relative; 
-            width: 99vw; 
+            width: 100vw; 
             flex-grow: 1;
-            height: calc(100vh - 48px);
+            height: calc(100vh - 44px);
             background: linear-gradient(to bottom, #4a7c36, #3b6329); 
             margin: 0 auto; 
             border: 2px solid #333; 
             overflow: hidden; 
             touch-action: manipulation; 
-            border-radius: 6px; 
+            border-radius: 0; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.8); 
         }
 
@@ -53,16 +53,17 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 10px;
         }
 
         .pvz-logo-container {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             animation: logoFloat 3s infinite ease-in-out;
         }
 
         .pvz-title-main {
-            font-size: 2.8em;
+            font-size: 2.5em;
             font-weight: 900;
             color: #81c784;
             text-shadow: 3px 3px 0 #1b5e20, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 5px 10px rgba(0,0,0,0.8);
@@ -72,7 +73,7 @@
         }
 
         .pvz-title-sub {
-            font-size: 1.8em;
+            font-size: 1.5em;
             font-weight: 900;
             color: #ffb74d;
             text-shadow: 2px 2px 0 #e65100, -1px -1px 0 #000, 1px -1px 0 #000;
@@ -81,14 +82,14 @@
 
         @keyframes logoFloat {
             0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-8px) scale(1.02); }
+            50% { transform: translateY(-6px) scale(1.02); }
         }
 
         .title-menu-box {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            width: 85%;
+            gap: 8px;
+            width: 90%;
             max-width: 320px;
         }
 
@@ -98,8 +99,8 @@
             border-radius: 8px;
             color: #fff;
             font-weight: bold;
-            font-size: 1.1em;
-            padding: 10px 16px;
+            font-size: 1em;
+            padding: 8px 14px;
             cursor: pointer;
             text-shadow: 1px 2px 2px rgba(0,0,0,0.8);
             box-shadow: 0 4px 0 #1b5e20, 0 5px 10px rgba(0,0,0,0.5);
@@ -128,7 +129,7 @@
             background: #111;
             border: 2px solid #444;
             border-radius: 12px;
-            height: 22px;
+            height: 20px;
             padding: 2px;
             position: relative;
             margin-top: 15px;
@@ -382,7 +383,21 @@
         .level-card.boss-level { background: linear-gradient(to bottom, #dc2626, #991b1b); border-color: #f87171; }
         .level-card.locked { background: linear-gradient(to bottom, #374151, #1f2937); border-color: #4b5563; color: #9ca3af; cursor: not-allowed; opacity: 0.6; }
 
-        @media (max-width: 768px) {
+        /* TỐI ƯU GIAO DIỆN MÀN HÌNH XOAY NGANG (LANDSCAPE) */
+        @media (orientation: landscape) {
+            .pvz-logo-container { margin-bottom: 5px; }
+            .pvz-title-main { font-size: 2.2em; }
+            .pvz-title-sub { font-size: 1.2em; }
+            .title-menu-box { max-width: 420px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+            .title-btn { padding: 6px 10px; font-size: 0.85em; }
+            .ui { padding: 1px 4px; font-size: 9px; }
+            .seed-card { padding: 1px 3px; font-size: 8px; min-width: 40px; height: 32px; }
+            .seed-card img { width: 16px; height: 16px; }
+            .sun-drop { font-size: 24px; }
+            .bullet { width: 8px; height: 8px; }
+        }
+
+        @media (max-width: 768px) and (orientation: portrait) {
             .ui { padding: 1px 2px; font-size: 8px; gap: 1px; }
             .seed-card { padding: 1px 2px; font-size: 7.5px; min-width: 30px; height: 32px; }
             .seed-card img { width: 14px; height: 14px; }
@@ -394,20 +409,6 @@
             .explosion-fx { font-size: 32px; }
             .pvz-menu-board { max-width: 320px; padding: 4px 6px; }
             .pvz-menu-btn { padding: 3px 6px; font-size: 9.5px; margin-top: 3px; }
-            .pvz-title-main { font-size: 2.1em; }
-            .pvz-title-sub { font-size: 1.3em; }
-        }
-
-        @media (min-width: 769px) {
-            .ui { padding: 4px 8px; font-size: 13px; gap: 4px; }
-            .seed-card { padding: 2px 6px; font-size: 10px; min-width: 60px; height: 42px; border-radius: 6px; }
-            .seed-card img { width: 24px; height: 24px; }
-            .control-btn, .menu-btn-game { padding: 3px 8px; font-size: 11px; border-radius: 5px; }
-            .sun-drop { font-size: 36px; padding: 12px; }
-            .lawnmower { width: 44px; height: 44px; }
-            .active-mower { width: 50px; height: 50px; }
-            .bullet { width: 11px; height: 11px; }
-            .explosion-fx { font-size: 60px; }
         }
     </style>
 </head>
@@ -675,7 +676,6 @@
         let plantFoodDrops = []; 
         let isDraggingPlantFood = false;
 
-        // TITLE SCREEN & LOADING SIMULATION
         function initTitleScreen() {
             let fill = document.getElementById('title-loading-fill');
             let text = document.getElementById('title-loading-text');
@@ -1443,17 +1443,20 @@
                                 sDiv.innerText = '☀️';
                                 container.appendChild(sDiv);
 
-                                let targetSunY = (row + 0.5) * cellH + (-30 - Math.random() * 30);
+                                let startX = (targetPlant.col + 1.5) * cellW;
+                                let startY = (row + 0.5) * cellH;
+
+                                let targetSunY = startY + (-30 - Math.random() * 30);
                                 if (targetSunY < 20) targetSunY = 20;
                                 if (targetSunY > container.clientHeight - 20) targetSunY = container.clientHeight - 20;
 
                                 let sObj = {
-                                    x: (plantCol + 1.5) * cellW,
-                                    y: (row + 0.5) * cellH,
-                                    startX: (plantCol + 1.5) * cellW,
-                                    startY: (row + 0.5) * cellH,
+                                    x: startX,
+                                    y: startY,
+                                    startX: startX,
+                                    startY: startY,
                                     vx: (Math.random() - 0.5) * 60,
-                                    vy: targetSunY - ((row + 0.5) * cellH),
+                                    vy: targetSunY - startY,
                                     animProgress: 0,
                                     isSunflowerSun: true,
                                     life: 400,
@@ -1874,12 +1877,12 @@
                     }
                     p.sunTimer += dt;
                     if(p.sunTimer > 480) {
-                        let screenCol = p.col + 1;
-                        let startX = (screenCol + 0.5) * cellW;
+                        // ĐÃ SỬA CÔNG THỨC: Xuất phát từ đúng ô đất trồng Hoa Hướng Dương
+                        let startX = (p.col + 1.5) * cellW;
                         let startY = (p.row + 0.5) * cellH;
                         
                         let angle = Math.random() * Math.PI * 2;
-                        let dist = 30 + Math.random() * 30;
+                        let dist = 25 + Math.random() * 25;
                         let vx = Math.cos(angle) * dist;
                         let vy = Math.sin(angle) * dist;
 
@@ -2082,7 +2085,6 @@
             }
         }
 
-        // TỰ ĐỘNG CHẠY LOADING TITLE SCREEN KHI VÀO GAME
         initTitleScreen();
     </script>
 </body>
