@@ -98,7 +98,26 @@
         }
         .seed-card:active { transform: translateY(2px); box-shadow: 0 0 #442200; }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
-        
+
+        /* THANH LÁ THẦN CHUẨN PVZ */
+        .plantfood-container {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(to bottom, #15803d, #166534);
+            border: 2px solid #22c55e;
+            border-radius: 20px;
+            padding: 2px 8px;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+            transition: transform 0.1s;
+        }
+        .plantfood-container:active { transform: scale(0.95); }
+        .plantfood-container.active-btn {
+            background: linear-gradient(to bottom, #ef4444, #991b1b);
+            border-color: #f87171;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+        }
+
         .cooldown-overlay {
             position: absolute;
             top: 0;
@@ -146,6 +165,16 @@
             height: 85%;
             object-fit: contain;
             pointer-events: none;
+        }
+
+        /* EFFET AURA ĐỎ CHO ZOMBIE LÁ THẦN */
+        @keyframes redAuraGlow {
+            0% { filter: drop-shadow(0 0 6px #ff0033) brightness(1.2); }
+            50% { filter: drop-shadow(0 0 16px #ff0055) brightness(1.5); }
+            100% { filter: drop-shadow(0 0 6px #ff0033) brightness(1.2); }
+        }
+        .zombie-red-aura {
+            animation: redAuraGlow 0.8s infinite ease-in-out !important;
         }
 
         .bullet { background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 6px #a5d6a7; pointer-events: none; will-change: left; }
@@ -227,6 +256,17 @@
             transform: translate(-50%, -50%);
             animation: bounce 0.6s infinite alternate; 
             filter: drop-shadow(0 2px 6px rgba(255, 235, 59, 0.8));
+            will-change: left, top;
+        }
+
+        .plantfood-drop {
+            position: absolute;
+            cursor: pointer;
+            z-index: 11;
+            transform: translate(-50%, -50%);
+            animation: bounce 0.5s infinite alternate;
+            filter: drop-shadow(0 0 10px #00ff87);
+            font-size: 1.8em;
             will-change: left, top;
         }
         
@@ -340,8 +380,15 @@
         <div class="ui hidden" id="game-ui">
             <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2px 8px;">
                 <span>☀️ <span id="sun-count" style="color: #ffeb3b;">50</span></span>
+                
+                <!-- THANH LÁ THẦN DẠNG HŨ ĐẶC TRƯNG -->
+                <div class="plantfood-container" onclick="selectPlant('plantfood')" id="btn-plantfood">
+                    <span style="font-size: 1.2em; margin-right: 4px;">🌿</span>
+                    <span style="color: #fff; font-size: 0.9em; font-weight: bold;">x<span id="plantfood-count">3</span></span>
+                </div>
+
                 <span>Màn: <span id="level-display" style="color: #00ffff;">1</span></span>
-                <div style="display: flex; align-items: center; gap: 6px; width: 35%;">
+                <div style="display: flex; align-items: center; gap: 6px; width: 30%;">
                     <div style="flex-grow: 1; background: #222; height: 12px; border-radius: 6px; position: relative; overflow: hidden; border: 1px solid #555;">
                         <div id="progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #48bb78, #38a169); transition: width 0.3s;"></div>
                     </div>
@@ -388,10 +435,6 @@
                     <div class="cooldown-overlay" id="cd-cherry"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M35 65 Q45 25 65 30' fill='none' stroke='%2338a169' stroke-width='5'/><circle cx='32' cy='68' r='22' fill='%23e53e3e'/><circle cx='68' cy='68' r='22' fill='%23e53e3e'/></svg>" alt="Cherry">
                     <span>Bom</span><span style="color:#ffeb3b; font-size:0.8em;">150☀️</span>
-                </div>
-                <div class="seed-card" onclick="selectPlant('plantfood')" id="btn-plantfood" style="background: linear-gradient(to bottom, #22c55e, #15803d); color: white;">
-                    <span style="font-size: 1.2em;">🌿</span>
-                    <span>Lá Thần (<span id="plantfood-count">3</span>)</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('shovel')" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
                     <span style="font-size: 1.2em;">⛏️</span>
@@ -449,7 +492,7 @@
                 </div>
             </div>
 
-            <!-- BẢNG TẠM DỪNG GỘP TẤT CẢ TÙY CHỌN -->
+            <!-- BẢNG TẠM DỪNG -->
             <div id="pause-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.75);">
                 <div class="pvz-menu-board">
                     <h1 style="color: #ffeb3b; margin-bottom: 4px; font-size: 1.25em; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
@@ -531,6 +574,7 @@
         bgm.volume = 0.5;
         let sfxVolume = 0.5;
         let plantFoodCount = 3;
+        let plantFoodDrops = []; 
 
         function updateBgmVolume(val) {
             bgm.volume = val;
@@ -742,10 +786,12 @@
             zombies.forEach(z => { if(z.el) z.el.remove(); });
             bullets.forEach(b => { if(b.el) b.el.remove(); });
             sunDrops.forEach(s => { if(s.el) s.el.remove(); });
+            plantFoodDrops.forEach(p => { if(p.el) p.el.remove(); });
             activeMowers.forEach(m => { if(m.el) m.el.remove(); });
             zombies = [];
             bullets = [];
             sunDrops = [];
+            plantFoodDrops = [];
             activeMowers = [];
         }
 
@@ -850,7 +896,7 @@
             animationFrameId = requestAnimationFrame(gameLoop);
         }
 
-        function createZombieElement(type) {
+        function createZombieElement(type, hasPlantFood) {
             let cWidth = container.clientWidth;
             let cHeight = container.clientHeight;
             let cellW = cWidth / gridCols;
@@ -858,6 +904,9 @@
 
             let zDiv = document.createElement('div');
             zDiv.className = 'entity dynamic-entity';
+            if(hasPlantFood) {
+                zDiv.classList.add('zombie-red-aura'); // THÊM AURA ĐỎ CHO ZOMBIE LÁ THẦN
+            }
             zDiv.style.width = cellW + 'px';
             zDiv.style.height = cellH + 'px';
             zDiv.style.zIndex = '2';
@@ -867,6 +916,35 @@
             zDiv.appendChild(zImg);
             container.appendChild(zDiv);
             return zDiv;
+        }
+
+        function spawnPlantFoodDrop(x, y) {
+            let pfDiv = document.createElement('div');
+            pfDiv.className = 'plantfood-drop';
+            pfDiv.innerText = '🌿';
+            pfDiv.style.left = x + 'px';
+            pfDiv.style.top = y + 'px';
+            container.appendChild(pfDiv);
+
+            let pfObj = {
+                x: x,
+                y: y,
+                life: 500,
+                el: pfDiv
+            };
+
+            pfDiv.onmousedown = (e) => {
+                e.stopPropagation();
+                let idx = plantFoodDrops.indexOf(pfObj);
+                if(idx !== -1) {
+                    plantFoodDrops.splice(idx, 1);
+                    pfObj.el.remove();
+                    plantFoodCount = Math.min(9, plantFoodCount + 1);
+                    document.getElementById('plantfood-count').innerText = plantFoodCount;
+                    playSound('plantfood');
+                }
+            };
+            plantFoodDrops.push(pfObj);
         }
 
         function triggerFinalWaveBanner() {
@@ -895,7 +973,8 @@
                     }
                 }
 
-                let zDiv = createZombieElement(type);
+                let hasPlantFood = (r === 2); // Zombie ở hàng giữa đợt cuối có lá thần
+                let zDiv = createZombieElement(type, hasPlantFood);
 
                 zombies.push({
                     row: r,
@@ -903,6 +982,7 @@
                     hp: hp,
                     maxHp: hp,
                     type: type,
+                    hasPlantFood: hasPlantFood,
                     hitFlash: 0,
                     slowTimer: 0,
                     el: zDiv
@@ -936,7 +1016,9 @@
                         else if(rand < 0.65) { type = 'conehead'; hp = 420; }
                     }
 
-                    let zDiv = createZombieElement(type);
+                    // TỶ LỆ 20% SPAWN ZOMBIE CÓ AURA ĐỎ MANG LÁ THẦN
+                    let hasPlantFood = Math.random() < 0.22;
+                    let zDiv = createZombieElement(type, hasPlantFood);
 
                     zombies.push({
                         row: row, 
@@ -944,6 +1026,7 @@
                         hp: hp, 
                         maxHp: hp,
                         type: type,
+                        hasPlantFood: hasPlantFood,
                         hitFlash: 0,
                         slowTimer: 0,
                         el: zDiv
@@ -1006,13 +1089,19 @@
         }
 
         function updateButtonStyles() {
-            ['peashooter', 'snowpea', 'bonkchoy', 'sunflower', 'wallnut', 'potatomine', 'cherry', 'plantfood', 'shovel'].forEach(t => {
+            ['peashooter', 'snowpea', 'bonkchoy', 'sunflower', 'wallnut', 'potatomine', 'cherry', 'shovel'].forEach(t => {
                 let btn = document.getElementById('btn-' + t);
                 if(btn) {
                     if(selectedType === t) btn.classList.add('active-btn');
                     else btn.classList.remove('active-btn');
                 }
             });
+
+            let pfBtn = document.getElementById('btn-plantfood');
+            if(pfBtn) {
+                if(selectedType === 'plantfood') pfBtn.classList.add('active-btn');
+                else pfBtn.classList.remove('active-btn');
+            }
         }
 
         function processInteraction(clientX, clientY) {
@@ -1035,7 +1124,7 @@
                 let plantCol = col - 1;
                 let now = performance.now();
 
-                // LÁ THẦN (PLANT FOOD)
+                // DÙNG LÁ THẦN (PLANT FOOD)
                 if(selectedType === 'plantfood') {
                     let targetPlant = plants.find(p => p.row === row && p.col === plantCol);
                     if(targetPlant && plantFoodCount > 0) {
@@ -1228,13 +1317,18 @@
             let cellW = cWidth / gridCols;
             let cellH = cHeight / gridRows;
 
-            // Cập nhật Xe cắt cỏ
+            // Xe cắt cỏ
             activeMowers.forEach(m => {
                 m.col += 0.22 * dt;
                 m.el.style.left = (m.col * cellW) + 'px';
                 zombies = zombies.filter(z => {
                     let hit = (z.row === m.row && Math.abs(z.col - m.col) < 0.8);
-                    if(hit && z.el) z.el.remove();
+                    if(hit) {
+                        if(z.hasPlantFood) {
+                            spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
+                        }
+                        if(z.el) z.el.remove();
+                    }
                     return !hit;
                 });
             });
@@ -1243,7 +1337,7 @@
             });
             activeMowers = activeMowers.filter(m => m.col < gridCols);
 
-            // Cập nhật Đạn
+            // Đạn
             bullets.forEach(b => {
                 b.col += 0.14 * dt;
                 b.el.style.left = (b.col * cellW) + 'px';
@@ -1253,7 +1347,7 @@
             });
             bullets = bullets.filter(b => b.col < gridCols && !b.hitDone);
 
-            // Cập nhật Mặt trời
+            // Mặt trời
             sunDrops.forEach(s => {
                 if (s.isSunflowerSun && s.animProgress < 1) {
                     s.animProgress += 0.04 * dt;
@@ -1274,6 +1368,15 @@
                 if(s.life <= 0) s.el.remove();
             });
             sunDrops = sunDrops.filter(s => s.life > 0);
+
+            // Vật phẩm Lá Thần rơi ra
+            plantFoodDrops.forEach(pf => {
+                pf.life -= dt;
+            });
+            plantFoodDrops.forEach(pf => {
+                if(pf.life <= 0) pf.el.remove();
+            });
+            plantFoodDrops = plantFoodDrops.filter(pf => pf.life > 0);
 
             let plantsChanged = false;
             let explodedMines = [];
@@ -1308,7 +1411,10 @@
 
                     zombies = zombies.filter(z => {
                         let inRange = (z.row >= cherry.row - 1 && z.row <= cherry.row + 1 && Math.abs(z.col - (cherry.col + 1)) <= 1.2);
-                        if(inRange && z.el) z.el.remove();
+                        if(inRange) {
+                            if(z.hasPlantFood) spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
+                            if(z.el) z.el.remove();
+                        }
                         return !inRange;
                     });
                 });
@@ -1316,7 +1422,7 @@
                 plantsChanged = true;
             }
 
-            // Cập nhật vị trí Zombie (Gán kích thước chuẩn để tránh bị phóng to)
+            // Zombie
             zombies.forEach(z => {
                 if(z.hitFlash > 0) z.hitFlash--;
                 if(z.slowTimer > 0) z.slowTimer -= dt;
@@ -1352,7 +1458,6 @@
                     z.col -= actualSpeed * dt;
                 }
 
-                // KHẮC PHỤC LỖI PHÓNG TO: Đặt chính xác tọa độ lẫn kích thước khung ô
                 z.el.style.width = cellW + 'px';
                 z.el.style.height = cellH + 'px';
                 z.el.style.left = (z.col * cellW) + 'px';
@@ -1372,8 +1477,12 @@
                 plantsChanged = true;
             }
 
+            // Xử lý Zombie chết rơi Lá Thần
             zombies.forEach(z => {
-                if(z.col <= -1 || z.hp <= 0) {
+                if(z.hp <= 0 || z.col <= -1) {
+                    if(z.hp <= 0 && z.hasPlantFood) {
+                        spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
+                    }
                     if(z.el) z.el.remove();
                 }
             });
@@ -1526,12 +1635,9 @@
                         }
                         playSound('hit');
                         b.hitDone = true;
-                        if(z.el && z.hp <= 0) z.el.remove();
                     }
                 });
             });
-
-            zombies = zombies.filter(z => z.hp > 0);
 
             if(finalWaveTriggered && zombiesSpawnedCount >= totalZombiesForLevel && zombies.length === 0) {
                 triggerWin();
@@ -1554,6 +1660,7 @@
 
                         activeMowers.push({row: z.row, col: 0, el: mDiv});
                         playSound('mower');
+                        if(z.hasPlantFood) spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
                         if(z.el) z.el.remove();
                         z.col = -99;
                         renderStaticElements();
