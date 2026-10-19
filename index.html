@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Plants vs Zombies 2 - Mobile Edition</title>
+    <title>Plants vs Zombies 2 - PC & Mobile Edition</title>
     <style>
         * { box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
         html, body { 
@@ -36,7 +36,7 @@
             position: relative; 
             width: 100vw; 
             flex-grow: 1;
-            height: calc(100vh - 44px);
+            height: calc(100vh - 75px);
             background: #2e7d32; 
             margin: 0 auto; 
             border: 2px solid #1b5e20; 
@@ -58,22 +58,22 @@
 
         .pvz-logo-container {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             animation: logoFloat 3s infinite ease-in-out;
         }
 
         .pvz-title-main {
-            font-size: 2.5em;
+            font-size: 3.2em;
             font-weight: 900;
             color: #81c784;
-            text-shadow: 3px 3px 0 #1b5e20, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 5px 10px rgba(0,0,0,0.8);
+            text-shadow: 4px 4px 0 #1b5e20, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 5px 15px rgba(0,0,0,0.8);
             letter-spacing: 2px;
             margin: 0;
             font-family: 'Impact', 'Segoe UI', sans-serif;
         }
 
         .pvz-title-sub {
-            font-size: 1.5em;
+            font-size: 1.8em;
             font-weight: 900;
             color: #ffb74d;
             text-shadow: 2px 2px 0 #e65100, -1px -1px 0 #000, 1px -1px 0 #000;
@@ -82,15 +82,15 @@
 
         @keyframes logoFloat {
             0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-6px) scale(1.02); }
+            50% { transform: translateY(-8px) scale(1.02); }
         }
 
         .title-menu-box {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
             width: 90%;
-            max-width: 320px;
+            max-width: 380px;
         }
 
         .title-btn {
@@ -99,8 +99,8 @@
             border-radius: 8px;
             color: #fff;
             font-weight: bold;
-            font-size: 1em;
-            padding: 8px 14px;
+            font-size: 1.1em;
+            padding: 12px 18px;
             cursor: pointer;
             text-shadow: 1px 2px 2px rgba(0,0,0,0.8);
             box-shadow: 0 4px 0 #1b5e20, 0 5px 10px rgba(0,0,0,0.5);
@@ -108,7 +108,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .title-btn:active {
@@ -124,14 +124,14 @@
 
         .loading-container {
             width: 80%;
-            max-width: 280px;
+            max-width: 300px;
             background: #111;
             border: 2px solid #444;
             border-radius: 12px;
-            height: 20px;
+            height: 24px;
             padding: 2px;
             position: relative;
-            margin-top: 15px;
+            margin-top: 20px;
             overflow: hidden;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
         }
@@ -149,13 +149,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 0.75em;
+            font-size: 0.85em;
             font-weight: bold;
             color: #fff;
             text-shadow: 1px 1px 2px #000;
         }
 
-        /* TÔ MÀU XEN KẼ XANH ĐẬM DẠNG CARO NHƯ GAME GỐC */
+        /* LƯỚI BẢN ĐỒ CARO XANH LÁ ĐẬM */
         .grid-cell { 
             position: absolute; 
             width: 9.09%; 
@@ -172,12 +172,13 @@
             border-right: 2px solid rgba(255, 255, 255, 0.2); 
         }
 
+        /* GIAO DIỆN THANH UI CHO MÁY TÍNH TO RÕ */
         .ui { 
             margin: 0; 
-            padding: 2px 4px;
+            padding: 6px 12px;
             font-weight: bold; 
-            background: #1e1e1e; 
-            border-bottom: 1px solid #333; 
+            background: linear-gradient(to bottom, #1e1e1e, #111); 
+            border-bottom: 2px solid #333; 
             width: 100vw;
             display: flex;
             flex-direction: column;
@@ -188,31 +189,34 @@
 
         .seed-card-wrapper {
             display: flex;
-            gap: 2px;
+            gap: 6px;
             overflow-x: auto;
             max-width: 100vw;
-            padding: 1px 2px;
+            padding: 4px;
         }
 
         .seed-card { 
             position: relative;
             background: linear-gradient(to bottom, #fff385, #e0a800); 
-            border: 1px solid #553300; 
+            border: 2px solid #553300; 
             cursor: pointer; 
-            border-radius: 4px; 
+            border-radius: 6px; 
             font-weight: bold; 
             color: #222; 
-            box-shadow: 0 1px #442200; 
+            box-shadow: 0 2px #442200; 
             touch-action: manipulation;
             display: inline-flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            padding: 1px 3px;
+            padding: 2px 6px;
+            min-width: 58px;
+            height: 52px;
             flex-shrink: 0;
+            font-size: 11px;
         }
-        .seed-card img { object-fit: contain; pointer-events: none; }
+        .seed-card img { width: 26px; height: 26px; object-fit: contain; pointer-events: none; }
         .seed-card:active { transform: translateY(1px); }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
 
@@ -220,11 +224,11 @@
             display: flex;
             align-items: center;
             background: linear-gradient(to bottom, #15803d, #166534);
-            border: 1.5px solid #22c55e;
-            border-radius: 12px;
-            padding: 1px 6px;
+            border: 2px solid #22c55e;
+            border-radius: 14px;
+            padding: 3px 10px;
             cursor: grab;
-            box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
             touch-action: none;
         }
         .plantfood-container:active { cursor: grabbing; transform: scale(0.95); }
@@ -233,7 +237,7 @@
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-            font-size: 2em;
+            font-size: 2.5em;
             transform: translate(-50%, -50%);
             filter: drop-shadow(0 0 10px #00ff87);
             display: none;
@@ -248,11 +252,11 @@
 
         .control-btn { 
             background: linear-gradient(to bottom, #42a5f5, #1565c0); 
-            color: white; border: 1px solid #0d47a1; border-radius: 4px; font-weight: bold; cursor: pointer; 
+            color: white; border: 1.5px solid #0d47a1; border-radius: 6px; font-weight: bold; cursor: pointer; padding: 4px 10px; font-size: 12px;
         }
         .menu-btn-game {
             background: linear-gradient(to bottom, #a0522d, #6b3012);
-            border: 1px solid #3d1c07; border-radius: 4px; color: #fff; font-weight: bold; cursor: pointer; text-shadow: 1px 1px #000;
+            border: 1.5px solid #3d1c07; border-radius: 6px; color: #fff; font-weight: bold; cursor: pointer; text-shadow: 1px 1px #000; padding: 4px 12px; font-size: 12px;
         }
 
         .entity { 
@@ -276,7 +280,7 @@
         .newspaper-angry { animation: angryShake 0.15s infinite linear !important; filter: drop-shadow(0 0 8px #ff0000) !important; }
 
         /* ĐẠN VÀ ĐẠN LỬA XANH DƯƠNG */
-        .bullet { background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 5px #a5d6a7; pointer-events: none; will-change: left; }
+        .bullet { background: #81c784; border: 1px solid #2e7d32; border-radius: 50%; position: absolute; z-index: 3; box-shadow: 0 0 5px #a5d6a7; pointer-events: none; will-change: left; width: 10px; height: 10px; }
         .bullet.ice-bullet { background: #63b3ed; border: 1px solid #3182ce; box-shadow: 0 0 5px #90cdf4; }
         .bullet.fire-bullet { background: #ff7043; border: 1px solid #d84315; box-shadow: 0 0 8px #ff3d00, 0 0 12px #ff9100; border-radius: 40%; }
         .bullet.blue-fire-bullet { background: #00e5ff; border: 1px solid #00838f; box-shadow: 0 0 10px #00e5ff, 0 0 18px #00b0ff; border-radius: 40%; }
@@ -384,12 +388,12 @@
         .sun-drop { 
             position: absolute; cursor: pointer; z-index: 10; transform: translate(-50%, -50%);
             animation: bounce 0.6s infinite alternate; filter: drop-shadow(0 2px 5px rgba(255, 235, 59, 0.8)); will-change: left, top;
-            font-size: 32px;
+            font-size: 34px;
         }
 
         .plantfood-drop {
             position: absolute; cursor: pointer; z-index: 11; transform: translate(-50%, -50%);
-            animation: bounce 0.5s infinite alternate; filter: drop-shadow(0 0 8px #00ff87); font-size: 1.6em; will-change: left, top;
+            animation: bounce 0.5s infinite alternate; filter: drop-shadow(0 0 8px #00ff87); font-size: 1.8em; will-change: left, top;
         }
         
         .lawnmower { position: absolute; z-index: 4; pointer-events: none; }
@@ -411,83 +415,57 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background: radial-gradient(circle, #2e7d32 0%, #0d2810 100%); 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            z-index: 20; text-align: center; padding: 4px;
+            z-index: 20; text-align: center; padding: 10px;
         }
 
         .pvz-menu-board {
             background: linear-gradient(to bottom, rgba(50, 25, 10, 0.98), rgba(30, 12, 4, 0.98));
-            border: 2px solid #5c3a21; border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.9);
-            width: 95%; max-width: 480px; max-height: 94vh; overflow-y: auto; padding: 6px 10px; text-align: center;
+            border: 3px solid #5c3a21; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.9);
+            width: 90%; max-width: 520px; max-height: 90vh; overflow-y: auto; padding: 15px; text-align: center;
         }
 
         .pvz-menu-btn {
             background: linear-gradient(to bottom, #a0522d, #6b3012);
-            border: 1.5px solid #3d1c07; border-radius: 5px; color: #fff; font-weight: bold; cursor: pointer;
-            box-shadow: 0 2px #2b1304; display: flex; flex-direction: column; align-items: center; text-shadow: 1px 1px #000; width: 100%;
+            border: 2px solid #3d1c07; border-radius: 6px; color: #fff; font-weight: bold; cursor: pointer;
+            box-shadow: 0 3px #2b1304; display: flex; flex-direction: column; align-items: center; text-shadow: 1px 1px #000; width: 100%;
+            padding: 8px; font-size: 14px; margin-top: 6px;
         }
         .pvz-menu-btn:active { transform: translateY(1px); }
         .hidden { display: none !important; }
 
         .level-grid {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; max-height: 55vh;
-            overflow-y: auto; padding: 4px; background: rgba(0,0,0,0.4); border-radius: 6px; border: 1px solid #442200; margin: 4px 0;
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-height: 50vh;
+            overflow-y: auto; padding: 8px; background: rgba(0,0,0,0.4); border-radius: 8px; border: 1.5px solid #442200; margin: 8px 0;
         }
         
         .level-card {
-            background: linear-gradient(to bottom, #15803d, #166534); border: 1.5px solid #22c55e;
-            border-radius: 5px; color: #fff; font-weight: bold; font-size: 0.8em; padding: 5px 1px;
+            background: linear-gradient(to bottom, #15803d, #166534); border: 2px solid #22c55e;
+            border-radius: 6px; color: #fff; font-weight: bold; font-size: 1em; padding: 10px 2px;
             cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         .level-card.boss-level { background: linear-gradient(to bottom, #dc2626, #991b1b); border-color: #f87171; }
         .level-card.locked { background: linear-gradient(to bottom, #374151, #1f2937); border-color: #4b5563; color: #9ca3af; cursor: not-allowed; opacity: 0.6; }
-
-        @media (orientation: landscape) {
-            .pvz-logo-container { margin-bottom: 5px; }
-            .pvz-title-main { font-size: 2.2em; }
-            .pvz-title-sub { font-size: 1.2em; }
-            .title-menu-box { max-width: 420px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-            .title-btn { padding: 6px 10px; font-size: 0.85em; }
-            .ui { padding: 1px 4px; font-size: 9px; }
-            .seed-card { padding: 1px 3px; font-size: 8px; min-width: 40px; height: 32px; }
-            .seed-card img { width: 16px; height: 16px; }
-            .sun-drop { font-size: 28px; }
-            .bullet { width: 8px; height: 8px; }
-        }
-
-        @media (max-width: 768px) and (orientation: portrait) {
-            .ui { padding: 1px 2px; font-size: 8px; gap: 1px; }
-            .seed-card { padding: 1px 2px; font-size: 7.5px; min-width: 30px; height: 32px; }
-            .seed-card img { width: 14px; height: 14px; }
-            .control-btn, .menu-btn-game { padding: 2px 4px; font-size: 8px; }
-            .sun-drop { font-size: 24px; }
-            .lawnmower { width: 26px; height: 26px; }
-            .active-mower { width: 30px; height: 30px; }
-            .bullet { width: 6px; height: 6px; }
-            .explosion-fx { font-size: 32px; }
-            .pvz-menu-board { max-width: 320px; padding: 4px 6px; }
-            .pvz-menu-btn { padding: 3px 6px; font-size: 9.5px; margin-top: 3px; }
-        }
     </style>
 </head>
 <body>
     <div id="game-wrapper">
         <div class="ui hidden" id="game-ui">
-            <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1px 4px;">
-                <span style="font-size: 0.9em;">☀️ <span id="sun-count" style="color: #ffeb3b;">50</span></span>
+            <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 4px 8px;">
+                <span style="font-size: 1.1em;">☀️ <span id="sun-count" style="color: #ffeb3b; font-size: 1.2em;">50</span></span>
                 
                 <div class="plantfood-container" id="btn-plantfood" onclick="selectPlant('plantfood')">
-                    <span style="font-size: 1em; margin-right: 2px;">🌿</span>
-                    <span style="color: #fff; font-size: 0.8em; font-weight: bold;">x<span id="plantfood-count">3</span></span>
+                    <span style="font-size: 1.2em; margin-right: 4px;">🌿</span>
+                    <span style="color: #fff; font-size: 0.95em; font-weight: bold;">x<span id="plantfood-count">3</span></span>
                 </div>
 
-                <span style="font-size: 0.85em;">Màn: <span id="level-display" style="color: #00ffff;">1</span></span>
-                <div style="display: flex; align-items: center; gap: 4px; width: 25%;">
-                    <div style="flex-grow: 1; background: #222; height: 8px; border-radius: 4px; position: relative; overflow: hidden; border: 1px solid #555;">
+                <span style="font-size: 1em;">Màn: <span id="level-display" style="color: #00ffff; font-size: 1.1em;">1</span></span>
+                <div style="display: flex; align-items: center; gap: 6px; width: 22%;">
+                    <div style="flex-grow: 1; background: #222; height: 10px; border-radius: 5px; position: relative; overflow: hidden; border: 1px solid #555;">
                         <div id="progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #48bb78, #38a169); transition: width 0.3s;"></div>
                     </div>
-                    <span style="font-size: 1em; line-height: 1;">🚩</span>
+                    <span style="font-size: 1.1em; line-height: 1;">🚩</span>
                 </div>
-                <div style="display: flex; gap: 3px;">
+                <div style="display: flex; gap: 6px;">
                     <button class="control-btn" onclick="toggleFullScreen()">🛜 Fullscreen</button>
                     <button class="menu-btn-game" id="pause-btn" onclick="togglePause()">MENU</button>
                 </div>
@@ -497,50 +475,50 @@
                 <div class="seed-card" onclick="selectPlant('peashooter')" id="btn-peashooter">
                     <div class="cooldown-overlay" id="cd-peashooter"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
-                    <span>Đậu</span><span style="color:#ffeb3b; font-size:0.75em;">100☀️</span>
+                    <span>Đậu</span><span style="color:#ffeb3b; font-size:9px;">100☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('snowpea')" id="btn-snowpea">
                     <div class="cooldown-overlay" id="cd-snowpea"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2363b3ed'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%233182ce'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%231a202c'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Snow Pea">
-                    <span>Đậu Băng</span><span style="color:#ffeb3b; font-size:0.75em;">175☀️</span>
+                    <span>Đậu Băng</span><span style="color:#ffeb3b; font-size:9px;">175☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('torchwood')" id="btn-torchwood">
                     <div class="cooldown-overlay" id="cd-torchwood"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='30' y='45' width='40' height='45' rx='8' fill='%23795548'/><polygon points='50,5 30,45 70,45' fill='%23ff5722'/><polygon points='50,15 38,45 62,45' fill='%23ffeb3b'/><circle cx='42' cy='60' r='4' fill='%23fff'/><circle cx='42' cy='60' r='2' fill='%23000'/><circle cx='58' cy='60' r='4' fill='%23fff'/><circle cx='58' cy='60' r='2' fill='%23000'/></svg>" alt="Torchwood">
-                    <span>Đuốc</span><span style="color:#ffeb3b; font-size:0.75em;">175☀️</span>
+                    <span>Đuốc</span><span style="color:#ffeb3b; font-size:9px;">175☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('chomper')" id="btn-chomper">
                     <div class="cooldown-overlay" id="cd-chomper"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='45' r='30' fill='%239c27b0'/><path d='M35 40 Q75 42 74 72 Q50 78 30 62 Z' fill='%233b003b'/><polygon points='42,42 46,48 50,42' fill='%23fff'/><polygon points='52,43 57,50 62,43' fill='%23fff'/></svg>" alt="Chomper">
-                    <span>Ăn Thịt</span><span style="color:#ffeb3b; font-size:0.75em;">150☀️</span>
+                    <span>Ăn Thịt</span><span style="color:#ffeb3b; font-size:9px;">150☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('bonkchoy')" id="btn-bonkchoy">
                     <div class="cooldown-overlay" id="cd-bonkchoy"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='55' r='25' fill='%2348bb78'/><ellipse cx='26' cy='45' rx='14' ry='18' fill='%2338a169'/><ellipse cx='74' cy='45' rx='14' ry='18' fill='%2338a169'/><circle cx='42' cy='50' r='4' fill='%23fff'/><circle cx='42' cy='50' r='2' fill='%23000'/><circle cx='58' cy='50' r='4' fill='%23fff'/><circle cx='58' cy='50' r='2' fill='%23000'/><path d='M45 62 Q50 66 55 62' fill='none' stroke='%231a202c' stroke-width='2.5'/><circle cx='18' cy='35' r='12' fill='%23276749'/><circle cx='82' cy='35' r='12' fill='%23276749'/></svg>" alt="Bonk Choy">
-                    <span>Cải Đấm</span><span style="color:#ffeb3b; font-size:0.75em;">150☀️</span>
+                    <span>Cải Đấm</span><span style="color:#ffeb3b; font-size:9px;">150☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('sunflower')" id="btn-sunflower">
                     <div class="cooldown-overlay" id="cd-sunflower"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23ecc94b'><circle cx='50' cy='20' r='12'/><circle cx='80' cy='32' r='12'/><circle cx='92' cy='60' r='12'/><circle cx='75' cy='85' r='12'/><circle cx='45' cy='90' r='12'/><circle cx='20' cy='80' r='12'/><circle cx='8' cy='55' r='12'/><circle cx='20' cy='30' r='12'/></g><circle cx='50' cy='55' r='28' fill='%23d69e2e'/><circle cx='40' cy='48' r='6' fill='%23fff'/><circle cx='40' cy='48' r='3' fill='%23000'/><circle cx='60' cy='48' r='6' fill='%23fff'/><circle cx='60' cy='48' r='3' fill='%23000'/></svg>" alt="Sunflower">
-                    <span>Hoa</span><span style="color:#ffeb3b; font-size:0.75em;">50☀️</span>
+                    <span>Hoa</span><span style="color:#ffeb3b; font-size:9px;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('wallnut')" id="btn-wallnut">
                     <div class="cooldown-overlay" id="cd-wallnut"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='52' rx='32' ry='38' fill='%23d69e2e'/><ellipse cx='50' cy='52' rx='27' ry='33' fill='%23b7791f'/><ellipse cx='42' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='42' cy='46' r='4' fill='%23000'/><ellipse cx='62' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='62' cy='46' r='4' fill='%23000'/></svg>" alt="Wallnut">
-                    <span>Khoai</span><span style="color:#ffeb3b; font-size:0.75em;">50☀️</span>
+                    <span>Khoai</span><span style="color:#ffeb3b; font-size:9px;">50☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('potatomine')" id="btn-potatomine">
                     <div class="cooldown-overlay" id="cd-potatomine"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='80' rx='16' ry='6' fill='%2354381e'/><path d='M47 80 L47 55 Q47 42 50 36 Q53 42 53 55 L53 80 Z' fill='%2348bb78'/><circle cx='50' cy='35' r='6' fill='%23e53e3e'/><path d='M50 45 Q42 43 44 52 Z' fill='%2338a169'/></svg>" alt="Potato Mine">
-                    <span>Mìn</span><span style="color:#ffeb3b; font-size:0.75em;">25☀️</span>
+                    <span>Mìn</span><span style="color:#ffeb3b; font-size:9px;">25☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('cherry')" id="btn-cherry">
                     <div class="cooldown-overlay" id="cd-cherry"></div>
                     <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M35 65 Q45 25 65 30' fill='none' stroke='%2338a169' stroke-width='5'/><circle cx='32' cy='68' r='22' fill='%23e53e3e'/><circle cx='68' cy='68' r='22' fill='%23e53e3e'/></svg>" alt="Cherry">
-                    <span>Bom</span><span style="color:#ffeb3b; font-size:0.75em;">150☀️</span>
+                    <span>Bom</span><span style="color:#ffeb3b; font-size:9px;">150☀️</span>
                 </div>
                 <div class="seed-card" onclick="selectPlant('shovel')" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
-                    <span style="font-size: 1.1em;">⛏️</span>
+                    <span style="font-size: 1.3em;">⛏️</span>
                     <span>Xẻng</span>
                 </div>
             </div>
@@ -553,7 +531,7 @@
             <div id="title-screen" class="screen-overlay">
                 <div class="pvz-logo-container">
                     <h1 class="pvz-title-main">PLANTS vs ZOMBIES</h1>
-                    <div class="pvz-title-sub">MOBILE EDITION</div>
+                    <div class="pvz-title-sub">PC & MOBILE EDITION</div>
                 </div>
 
                 <div class="title-menu-box hidden" id="title-menu-buttons">
@@ -569,7 +547,7 @@
                     <button class="title-btn secondary" onclick="openSettings()">
                         <span>⚙️</span> CÀI ĐẶT ÂM LƯỢNG
                     </button>
-                    <button class="title-btn secondary" onclick="openResetModal()" style="background: linear-gradient(to bottom, #b91c1c, #991b1b); border-color: #7f1d1d; grid-column: span 2;">
+                    <button class="title-btn secondary" onclick="openResetModal()" style="background: linear-gradient(to bottom, #b91c1c, #991b1b); border-color: #7f1d1d;">
                         <span>🔄</span> CHƠI LẠI TỪ ĐẦU
                     </button>
                 </div>
@@ -583,17 +561,17 @@
             <!-- MENU CHỌN MÀN CHƠI -->
             <div id="menu-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board">
-                    <h1 style="color: #66bb6a; margin-bottom: 2px; font-size: 1.1em; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI (1-50)</h1>
-                    <p style="color: #d0d0d0; margin-bottom: 2px; font-size: 0.75em;">🔴 Màn màu đỏ = BOSS MÙA VỤ!</p>
+                    <h1 style="color: #66bb6a; margin-bottom: 6px; font-size: 1.4em; text-shadow: 2px 2px #000;">CHỌN MÀN CHƠI (1-50)</h1>
+                    <p style="color: #d0d0d0; margin-bottom: 6px; font-size: 0.9em;">🔴 Màn màu đỏ = BOSS MÙA VỤ!</p>
                     
                     <div class="level-grid" id="level-grid-container"></div>
 
-                    <div style="display: flex; gap: 4px; margin-top: 4px; justify-content: center; width: 100%;">
-                        <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #0284c7, #0369a1); padding: 4px 6px; flex: 1;">
-                            <span style="font-size: 0.8em;">🏠 VỀ TRANG CHỦ</span>
+                    <div style="display: flex; gap: 8px; margin-top: 8px; justify-content: center; width: 100%;">
+                        <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #0284c7, #0369a1); padding: 8px; flex: 1; margin:0;">
+                            <span>🏠 VỀ TRANG CHỦ</span>
                         </div>
-                        <div class="pvz-menu-btn" onclick="openSettings()" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 4px 6px; flex: 1;">
-                            <span style="font-size: 0.8em;">⚙️ ÂM LƯỢNG</span>
+                        <div class="pvz-menu-btn" onclick="openSettings()" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 8px; flex: 1; margin:0;">
+                            <span>⚙️ ÂM LƯỢNG</span>
                         </div>
                     </div>
                 </div>
@@ -601,14 +579,14 @@
 
             <!-- POPUP XÁC NHẬN CHƠI LẠI -->
             <div id="reset-modal-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.8); z-index: 60;">
-                <div class="pvz-menu-board" style="max-width: 300px; border-color: #ef4444;">
-                    <h2 style="color: #ff5252; margin-bottom: 4px; font-size: 1em; text-shadow: 2px 2px #000;">⚠️ XÁC NHẬN CHƠI LẠI?</h2>
-                    <p style="color: #eee; margin-bottom: 8px; font-size: 0.8em; line-height: 1.2;">Bạn có chắc chắn muốn xóa toàn bộ tiến trình và quay về Màn 1 không?</p>
-                    <div style="display: flex; gap: 6px;">
-                        <div class="pvz-menu-btn" onclick="confirmResetProgress()" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 5px;">
+                <div class="pvz-menu-board" style="max-width: 340px; border-color: #ef4444;">
+                    <h2 style="color: #ff5252; margin-bottom: 8px; font-size: 1.2em; text-shadow: 2px 2px #000;">⚠️ XÁC NHẬN CHƠI LẠI?</h2>
+                    <p style="color: #eee; margin-bottom: 15px; font-size: 0.95em; line-height: 1.3;">Bạn có chắc chắn muốn xóa toàn bộ tiến trình và quay về Màn 1 không?</p>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="pvz-menu-btn" onclick="confirmResetProgress()" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 8px; margin:0;">
                             <span>ĐỒNG Ý</span>
                         </div>
-                        <div class="pvz-menu-btn" onclick="closeResetModal()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 5px;">
+                        <div class="pvz-menu-btn" onclick="closeResetModal()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 8px; margin:0;">
                             <span>HỦY BỎ</span>
                         </div>
                     </div>
@@ -617,20 +595,20 @@
 
             <!-- Bảng Cài Đặt -->
             <div id="settings-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.85); z-index: 55;">
-                <div class="pvz-menu-board">
-                    <h1 style="color: #ffeb3b; margin-bottom: 6px; font-size: 1.1em; text-shadow: 2px 2px #000;">⚙️ CÀI ĐẶT ÂM LƯỢNG</h1>
+                <div class="pvz-menu-board" style="max-width: 360px;">
+                    <h1 style="color: #ffeb3b; margin-bottom: 12px; font-size: 1.3em; text-shadow: 2px 2px #000;">⚙️ CÀI ĐẶT ÂM LƯỢNG</h1>
                     
-                    <div style="margin: 4px 0; text-align: left; font-size: 0.85em;">
+                    <div style="margin: 10px 0; text-align: left; font-size: 1em;">
                         <label style="color: #4ade80; font-weight: bold;">🎵 Nhạc nền (BGM): <span id="bgm-val">50%</span></label>
-                        <input type="range" id="bgm-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 2px;" oninput="updateBgmVolume(this.value)">
+                        <input type="range" id="bgm-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 6px;" oninput="updateBgmVolume(this.value)">
                     </div>
 
-                    <div style="margin: 4px 0; text-align: left; font-size: 0.85em;">
+                    <div style="margin: 10px 0; text-align: left; font-size: 1em;">
                         <label style="color: #60a5fa; font-weight: bold;">🔊 Hiệu ứng (SFX): <span id="sfx-val">50%</span></label>
-                        <input type="range" id="sfx-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 2px;" oninput="updateSfxVolume(this.value)">
+                        <input type="range" id="sfx-slider" min="0" max="1" step="0.1" value="0.5" style="width: 100%; cursor: pointer; margin-top: 6px;" oninput="updateSfxVolume(this.value)">
                     </div>
 
-                    <div class="pvz-menu-btn" onclick="closeSettings()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 5px 8px; margin-top: 6px;">
+                    <div class="pvz-menu-btn" onclick="closeSettings()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 10px; margin-top: 15px;">
                         <span>QUAY LẠI</span>
                     </div>
                 </div>
@@ -638,16 +616,16 @@
 
             <!-- BẢNG TẠM DỪNG IN-GAME -->
             <div id="pause-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.75);">
-                <div class="pvz-menu-board">
-                    <h1 style="color: #ffeb3b; margin-bottom: 2px; font-size: 1.1em; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
-                    <p style="color: #ccc; margin-bottom: 4px; font-size: 0.8em;">Trò chơi đang tạm dừng</p>
-                    <div class="pvz-menu-btn" onclick="togglePause()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 5px 8px; margin-top: 3px;">
+                <div class="pvz-menu-board" style="max-width: 340px;">
+                    <h1 style="color: #ffeb3b; margin-bottom: 6px; font-size: 1.3em; text-shadow: 2px 2px #000;">⏸️ TẠM DỪNG</h1>
+                    <p style="color: #ccc; margin-bottom: 12px; font-size: 0.95em;">Trò chơi đang tạm dừng</p>
+                    <div class="pvz-menu-btn" onclick="togglePause()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 10px;">
                         <span>▶️ TIẾP TỤC CHƠI</span>
                     </div>
-                    <div class="pvz-menu-btn" onclick="openSettings()" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 5px 8px; margin-top: 3px;">
+                    <div class="pvz-menu-btn" onclick="openSettings()" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 10px;">
                         <span>⚙️ CÀI ĐẶT ÂM LƯỢNG</span>
                     </div>
-                    <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 5px 8px; margin-top: 3px;">
+                    <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 10px;">
                         <span>🏠 VỀ MÀN HÌNH CHÍNH</span>
                     </div>
                 </div>
@@ -655,10 +633,10 @@
 
             <!-- Màn hình Game Over -->
             <div id="gameover-screen" class="screen-overlay hidden">
-                <div class="pvz-menu-board">
-                    <h1 style="color: #ff5252; margin-bottom: 2px; font-size: 1.1em; text-shadow: 2px 2px #000;">GAME OVER</h1>
-                    <p style="color: #ccc; margin-bottom: 4px; font-size: 0.8em;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
-                    <div class="pvz-menu-btn" onclick="showTitleScreen()" style="padding: 5px 8px; margin-top: 4px;">
+                <div class="pvz-menu-board" style="max-width: 340px;">
+                    <h1 style="color: #ff5252; margin-bottom: 6px; font-size: 1.3em; text-shadow: 2px 2px #000;">GAME OVER</h1>
+                    <p style="color: #ccc; margin-bottom: 12px; font-size: 0.95em;">Xe cắt cỏ đã hết & Zombie đã vào nhà!</p>
+                    <div class="pvz-menu-btn" onclick="showTitleScreen()" style="padding: 10px; margin-top: 10px;">
                         <span>VỀ MÀN HÌNH CHÍNH</span>
                     </div>
                 </div>
@@ -666,13 +644,13 @@
 
             <!-- Màn hình Chiến Thắng -->
             <div id="win-screen" class="screen-overlay hidden">
-                <div class="pvz-menu-board" style="position: relative; z-index: 22;">
-                    <h1 style="color: #00e676; margin-bottom: 2px; font-size: 1.1em; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
-                    <p style="color: #ccc; margin-bottom: 4px; font-size: 0.8em;" id="win-message">Bạn đã hoàn thành màn chơi!</p>
-                    <div class="pvz-menu-btn" onclick="nextLevelOrMenu()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 5px 8px; margin-top: 4px;">
+                <div class="pvz-menu-board" style="position: relative; z-index: 22; max-width: 360px;">
+                    <h1 style="color: #00e676; margin-bottom: 6px; font-size: 1.3em; text-shadow: 2px 2px #000;">CHIẾN THẮNG! 🎉</h1>
+                    <p style="color: #ccc; margin-bottom: 12px; font-size: 0.95em;" id="win-message">Bạn đã hoàn thành màn chơi!</p>
+                    <div class="pvz-menu-btn" onclick="nextLevelOrMenu()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 10px; margin-top: 8px;">
                         <span id="win-btn-text">MÀN TIẾP THEO ▶️</span>
                     </div>
-                    <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #0284c7, #0369a1); padding: 5px 8px; margin-top: 5px;">
+                    <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #0284c7, #0369a1); padding: 10px; margin-top: 8px;">
                         <span>🏠 VỀ MENU CHÍNH</span>
                     </div>
                 </div>
@@ -839,9 +817,9 @@
                 if(i % 10 === 0) card.classList.add('boss-level');
                 if(i > maxUnlockedLevel) card.classList.add('locked');
 
-                card.innerHTML = `<span style="font-size:1em; font-weight:900;">${i}</span>`;
-                if(i % 10 === 0) card.innerHTML += `<span style="font-size:0.6em; color:#ffeb3b;">BOSS</span>`;
-                else if(i > maxUnlockedLevel) card.innerHTML += `<span style="font-size:0.6em;">🔒</span>`;
+                card.innerHTML = `<span style="font-size:1.1em; font-weight:900;">${i}</span>`;
+                if(i % 10 === 0) card.innerHTML += `<span style="font-size:0.65em; color:#ffeb3b;">BOSS</span>`;
+                else if(i > maxUnlockedLevel) card.innerHTML += `<span style="font-size:0.65em;">🔒</span>`;
 
                 card.onclick = () => {
                     if(i <= maxUnlockedLevel) {
@@ -1314,7 +1292,7 @@
             let banner = document.createElement('div');
             banner.className = 'screen-overlay';
             banner.style.background = 'rgba(180, 0, 0, 0.4)';
-            banner.innerHTML = `<h1 style="color: #ffeb3b; text-shadow: 2px 2px #000; font-size: 1.1em;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 0.8em;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
+            banner.innerHTML = `<h1 style="color: #ffeb3b; text-shadow: 2px 2px #000; font-size: 1.3em;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 1em;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
             container.appendChild(banner);
 
             for (let r = 0; r < gridRows; r++) {
@@ -1973,9 +1951,6 @@
                     if(p.shootTimer > 4) { 
                         let bDiv = document.createElement('div');
                         bDiv.className = p.isIce ? 'bullet ice-bullet' : 'bullet';
-                        let bulletSize = window.innerWidth > 768 ? '11px' : '6px';
-                        bDiv.style.width = bulletSize;
-                        bDiv.style.height = bulletSize;
                         bDiv.style.left = ((p.col + 1.1) * cellW) + 'px';
                         bDiv.style.top = (p.row * cellH + cellH * 0.4) + 'px';
                         container.appendChild(bDiv);
@@ -1995,9 +1970,6 @@
                         if(p.shootTimer > 45) {
                             let bDiv = document.createElement('div');
                             bDiv.className = (p.type === 'snowpea') ? 'bullet ice-bullet' : 'bullet';
-                            let bulletSize = window.innerWidth > 768 ? '11px' : '6px';
-                            bDiv.style.width = bulletSize;
-                            bDiv.style.height = bulletSize;
                             bDiv.style.left = ((p.col + 1.1) * cellW) + 'px';
                             bDiv.style.top = (p.row * cellH + cellH * 0.4) + 'px';
                             container.appendChild(bDiv);
@@ -2235,7 +2207,6 @@
                 if (p.type === 'potatomine') {
                     img.src = p.armed ? PLANT_IMAGES.potatomine_armed : PLANT_IMAGES.potatomine_unarmed;
                 } else if (p.type === 'torchwood') {
-                    /* ĐỔI THẲNG NGUYÊN MẪU SVG SANG LỬA XANH KHI NẠP LÁ THẦN */
                     img.src = p.isBlueFlame ? PLANT_IMAGES.torchwood_blue : PLANT_IMAGES.torchwood;
                 } else if (p.type === 'chomper') {
                     img.src = p.isChewing ? PLANT_IMAGES.chomper_chewing : PLANT_IMAGES.chomper;
