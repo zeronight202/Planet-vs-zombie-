@@ -762,25 +762,42 @@
         gameBGM.volume = 0.5;
         gameBGM.load();
 
+        let winBGM = new Audio('Win.mp3');
+        winBGM.loop = false;
+        winBGM.volume = 0.5;
+        winBGM.load();
+
         let sfxVolume = 0.5;
         let plantFoodCount = 3;
         let plantFoodDrops = []; 
         let isDraggingPlantFood = false;
 
-        function ensureMenuBGMPlay() {
+        function stopAllBGM() {
+            menuBGM.pause();
+            menuBGM.currentTime = 0;
             gameBGM.pause();
             gameBGM.currentTime = 0;
+            winBGM.pause();
+            winBGM.currentTime = 0;
+        }
+
+        function ensureMenuBGMPlay() {
+            stopAllBGM();
             if (menuBGM.paused) {
                 menuBGM.play().catch(e => {});
             }
         }
 
         function ensureGameBGMPlay() {
-            menuBGM.pause();
-            menuBGM.currentTime = 0;
+            stopAllBGM();
             if (gameBGM.paused) {
                 gameBGM.play().catch(e => {});
             }
+        }
+
+        function playWinBGM() {
+            stopAllBGM();
+            winBGM.play().catch(e => {});
         }
 
         function updatePlayButtonText() {
@@ -898,6 +915,7 @@
         function updateBgmVolume(val) {
             menuBGM.volume = val;
             gameBGM.volume = val;
+            winBGM.volume = val;
             document.getElementById('bgm-val').innerText = Math.round(val * 100) + '%';
         }
 
@@ -907,11 +925,6 @@
         }
 
         function openSettings() {
-            if (gameStarted) {
-                ensureGameBGMPlay();
-            } else {
-                ensureMenuBGMPlay();
-            }
             document.getElementById('settings-overlay').classList.remove('hidden');
         }
 
@@ -1341,7 +1354,6 @@
                 if(currentLevelConfig.isFinalBoss) {
                     type = (r % 2 === 0) ? 'zomboss' : 'gargantuar';
                 } else if(currentLevelConfig.isBoss) {
-                    // Màn boss (10, 20, 30, 40): đợt cuối xuất hiện Gargantuar ở các hàng 1 và 3
                     type = (r === 1 || r === 3) ? 'gargantuar' : 'buckethead';
                 } else {
                     type = getRandomZombieType(currentLevelConfig);
@@ -1412,7 +1424,6 @@
                     if(currentLevelConfig.isFinalBoss) {
                         type = (Math.random() < 0.25) ? 'zomboss' : (Math.random() < 0.6 ? 'buckethead' : 'gargantuar');
                     } else {
-                        // Các màn boss (10, 20, 30, 40) hoặc màn thường KHÔNG xuất hiện Gargantuar giữa màn
                         type = getRandomZombieType(currentLevelConfig);
                     }
 
@@ -1479,6 +1490,7 @@
             document.getElementById('win-message').innerText = currentLevel === 50 ? `🎉 CHÚC MỪNG BẠN ĐÃ PHÁ ĐẢO GAME! 🎉` : `Bạn đã hoàn thành Màn ${currentLevel}!`;
             document.getElementById('win-btn-text').innerText = (currentLevel < 50) ? `MÀN TIẾP THEO (${currentLevel + 1}) ▶️` : `VỀ MÀN HÌNH CHÍNH 🏠`;
 
+            playWinBGM(); // Tắt BGM cũ và phát nhạc Win.mp3
             winScreen.classList.remove('hidden');
             startFireworks();
         }
@@ -2357,7 +2369,6 @@
             }
         }
 
-        // Tự động phát nhạc menu ngay khi tải trang
         window.addEventListener('DOMContentLoaded', () => {
             menuBGM.play().catch(e => {});
             initTitleScreen();
