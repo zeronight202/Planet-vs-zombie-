@@ -380,10 +380,17 @@
 
         @keyframes explodeAnim {
             0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; filter: brightness(2); }
-            50% { transform: translate(-50%, -50%) scale(2); opacity: 0.9; filter: brightness(1.5); }
-            100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(4); opacity: 0.9; filter: brightness(1.6); }
+            100% { transform: translate(-50%, -50%) scale(5.5); opacity: 0; }
         }
-        .explosion-fx { position: absolute; z-index: 25; pointer-events: none; animation: explodeAnim 0.5s ease-out forwards; }
+        .explosion-fx { 
+            position: absolute; 
+            z-index: 25; 
+            pointer-events: none; 
+            font-size: 5em; 
+            transform: translate(-50%, -50%);
+            animation: explodeAnim 0.6s ease-out forwards; 
+        }
 
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-5px); } }
         
@@ -741,23 +748,21 @@
 
         let maxUnlockedLevel = parseInt(localStorage.getItem('pvz2_unlocked_level')) || 1;
         
-        // --- ÂM NHẠC MENU & GAME ---
         let menuBGM = new Audio('plantvszombie.mp3');
         menuBGM.loop = true;
         menuBGM.volume = 0.5;
-        menuBGM.load(); // Tải trước file âm thanh ngay khi load trang
+        menuBGM.load();
 
         let gameBGM = new Audio('themesoundplntsv.mp3');
         gameBGM.loop = true;
         gameBGM.volume = 0.5;
-        gameBGM.load(); // Tải trước file âm thanh ngay khi load trang
+        gameBGM.load();
 
         let sfxVolume = 0.5;
         let plantFoodCount = 3;
         let plantFoodDrops = []; 
         let isDraggingPlantFood = false;
 
-        // Bắt sự kiện chạm/click bất kỳ trên trang để kích hoạt Audio Autoplay
         window.addEventListener('pointerdown', function initAudioOnUserGesture() {
             if (menuBGM.paused && !gameStarted) {
                 menuBGM.play().catch(e => {});
@@ -1166,7 +1171,7 @@
 
         function startGame(level) {
             initAudio(); 
-            ensureGameBGMPlay(); // Dừng triệt để nhạc Menu và chuyển sang nhạc Gameplay
+            ensureGameBGMPlay();
             
             currentLevel = level;
             currentLevelConfig = LEVEL_CONFIGS[currentLevel - 1];
@@ -1561,6 +1566,26 @@
                                 if(z.el) z.el.remove();
                                 z.hp = -1;
                             });
+
+                            // Nhả cầu năng lượng tím độc dược tấn công dọc hàng giống game gốc
+                            let spitDiv = document.createElement('div');
+                            spitDiv.className = 'bullet';
+                            spitDiv.style.width = '24px';
+                            spitDiv.style.height = '24px';
+                            spitDiv.style.background = '#9c27b0';
+                            spitDiv.style.boxShadow = '0 0 15px #ab47bc, 0 0 25px #ce93d8';
+                            spitDiv.style.left = ((targetPlant.col + 1.2) * cellW) + 'px';
+                            spitDiv.style.top = (targetPlant.row * cellH + cellH * 0.35) + 'px';
+                            container.appendChild(spitDiv);
+
+                            bullets.push({
+                                row: targetPlant.row,
+                                col: targetPlant.col + 1.2,
+                                isFire: true,
+                                isChomperSpit: true,
+                                el: spitDiv
+                            });
+
                             targetPlant.chewTimer = 0;
                             targetPlant.isChewing = false;
                         }
@@ -1755,10 +1780,10 @@
             activeMowers = activeMowers.filter(m => m.col < gridCols);
 
             bullets.forEach(b => {
-                b.col += 0.14 * dt;
+                b.col += (b.isChomperSpit ? 0.25 : 0.14) * dt;
 
                 let torchwood = plants.find(p => p.type === 'torchwood' && p.row === b.row && Math.abs((p.col + 1) - b.col) < 0.3);
-                if (torchwood) {
+                if (torchwood && !b.isChomperSpit) {
                     if (torchwood.isBlueFlame) {
                         b.isFire = true;
                         b.isBlue = true;
@@ -1877,10 +1902,10 @@
                     fx.style.left = ((screenCol + 0.5) * cellW) + 'px';
                     fx.style.top = ((cherry.row + 0.5) * cellH) + 'px';
                     container.appendChild(fx);
-                    setTimeout(() => fx.remove(), 500);
+                    setTimeout(() => fx.remove(), 600);
 
                     zombies = zombies.filter(z => {
-                        let inRange = (z.row >= cherry.row - 1 && z.row <= cherry.row + 1 && Math.abs(z.col - (cherry.col + 1)) <= 1.2);
+                        let inRange = (z.row >= cherry.row - 1 && z.row <= cherry.row + 1 && Math.abs(z.col - (cherry.col + 1)) <= 1.8);
                         if(inRange) {
                             if(z.hasPlantFood) spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
                             if(z.el) z.el.remove();
@@ -1917,7 +1942,7 @@
                         fx.style.left = ((screenCol + 0.5) * cellW) + 'px';
                         fx.style.top = ((hitPlant.row + 0.5) * cellH) + 'px';
                         container.appendChild(fx);
-                        setTimeout(() => fx.remove(), 500);
+                        setTimeout(() => fx.remove(), 600);
 
                     } else if (hitPlant.type !== 'cherry') {
                         hitPlant.hp -= 0.8 * dt;
@@ -2127,9 +2152,11 @@
             bullets.forEach(b => {
                 if(b.hitDone) return;
                 zombies.forEach(z => {
-                    if(!b.hitDone && b.row === z.row && Math.abs(b.col - z.col) < 0.35) {
+                    if(!b.hitDone && b.row === z.row && Math.abs(b.col - z.col) < 0.45) {
                         let damage = 12;
-                        if (b.isFire) {
+                        if (b.isChomperSpit) {
+                            damage = 250; 
+                        } else if (b.isFire) {
                             damage = b.isBlue ? 36 : 24; 
                             z.slowTimer = 0; 
                         } else if (b.isIce) {
@@ -2139,7 +2166,9 @@
                         z.hp -= damage;
                         z.hitFlash = 6;
                         playSound('hit');
-                        b.hitDone = true;
+                        if (!b.isChomperSpit) {
+                            b.hitDone = true;
+                        }
                     }
                 });
             });
