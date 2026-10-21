@@ -682,11 +682,13 @@
         const LEVEL_CONFIGS = Array.from({ length: 50 }, (_, i) => {
             let levelNum = i + 1;
             let isBoss = (levelNum % 10 === 0);
+            let isFinalBoss = (levelNum === 50);
             
             return {
                 level: levelNum,
                 isBoss: isBoss,
-                totalZombies: isBoss ? (18 + levelNum * 1.2) : (8 + levelNum * 1.2),
+                isFinalBoss: isFinalBoss,
+                totalZombies: isFinalBoss ? 35 : (isBoss ? (22 + levelNum * 1.2) : (8 + levelNum * 1.2)),
                 spawnDelay: isBoss ? 3200 : Math.max(3000, 8500 - levelNum * 100),
                 zombieRatio: {
                     normal: isBoss ? 0.2 : Math.max(0.15, 1 - levelNum * 0.02),
@@ -741,7 +743,9 @@
             newspaper_paper: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%234a5568"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><rect x="20" y="38" width="40" height="30" rx="3" fill="%23e2e8f0" stroke="%23a0aec0" stroke-width="2"/><line x1="25" y1="45" x2="55" y2="45" stroke="%23718096" stroke-width="2"/><line x1="25" y1="52" x2="55" y2="52" stroke="%23718096" stroke-width="2"/><circle cx="58" cy="38" r="4" fill="%23fff"/><circle cx="58" cy="38" r="1.5" fill="%23000"/></svg>',
             newspaper_angry: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%23742a2a"/><circle cx="50" cy="42" r="22" fill="%23feb2b2"/><circle cx="42" cy="40" r="6" fill="%23fff"/><circle cx="42" cy="40" r="3" fill="%23e53e3e"/><circle cx="56" cy="38" r="6" fill="%23fff"/><circle cx="56" cy="38" r="3" fill="%23e53e3e"/><path d="M38 32 L48 36" stroke="%23742a2a" stroke-width="3"/><path d="M60 32 L50 36" stroke="%23742a2a" stroke-width="3"/><path d="M42 54 Q50 48 58 54" fill="none" stroke="%231a202c" stroke-width="3"/></svg>',
             polevaulting_pole: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%232b6cb0"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><line x1="10" y1="90" x2="85" y2="15" stroke="%23d69e2e" stroke-width="5" stroke-linecap="round"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/></svg>',
-            polevaulting_nopole: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%232b6cb0"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/><path d="M44 52 Q50 58 56 52 Z" fill="%231a202c"/></svg>'
+            polevaulting_nopole: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%232b6cb0"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/><path d="M44 52 Q50 58 56 52 Z" fill="%231a202c"/></svg>',
+            gargantuar: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="32" y="55" width="36" height="40" rx="6" fill="%234a5568"/><circle cx="50" cy="35" r="28" fill="%23a0aec0"/><path d="M15 45 L35 25 L30 20 L10 40 Z" fill="%23718096"/><circle cx="40" cy="32" r="6" fill="%23fff"/><circle cx="40" cy="32" r="2.5" fill="%23e53e3e"/><circle cx="60" cy="30" r="5" fill="%23fff"/><circle cx="60" cy="30" r="2" fill="%23e53e3e"/><path d="M42 46 Q50 52 58 46" fill="none" stroke="%231a202c" stroke-width="3"/></svg>',
+            zomboss: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="25" y="30" width="50" height="50" rx="10" fill="%232d3748" stroke="%23e53e3e" stroke-width="3"/><circle cx="50" cy="30" r="18" fill="%23cbd5e0"/><circle cx="44" cy="28" r="4" fill="%23e53e3e"/><circle cx="56" cy="28" r="4" fill="%23e53e3e"/><rect x="35" y="50" width="30" height="20" rx="4" fill="%234a5568"/><path d="M20 50 L10 70 L25 70 Z" fill="%23718096"/><path d="M80 50 L90 70 L75 70 Z" fill="%23718096"/></svg>'
         };
 
         const LAWNMOWER_SVG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="45" width="55" height="25" rx="6" fill="%23e53e3e"/><rect x="25" y="35" width="25" height="15" rx="3" fill="%23cbd5e0"/><circle cx="20" cy="70" r="12" fill="%232d3748"/><circle cx="20" cy="70" r="5" fill="%23cbd5e0"/><circle cx="65" cy="70" r="12" fill="%232d3748"/><circle cx="65" cy="70" r="5" fill="%23cbd5e0"/><path d="M75 50 L90 35 L95 38" fill="none" stroke="%23718096" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -865,7 +869,8 @@
                 if(i > maxUnlockedLevel) card.classList.add('locked');
 
                 card.innerHTML = `<span style="font-size:1.1em; font-weight:900;">${i}</span>`;
-                if(i % 10 === 0) card.innerHTML += `<span style="font-size:0.7em; color:#ffeb3b;">BOSS</span>`;
+                if(i === 50) card.innerHTML += `<span style="font-size:0.65em; color:#ffeb3b;">ZOMBOSS</span>`;
+                else if(i % 10 === 0) card.innerHTML += `<span style="font-size:0.7em; color:#ffeb3b;">BOSS</span>`;
                 else if(i > maxUnlockedLevel) card.innerHTML += `<span style="font-size:0.7em;">🔒</span>`;
 
                 card.onclick = () => {
@@ -1277,8 +1282,8 @@
             if(hasPlantFood) {
                 zDiv.classList.add('zombie-red-aura');
             }
-            zDiv.style.width = cellW + 'px';
-            zDiv.style.height = cellH + 'px';
+            zDiv.style.width = cellW + (type === 'gargantuar' ? cellW * 0.5 : (type === 'zomboss' ? cellW * 0.8 : 0)) + 'px';
+            zDiv.style.height = cellH + (type === 'gargantuar' ? cellH * 0.3 : (type === 'zomboss' ? cellH * 0.5 : 0)) + 'px';
             zDiv.style.zIndex = '2';
             
             let zImg = document.createElement('img');
@@ -1286,6 +1291,8 @@
             else if(type === 'conehead') zImg.src = ZOMBIE_IMAGES.conehead;
             else if(type === 'newspaper') zImg.src = ZOMBIE_IMAGES.newspaper_paper;
             else if(type === 'polevaulting') zImg.src = ZOMBIE_IMAGES.polevaulting_pole;
+            else if(type === 'gargantuar') zImg.src = ZOMBIE_IMAGES.gargantuar;
+            else if(type === 'zomboss') zImg.src = ZOMBIE_IMAGES.zomboss;
             else zImg.src = ZOMBIE_IMAGES.normal;
 
             zDiv.appendChild(zImg);
@@ -1336,13 +1343,24 @@
             banner.innerHTML = `<h1 style="color: #ffeb3b; text-shadow: 2px 2px #000; font-size: 1.5em;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 1.1em;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
             container.appendChild(banner);
 
+            let spawnCount = currentLevelConfig.isFinalBoss ? 5 : (currentLevelConfig.isBoss ? 3 : 1);
             for (let r = 0; r < gridRows; r++) {
-                let type = getRandomZombieType(currentLevelConfig);
+                let type = 'normal';
+                if(currentLevelConfig.isFinalBoss) {
+                    type = 'zomboss';
+                } else if(currentLevelConfig.isBoss && (r === 1 || r === 3)) {
+                    type = 'gargantuar';
+                } else {
+                    type = getRandomZombieType(currentLevelConfig);
+                }
+
                 let hp = 180;
                 if(type === 'buckethead') hp = 1100;
                 else if(type === 'conehead') hp = 420;
                 else if(type === 'newspaper') hp = 340;
                 else if(type === 'polevaulting') hp = 320;
+                else if(type === 'gargantuar') hp = 3200;
+                else if(type === 'zomboss') hp = 6000;
 
                 let hasPlantFood = (r === 2);
                 let zDiv = createZombieElement(type, hasPlantFood);
@@ -1396,12 +1414,23 @@
                 if(!gameStarted || gameOver || gameWon) return;
                 if(!isPaused) {
                     let row = Math.floor(Math.random() * gridRows);
-                    let type = getRandomZombieType(currentLevelConfig);
+                    let type = 'normal';
+
+                    if(currentLevelConfig.isFinalBoss) {
+                        type = (Math.random() < 0.25) ? 'zomboss' : (Math.random() < 0.6 ? 'buckethead' : 'gargantuar');
+                    } else if(currentLevelConfig.isBoss && Math.random() < 0.35) {
+                        type = 'gargantuar';
+                    } else {
+                        type = getRandomZombieType(currentLevelConfig);
+                    }
+
                     let hp = 180;
                     if(type === 'buckethead') hp = 1100;
                     else if(type === 'conehead') hp = 420;
                     else if(type === 'newspaper') hp = 340;
                     else if(type === 'polevaulting') hp = 320;
+                    else if(type === 'gargantuar') hp = 3200;
+                    else if(type === 'zomboss') hp = 6000;
 
                     let hasPlantFood = Math.random() < currentLevelConfig.plantFoodRatio;
                     let zDiv = createZombieElement(type, hasPlantFood);
@@ -1455,7 +1484,7 @@
                 localStorage.setItem('pvz2_unlocked_level', maxUnlockedLevel);
             }
 
-            document.getElementById('win-message').innerText = `Bạn đã hoàn thành Màn ${currentLevel}!`;
+            document.getElementById('win-message').innerText = currentLevel === 50 ? `🎉 CHÚC MỪNG BẠN ĐÃ PHÁ ĐẢO GAME! 🎉` : `Bạn đã hoàn thành Màn ${currentLevel}!`;
             document.getElementById('win-btn-text').innerText = (currentLevel < 50) ? `MÀN TIẾP THEO (${currentLevel + 1}) ▶️` : `VỀ MÀN HÌNH CHÍNH 🏠`;
 
             winScreen.classList.remove('hidden');
@@ -1932,7 +1961,7 @@
                     } else if (hitPlant.type === 'potatomine' && hitPlant.armed) {
                         playSound('boom');
                         explodedMines.push(hitPlant);
-                        z.hp = -1; 
+                        z.hp -= 300; 
 
                         let fx = document.createElement('div');
                         fx.className = 'explosion-fx';
@@ -1944,7 +1973,11 @@
                         setTimeout(() => fx.remove(), 500);
 
                     } else if (hitPlant.type !== 'cherry') {
-                        hitPlant.hp -= 0.8 * dt;
+                        if (z.type === 'gargantuar') {
+                            hitPlant.hp -= 999; // Gargantuar nghiền nát cây tức thì
+                        } else {
+                            hitPlant.hp -= 0.8 * dt;
+                        }
                         playSound('bite');
                         if(hitPlant.hp <= 0) {
                             plants = plants.filter(p => p !== hitPlant);
@@ -1957,6 +1990,7 @@
                     else if(z.type === 'conehead') baseSpeed = 0.0024;
                     else if(z.type === 'polevaulting') baseSpeed = z.hasPole ? 0.0068 : 0.0032;
                     else if(z.type === 'newspaper') baseSpeed = z.isAngry ? 0.0085 : 0.0022;
+                    else if(z.type === 'gargantuar' || z.type === 'zomboss') baseSpeed = 0.0014;
 
                     let actualSpeed = z.slowTimer > 0 ? baseSpeed * 0.5 : baseSpeed;
                     z.col -= actualSpeed * dt;
@@ -1970,10 +2004,12 @@
                     playSound('mower');
                 }
 
-                z.el.style.width = cellW + 'px';
-                z.el.style.height = cellH + 'px';
+                let zWidthW = cellW + (z.type === 'gargantuar' ? cellW * 0.5 : (z.type === 'zomboss' ? cellW * 0.8 : 0));
+                let zHeightH = cellH + (z.type === 'gargantuar' ? cellH * 0.3 : (z.type === 'zomboss' ? cellH * 0.5 : 0));
+                z.el.style.width = zWidthW + 'px';
+                z.el.style.height = zHeightH + 'px';
                 z.el.style.left = (z.col * cellW) + 'px';
-                z.el.style.top = (z.row * cellH) + 'px';
+                z.el.style.top = (z.row * cellH - (z.type === 'zomboss' ? cellH * 0.25 : 0)) + 'px';
 
                 if(z.hitFlash > 0) {
                     z.el.style.filter = 'brightness(3) sepia(1) hue-rotate(-50deg)';
