@@ -691,14 +691,14 @@
                 totalZombies: isFinalBoss ? 35 : (isBoss ? (22 + levelNum * 1.2) : (8 + levelNum * 1.2)),
                 spawnDelay: isBoss ? 3200 : Math.max(3000, 8500 - levelNum * 100),
                 zombieRatio: {
-                    normal: isBoss ? 0.2 : Math.max(0.15, 1 - levelNum * 0.02),
-                    conehead: isBoss ? 0.25 : Math.min(0.3, levelNum * 0.012),
-                    buckethead: isBoss ? 0.25 : Math.min(0.25, Math.max(0, (levelNum - 3) * 0.01)),
-                    newspaper: (levelNum >= 5) ? (isBoss ? 0.15 : Math.min(0.2, Math.max(0, (levelNum - 4) * 0.012))) : 0,
-                    polevaulting: (levelNum >= 11) ? (isBoss ? 0.15 : Math.min(0.15, Math.max(0, (levelNum - 10) * 0.01))) : 0
+                    normal: isBoss ? 0.25 : Math.max(0.15, 1 - levelNum * 0.02),
+                    conehead: isBoss ? 0.3 : Math.min(0.3, levelNum * 0.012),
+                    buckethead: isBoss ? 0.3 : Math.min(0.25, Math.max(0, (levelNum - 3) * 0.01)),
+                    newspaper: (levelNum >= 5) ? (isBoss ? 0.2 : Math.min(0.2, Math.max(0, (levelNum - 4) * 0.012))) : 0,
+                    polevaulting: (levelNum >= 11) ? (isBoss ? 0.25 : Math.min(0.15, Math.max(0, (levelNum - 10) * 0.01))) : 0
                 },
                 plantFoodRatio: 0.1,
-                hasPresetMines: isBoss
+                hasPresetMines: isBoss && !isFinalBoss
             };
         });
 
@@ -766,13 +766,6 @@
         let plantFoodCount = 3;
         let plantFoodDrops = []; 
         let isDraggingPlantFood = false;
-
-        window.addEventListener('pointerdown', function initAudioOnUserGesture() {
-            if (menuBGM.paused && !gameStarted) {
-                menuBGM.play().catch(e => {});
-            }
-            window.removeEventListener('pointerdown', initAudioOnUserGesture);
-        }, { once: true });
 
         function ensureMenuBGMPlay() {
             gameBGM.pause();
@@ -1343,13 +1336,13 @@
             banner.innerHTML = `<h1 style="color: #ffeb3b; text-shadow: 2px 2px #000; font-size: 1.5em;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 1.1em;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
             container.appendChild(banner);
 
-            let spawnCount = currentLevelConfig.isFinalBoss ? 5 : (currentLevelConfig.isBoss ? 3 : 1);
             for (let r = 0; r < gridRows; r++) {
                 let type = 'normal';
                 if(currentLevelConfig.isFinalBoss) {
-                    type = 'zomboss';
-                } else if(currentLevelConfig.isBoss && (r === 1 || r === 3)) {
-                    type = 'gargantuar';
+                    type = (r % 2 === 0) ? 'zomboss' : 'gargantuar';
+                } else if(currentLevelConfig.isBoss) {
+                    // Màn boss (10, 20, 30, 40): đợt cuối xuất hiện Gargantuar ở các hàng 1 và 3
+                    type = (r === 1 || r === 3) ? 'gargantuar' : 'buckethead';
                 } else {
                     type = getRandomZombieType(currentLevelConfig);
                 }
@@ -1418,9 +1411,8 @@
 
                     if(currentLevelConfig.isFinalBoss) {
                         type = (Math.random() < 0.25) ? 'zomboss' : (Math.random() < 0.6 ? 'buckethead' : 'gargantuar');
-                    } else if(currentLevelConfig.isBoss && Math.random() < 0.35) {
-                        type = 'gargantuar';
                     } else {
+                        // Các màn boss (10, 20, 30, 40) hoặc màn thường KHÔNG xuất hiện Gargantuar giữa màn
                         type = getRandomZombieType(currentLevelConfig);
                     }
 
@@ -1974,7 +1966,7 @@
 
                     } else if (hitPlant.type !== 'cherry') {
                         if (z.type === 'gargantuar') {
-                            hitPlant.hp -= 999; // Gargantuar nghiền nát cây tức thì
+                            hitPlant.hp -= 999; 
                         } else {
                             hitPlant.hp -= 0.8 * dt;
                         }
@@ -2365,7 +2357,11 @@
             }
         }
 
-        initTitleScreen();
+        // Tự động phát nhạc menu ngay khi tải trang
+        window.addEventListener('DOMContentLoaded', () => {
+            menuBGM.play().catch(e => {});
+            initTitleScreen();
+        });
     </script>
 </body>
 </html>
