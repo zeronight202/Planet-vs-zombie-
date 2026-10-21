@@ -540,7 +540,7 @@
 
         <div id="game-container" onclick="handleGridClick(event)">
             <!-- TITLE SCREEN -->
-            <div id="title-screen" class="screen-overlay" onclick="ensureMenuBGMPlay()">
+            <div id="title-screen" class="screen-overlay">
                 <div class="pvz-logo-container">
                     <h1 class="pvz-title-main">PLANTS vs ZOMBIES</h1>
                     <div class="pvz-title-sub">PC & MOBILE EDITION</div>
@@ -745,20 +745,30 @@
         let menuBGM = new Audio('plantvszombie.mp3');
         menuBGM.loop = true;
         menuBGM.volume = 0.5;
+        menuBGM.load(); // Tải trước file âm thanh ngay khi load trang
 
         let gameBGM = new Audio('themesoundplntsv.mp3');
         gameBGM.loop = true;
         gameBGM.volume = 0.5;
+        gameBGM.load(); // Tải trước file âm thanh ngay khi load trang
 
         let sfxVolume = 0.5;
         let plantFoodCount = 3;
         let plantFoodDrops = []; 
         let isDraggingPlantFood = false;
 
+        // Bắt sự kiện chạm/click bất kỳ trên trang để kích hoạt Audio Autoplay
+        window.addEventListener('pointerdown', function initAudioOnUserGesture() {
+            if (menuBGM.paused && !gameStarted) {
+                menuBGM.play().catch(e => {});
+            }
+            window.removeEventListener('pointerdown', initAudioOnUserGesture);
+        }, { once: true });
+
         function ensureMenuBGMPlay() {
+            gameBGM.pause();
+            gameBGM.currentTime = 0;
             if (menuBGM.paused) {
-                gameBGM.pause();
-                gameBGM.currentTime = 0;
                 menuBGM.play().catch(e => {});
             }
         }
@@ -1156,7 +1166,8 @@
 
         function startGame(level) {
             initAudio(); 
-            ensureGameBGMPlay(); // Đổi sang nhạc trận đấu khi bắt đầu chơi
+            ensureGameBGMPlay(); // Dừng triệt để nhạc Menu và chuyển sang nhạc Gameplay
+            
             currentLevel = level;
             currentLevelConfig = LEVEL_CONFIGS[currentLevel - 1];
             
