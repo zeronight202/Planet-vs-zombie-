@@ -438,7 +438,7 @@
             .level-card { font-size: 0.95em; padding: 10px 2px; }
         }
 
-        /* MÁY TÍNH / PC (Phóng to thoải mái cho chuột bấm dễ dàng) */
+        /* MÁY TÍNH / PC */
         @media (min-width: 769px) {
             .pvz-title-main { font-size: 3.8em; }
             .pvz-title-sub { font-size: 1.8em; }
@@ -449,7 +449,7 @@
             .seed-card img { width: 36px; height: 36px; }
             #game-container { height: calc(100vh - 90px); }
             .bullet { width: 12px; height: 12px; }
-            .sun-drop { font-size: 50px; } /* Phóng to mặt trời hết cỡ trên PC để click cực dễ */
+            .sun-drop { font-size: 50px; }
             .plantfood-drop { font-size: 2.5em; }
             .plantfood-container { padding: 6px 16px; }
             .control-btn, .menu-btn-game { padding: 8px 18px; font-size: 14px; }
@@ -540,7 +540,7 @@
 
         <div id="game-container" onclick="handleGridClick(event)">
             <!-- TITLE SCREEN -->
-            <div id="title-screen" class="screen-overlay">
+            <div id="title-screen" class="screen-overlay" onclick="ensureBGMPlay()">
                 <div class="pvz-logo-container">
                     <h1 class="pvz-title-main">PLANTS vs ZOMBIES</h1>
                     <div class="pvz-title-sub">PC & MOBILE EDITION</div>
@@ -748,6 +748,12 @@
         let plantFoodDrops = []; 
         let isDraggingPlantFood = false;
 
+        function ensureBGMPlay() {
+            if (bgm.paused) {
+                bgm.play().catch(e => {});
+            }
+        }
+
         function updatePlayButtonText() {
             maxUnlockedLevel = parseInt(localStorage.getItem('pvz2_unlocked_level')) || 1;
             let playLevelText = document.getElementById('title-play-level');
@@ -755,6 +761,7 @@
         }
 
         function initTitleScreen() {
+            ensureBGMPlay();
             let fill = document.getElementById('title-loading-fill');
             let text = document.getElementById('title-loading-text');
             let box = document.getElementById('title-loading-box');
@@ -779,7 +786,7 @@
         }
 
         function showTitleScreen() {
-            stopBGM();
+            ensureBGMPlay(); // Giữ hoặc bật nhạc nền khi về menu chính
             isPaused = false;
             clearAllDynamicElements();
             if(gameUI) gameUI.classList.add('hidden');
@@ -809,7 +816,7 @@
         }
 
         function openLevelSelect() {
-            initAudio();
+            ensureBGMPlay();
             document.getElementById('title-screen').classList.add('hidden');
             renderLevelGrid();
             menuScreen.classList.remove('hidden');
@@ -842,7 +849,7 @@
         }
 
         function openResetModal() {
-            initAudio();
+            ensureBGMPlay();
             document.getElementById('reset-modal-overlay').classList.remove('hidden');
         }
 
@@ -869,22 +876,12 @@
         }
 
         function openSettings() {
-            initAudio();
+            ensureBGMPlay();
             document.getElementById('settings-overlay').classList.remove('hidden');
         }
 
         function closeSettings() {
             document.getElementById('settings-overlay').classList.add('hidden');
-        }
-
-        function startBGM() {
-            bgm.currentTime = 0;
-            bgm.play().catch(e => {});
-        }
-
-        function stopBGM() {
-            bgm.pause();
-            bgm.currentTime = 0;
         }
 
         function toggleFullScreen() {
@@ -900,7 +897,7 @@
         let isPaused = false;
         function togglePause() {
             if(!gameStarted || gameOver || gameWon) return;
-            initAudio();
+            ensureBGMPlay();
             isPaused = !isPaused;
             let pauseOverlay = document.getElementById('pause-overlay');
             if(isPaused) {
@@ -908,7 +905,7 @@
                 if(bgm) bgm.pause();
             } else {
                 if(pauseOverlay) pauseOverlay.classList.add('hidden');
-                if(bgm) bgm.play().catch(e => {});
+                ensureBGMPlay();
                 lastTime = performance.now();
             }
         }
@@ -1138,7 +1135,7 @@
 
         function startGame(level) {
             initAudio(); 
-            startBGM(); 
+            ensureBGMPlay(); 
             currentLevel = level;
             currentLevelConfig = LEVEL_CONFIGS[currentLevel - 1];
             
@@ -1400,7 +1397,6 @@
         }
 
         function triggerGameOver() {
-            stopBGM();
             gameOver = true;
             gameStarted = false;
             cancelAnimationFrame(animationFrameId);
@@ -1410,7 +1406,6 @@
         }
 
         function triggerWin() {
-            stopBGM();
             gameWon = true;
             gameStarted = false;
             cancelAnimationFrame(animationFrameId);
