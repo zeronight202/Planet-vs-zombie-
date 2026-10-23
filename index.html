@@ -113,39 +113,6 @@
             box-shadow: 0 4px 0 #231004, 0 6px 12px rgba(0,0,0,0.5);
         }
 
-        .loading-container {
-            width: 80%;
-            max-width: 320px;
-            background: #111;
-            border: 2px solid #444;
-            border-radius: 10px;
-            height: 24px;
-            padding: 2px;
-            position: relative;
-            margin-top: 16px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
-        }
-
-        .loading-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #4caf50, #8bc34a);
-            border-radius: 6px;
-            transition: width 0.2s ease;
-        }
-
-        .loading-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 0.85em;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 1px 1px 2px #000;
-        }
-
         /* LƯỚI BẢN ĐỒ */
         .grid-cell { 
             position: absolute; 
@@ -553,7 +520,7 @@
                     <div class="pvz-title-sub">PC & MOBILE EDITION</div>
                 </div>
 
-                <div class="title-menu-box hidden" id="title-menu-buttons">
+                <div class="title-menu-box" id="title-menu-buttons">
                     <button class="title-btn" onclick="playCurrentLevel()">
                         <span>🌻</span> CHƠI NGAY (<span id="title-play-level">Màn 1</span>)
                     </button>
@@ -569,11 +536,6 @@
                     <button class="title-btn secondary" onclick="openResetModal()" style="background: linear-gradient(to bottom, #b91c1c, #991b1b); border-color: #7f1d1d;">
                         <span>🔄</span> CHƠI LẠI TỪ ĐẦU
                     </button>
-                </div>
-
-                <div class="loading-container" id="title-loading-box">
-                    <div class="loading-fill" id="title-loading-fill"></div>
-                    <div class="loading-text" id="title-loading-text">Đang tải tài nguyên... 0%</div>
                 </div>
             </div>
 
@@ -772,6 +734,17 @@
         let plantFoodDrops = []; 
         let isDraggingPlantFood = false;
 
+        // Cache kích thước container để chống lag Layout Thrashing
+        let cachedWidth = 800;
+        let cachedHeight = 500;
+        const container = document.getElementById('game-container');
+
+        function updateCachedDimensions() {
+            cachedWidth = container.clientWidth || window.innerWidth;
+            cachedHeight = container.clientHeight || (window.innerHeight - 60);
+        }
+        window.addEventListener('resize', updateCachedDimensions);
+
         function stopAllBGM() {
             menuBGM.pause();
             menuBGM.currentTime = 0;
@@ -807,28 +780,9 @@
         }
 
         function initTitleScreen() {
+            updateCachedDimensions();
             ensureMenuBGMPlay();
-            let fill = document.getElementById('title-loading-fill');
-            let text = document.getElementById('title-loading-text');
-            let box = document.getElementById('title-loading-box');
-            let menu = document.getElementById('title-menu-buttons');
-
             updatePlayButtonText();
-
-            let progress = 0;
-            let interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 15) + 5;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        box.classList.add('hidden');
-                        menu.classList.remove('hidden');
-                    }, 300);
-                }
-                fill.style.width = progress + '%';
-                text.innerText = `Đang tải tài nguyên... ${progress}%`;
-            }, 100);
         }
 
         function showTitleScreen() {
@@ -845,7 +799,6 @@
             let titleScreen = document.getElementById('title-screen');
             titleScreen.classList.remove('hidden');
             document.getElementById('title-menu-buttons').classList.remove('hidden');
-            document.getElementById('title-loading-box').classList.add('hidden');
             
             updatePlayButtonText();
 
@@ -870,8 +823,8 @@
 
         function renderLevelGrid() {
             maxUnlockedLevel = parseInt(localStorage.getItem('pvz2_unlocked_level')) || 1;
-            let container = document.getElementById('level-grid-container');
-            container.innerHTML = '';
+            let gridContainer = document.getElementById('level-grid-container');
+            gridContainer.innerHTML = '';
             for(let i=1; i<=50; i++) {
                 let card = document.createElement('div');
                 card.className = 'level-card';
@@ -891,7 +844,7 @@
                         triggerRedFlash();
                     }
                 };
-                container.appendChild(card);
+                gridContainer.appendChild(card);
             }
         }
 
@@ -946,7 +899,6 @@
         function togglePause() {
             if(!gameStarted || gameOver || gameWon) return;
             isPaused = !isPaused;
-            let pauseOverlay = document.getElementById('pause-overlay');
             if(isPaused) {
                 if(pauseOverlay) pauseOverlay.classList.remove('hidden');
                 if(gameBGM) gameBGM.pause();
@@ -1094,7 +1046,6 @@
         let zombiesSpawnedCount = 0;
         let totalZombiesForLevel = 20;
 
-        const container = document.getElementById('game-container');
         const gameUI = document.getElementById('game-ui');
         const menuScreen = document.getElementById('menu-screen');
         const pauseOverlay = document.getElementById('pause-overlay');
@@ -1181,6 +1132,7 @@
         }
 
         function startGame(level) {
+            updateCachedDimensions();
             initAudio(); 
             ensureGameBGMPlay();
             
@@ -1241,10 +1193,8 @@
 
             sunSpawner = setInterval(() => {
                 if(!gameStarted || gameOver || gameWon || isPaused) return;
-                let cWidth = container.clientWidth || 800;
-                let cHeight = container.clientHeight || 500;
-                let randomX = Math.random() * (cWidth - 100) + 50;
-                let targetY = Math.random() * (cHeight * 0.5) + (cHeight * 0.25);
+                let randomX = Math.random() * (cachedWidth - 100) + 50;
+                let targetY = Math.random() * (cachedHeight * 0.5) + (cachedHeight * 0.25);
                 
                 let sDiv = document.createElement('div');
                 sDiv.className = 'sun-drop';
@@ -1278,10 +1228,8 @@
         }
 
         function createZombieElement(type, hasPlantFood) {
-            let cWidth = container.clientWidth;
-            let cHeight = container.clientHeight;
-            let cellW = cWidth / gridCols;
-            let cellH = cHeight / gridRows;
+            let cellW = cachedWidth / gridCols;
+            let cellH = cachedHeight / gridRows;
 
             let zDiv = document.createElement('div');
             zDiv.className = 'entity dynamic-entity';
@@ -1307,9 +1255,8 @@
         }
 
         function spawnPlantFoodDrop(x, y) {
-            let cHeight = container.clientHeight;
             let minY = 20;
-            let maxY = cHeight - 20;
+            let maxY = cachedHeight - 20;
             if (y < minY) y = minY;
             if (y > maxY) y = maxY;
 
@@ -1490,7 +1437,7 @@
             document.getElementById('win-message').innerText = currentLevel === 50 ? `🎉 CHÚC MỪNG BẠN ĐÃ PHÁ ĐẢO GAME! 🎉` : `Bạn đã hoàn thành Màn ${currentLevel}!`;
             document.getElementById('win-btn-text').innerText = (currentLevel < 50) ? `MÀN TIẾP THEO (${currentLevel + 1}) ▶️` : `VỀ MÀN HÌNH CHÍNH 🏠`;
 
-            playWinBGM(); // Tắt BGM cũ và phát nhạc Win.mp3
+            playWinBGM(); 
             winScreen.classList.remove('hidden');
             startFireworks();
         }
@@ -1547,8 +1494,8 @@
             let rect = container.getBoundingClientRect();
             let x = clientX - rect.left;
             let y = clientY - rect.top;
-            let cellW = container.clientWidth / gridCols;
-            let cellH = container.clientHeight / gridRows;
+            let cellW = cachedWidth / gridCols;
+            let cellH = cachedHeight / gridRows;
 
             if(!selectedType) return;
             
@@ -1637,7 +1584,7 @@
 
                                 let targetSunY = startY + (-30 - Math.random() * 30);
                                 if (targetSunY < 30) targetSunY = 30;
-                                if (targetSunY > container.clientHeight - 30) targetSunY = container.clientHeight - 30;
+                                if (targetSunY > cachedHeight - 30) targetSunY = cachedHeight - 30;
 
                                 let sObj = {
                                     x: startX,
@@ -1787,10 +1734,8 @@
                 }
             }
 
-            let cWidth = container.clientWidth;
-            let cHeight = container.clientHeight;
-            let cellW = cWidth / gridCols;
-            let cellH = cHeight / gridRows;
+            let cellW = cachedWidth / gridCols;
+            let cellH = cachedHeight / gridRows;
 
             activeMowers.forEach(m => {
                 m.col += 0.22 * dt;
@@ -1849,7 +1794,7 @@
             if(needsRender) renderStaticElements();
 
             sunDrops.forEach(s => {
-                let maxDropY = cHeight - 40;
+                let maxDropY = cachedHeight - 40;
                 if (s.targetY > maxDropY) s.targetY = maxDropY;
 
                 if (s.isSunflowerSun && s.animProgress < 1) {
@@ -2145,7 +2090,7 @@
                         let vy = Math.sin(angle) * dist;
 
                         let targetSunY = startY + vy;
-                        let maxDropY = cHeight - 40;
+                        let maxDropY = cachedHeight - 40;
                         if (targetSunY > maxDropY) targetSunY = maxDropY;
                         if (targetSunY < 30) targetSunY = 30;
                         let fixedVy = targetSunY - startY;
@@ -2250,10 +2195,8 @@
         function renderStaticElements() {
             container.querySelectorAll('.static-entity, .lawnmower').forEach(el => el.remove());
 
-            let cWidth = container.clientWidth;
-            let cHeight = container.clientHeight;
-            let cellW = cWidth / gridCols;
-            let cellH = cHeight / gridRows;
+            let cellW = cachedWidth / gridCols;
+            let cellH = cachedHeight / gridRows;
 
             lawnmowers.forEach((hasMower, r) => {
                 if(hasMower) {
@@ -2369,10 +2312,17 @@
             }
         }
 
+        // Tự động phát nhạc menu ngay khi tải trang và hỗ trợ click bất kỳ đâu để bật nhạc nếu bị trình duyệt chặn
         window.addEventListener('DOMContentLoaded', () => {
-            menuBGM.play().catch(e => {});
             initTitleScreen();
+            menuBGM.play().catch(e => {});
         });
+
+        window.addEventListener('click', () => {
+            if (!gameStarted && menuBGM.paused && winBGM.paused && gameBGM.paused) {
+                menuBGM.play().catch(e => {});
+            }
+        }, { once: true });
     </script>
 </body>
 </html>
