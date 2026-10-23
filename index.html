@@ -113,6 +113,64 @@
             box-shadow: 0 4px 0 #231004, 0 6px 12px rgba(0,0,0,0.5);
         }
 
+        /* KHỐI ĐẤT XOAY VÀ THANH LOADING TẢI TÀI NGUYÊN */
+        .loading-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .dirt-spinner {
+            width: 48px;
+            height: 48px;
+            background: #5d4037;
+            border: 3px solid #3e2723;
+            border-top: 6px solid #4caf50;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.6), 0 4px 8px rgba(0,0,0,0.5);
+            animation: spinDirt 1s linear infinite;
+        }
+
+        @keyframes spinDirt {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-container {
+            width: 280px;
+            background: #1b1b1b;
+            border: 3px solid #332211;
+            border-radius: 12px;
+            height: 24px;
+            padding: 2px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.6);
+        }
+
+        .loading-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(to bottom, #aed581, #558b2f);
+            border-radius: 8px;
+            transition: width 0.15s ease-out;
+            box-shadow: 0 0 8px rgba(139, 195, 74, 0.8);
+        }
+
+        .loading-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8em;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px #000;
+            white-space: nowrap;
+        }
+
         /* LƯỚI BẢN ĐỒ */
         .grid-cell { 
             position: absolute; 
@@ -520,7 +578,15 @@
                     <div class="pvz-title-sub">PC & MOBILE EDITION</div>
                 </div>
 
-                <div class="title-menu-box" id="title-menu-buttons">
+                <div class="loading-wrapper" id="title-loading-box">
+                    <div class="dirt-spinner"></div>
+                    <div class="loading-container">
+                        <div class="loading-fill" id="title-loading-fill"></div>
+                        <div class="loading-text" id="title-loading-text">Đang tải... 0%</div>
+                    </div>
+                </div>
+
+                <div class="title-menu-box hidden" id="title-menu-buttons">
                     <button class="title-btn" onclick="playCurrentLevel()">
                         <span>🌻</span> CHƠI NGAY (<span id="title-play-level">Màn 1</span>)
                     </button>
@@ -734,7 +800,6 @@
         let plantFoodDrops = []; 
         let isDraggingPlantFood = false;
 
-        // Cache kích thước container để chống lag Layout Thrashing
         let cachedWidth = 800;
         let cachedHeight = 500;
         const container = document.getElementById('game-container');
@@ -783,6 +848,26 @@
             updateCachedDimensions();
             ensureMenuBGMPlay();
             updatePlayButtonText();
+
+            let fill = document.getElementById('title-loading-fill');
+            let text = document.getElementById('title-loading-text');
+            let box = document.getElementById('title-loading-box');
+            let menu = document.getElementById('title-menu-buttons');
+
+            let progress = 0;
+            let interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 18) + 8;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        box.classList.add('hidden');
+                        menu.classList.remove('hidden');
+                    }, 250);
+                }
+                fill.style.width = progress + '%';
+                text.innerText = `Đang tải... ${progress}%`;
+            }, 80);
         }
 
         function showTitleScreen() {
@@ -799,6 +884,7 @@
             let titleScreen = document.getElementById('title-screen');
             titleScreen.classList.remove('hidden');
             document.getElementById('title-menu-buttons').classList.remove('hidden');
+            document.getElementById('title-loading-box').classList.add('hidden');
             
             updatePlayButtonText();
 
@@ -2312,7 +2398,6 @@
             }
         }
 
-        // Tự động phát nhạc menu ngay khi tải trang và hỗ trợ click bất kỳ đâu để bật nhạc nếu bị trình duyệt chặn
         window.addEventListener('DOMContentLoaded', () => {
             initTitleScreen();
             menuBGM.play().catch(e => {});
