@@ -171,101 +171,84 @@
             white-space: nowrap;
         }
 
+        /* MÀN HÌNH CHỌN CÂY TRƯỚC TRẬN */
+        .seed-select-board {
+            background: linear-gradient(to bottom, rgba(50, 25, 10, 0.98), rgba(30, 12, 4, 0.98));
+            border: 3px solid #5c3a21; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.9);
+            width: 92%; max-width: 620px; padding: 18px; text-align: center; max-height: 92vh; overflow-y: auto;
+        }
+
+        .selected-slots-grid {
+            display: flex; gap: 6px; justify-content: center; min-height: 70px; background: rgba(0,0,0,0.5);
+            padding: 8px; border-radius: 8px; border: 2px solid #5c3a21; margin: 10px 0; flex-wrap: wrap;
+        }
+
+        .slot-box {
+            width: 54px; height: 62px; background: #222; border: 2px dashed #666; border-radius: 6px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
+            position: relative; font-size: 9px; color: #aaa; font-weight: bold;
+        }
+        .slot-box.filled {
+            background: linear-gradient(to bottom, #fff385, #e0a800); border: 2px solid #553300; color: #222;
+        }
+
+        .pool-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 38vh;
+            overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.4); border-radius: 8px; border: 2px solid #442200; margin: 10px 0;
+        }
+
+        .pool-card {
+            background: linear-gradient(to bottom, #fff385, #e0a800); border: 2px solid #553300;
+            border-radius: 6px; padding: 4px; display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; color: #222; font-size: 11px; font-weight: bold; position: relative;
+        }
+        .pool-card:active { transform: translateY(2px); }
+        .pool-card.selected { opacity: 0.35; filter: grayscale(60%); cursor: not-allowed; }
+
         /* LƯỚI BẢN ĐỒ */
         .grid-cell { 
-            position: absolute; 
-            width: 9.09%; 
-            height: 20%; 
-            border: 1px solid rgba(0, 0, 0, 0.15); 
-            box-sizing: border-box; 
-            background: #388e3c;
+            position: absolute; width: 9.09%; height: 20%; border: 1px solid rgba(0, 0, 0, 0.15); box-sizing: border-box; background: #388e3c;
         }
         .grid-cell.cell-alt { background: #2e7d32; }
         .grid-cell.mower-lane { background: #1b5e20; border-right: 2px solid rgba(255, 255, 255, 0.2); }
 
         /* GIAO DIỆN THANH UI TRONG GAME */
         .ui { 
-            margin: 0; 
-            font-weight: bold; 
-            background: linear-gradient(to bottom, #1e1e1e, #111); 
-            border-bottom: 2px solid #333; 
-            width: 100vw;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
+            margin: 0; font-weight: bold; background: linear-gradient(to bottom, #1e1e1e, #111); border-bottom: 2px solid #333; 
+            width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10;
         }
 
         .seed-card-wrapper {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            max-width: 100vw;
-            padding: 4px;
+            display: flex; gap: 6px; overflow-x: auto; max-width: 100vw; padding: 4px;
         }
 
         .seed-card { 
-            position: relative;
-            background: linear-gradient(to bottom, #fff385, #e0a800); 
-            border: 2px solid #553300; 
-            cursor: pointer; 
-            border-radius: 6px; 
-            font-weight: bold; 
-            color: #222; 
-            box-shadow: 0 3px #442200; 
-            touch-action: manipulation;
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            flex-shrink: 0;
+            position: relative; background: linear-gradient(to bottom, #fff385, #e0a800); border: 2px solid #553300; 
+            cursor: pointer; border-radius: 6px; font-weight: bold; color: #222; box-shadow: 0 3px #442200; touch-action: manipulation;
+            display: inline-flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;
         }
         .seed-card:active { transform: translateY(2px); }
         .seed-card.active-btn { background: linear-gradient(to bottom, #ff5252, #c62828); color: white; border-color: #fff; }
 
         .plantfood-container {
-            display: flex;
-            align-items: center;
-            background: linear-gradient(to bottom, #15803d, #166534);
-            border: 2px solid #22c55e;
-            border-radius: 16px;
-            cursor: grab;
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
-            touch-action: none;
+            display: flex; align-items: center; background: linear-gradient(to bottom, #15803d, #166534);
+            border: 2px solid #22c55e; border-radius: 16px; cursor: grab; box-shadow: 0 0 10px rgba(34, 197, 94, 0.7); touch-action: none;
         }
         .plantfood-container:active { cursor: grabbing; transform: scale(0.95); }
 
         #dragged-plantfood {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            font-size: 2.8em;
-            transform: translate(-50%, -50%);
-            filter: drop-shadow(0 0 12px #00ff87);
-            display: none;
+            position: fixed; pointer-events: none; z-index: 9999; font-size: 2.8em; transform: translate(-50%, -50%);
+            filter: drop-shadow(0 0 12px #00ff87); display: none;
         }
 
         .cooldown-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.65);
-            z-index: 5; display: none;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.65); z-index: 5; display: none;
         }
 
-        .control-btn { 
-            background: linear-gradient(to bottom, #42a5f5, #1565c0); 
-            color: white; border: 1.5px solid #0d47a1; border-radius: 6px; font-weight: bold; cursor: pointer;
-        }
-        .menu-btn-game {
-            background: linear-gradient(to bottom, #a0522d, #6b3012);
-            border: 1.5px solid #3d1c07; border-radius: 6px; color: #fff; font-weight: bold; cursor: pointer; text-shadow: 1px 1px #000;
-        }
+        .control-btn { background: linear-gradient(to bottom, #42a5f5, #1565c0); color: white; border: 1.5px solid #0d47a1; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .menu-btn-game { background: linear-gradient(to bottom, #a0522d, #6b3012); border: 1.5px solid #3d1c07; border-radius: 6px; color: #fff; font-weight: bold; cursor: pointer; text-shadow: 1px 1px #000; }
 
-        .entity { 
-            position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; will-change: left, top;
-        }
+        .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; will-change: left, top; }
         .entity img { width: 85%; height: 85%; object-fit: contain; pointer-events: none; }
 
         @keyframes redAuraGlow {
@@ -409,11 +392,7 @@
             100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
         }
         .explosion-fx { 
-            position: absolute; 
-            z-index: 25; 
-            pointer-events: none; 
-            font-size: 3em; 
-            transform: translate(-50%, -50%);
+            position: absolute; z-index: 25; pointer-events: none; font-size: 3em; transform: translate(-50%, -50%);
             animation: explodeAnim 0.5s ease-out forwards; 
         }
 
@@ -468,6 +447,7 @@
             .pvz-menu-board { max-width: 360px; padding: 14px; }
             .pvz-menu-btn { padding: 8px; font-size: 13px; margin-top: 6px; }
             .level-card { font-size: 0.95em; padding: 10px 2px; }
+            .slot-box { width: 42px; height: 50px; }
         }
 
         /* MÁY TÍNH / PC */
@@ -516,55 +496,7 @@
             </div>
             
             <div class="seed-card-wrapper">
-                <div class="seed-card" onclick="selectPlant('peashooter')" id="btn-peashooter">
-                    <div class="cooldown-overlay" id="cd-peashooter"></div>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2368d391'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%2368d391'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%2322543d'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Peashooter">
-                    <span>Đậu</span><span style="color:#ffeb3b; font-size:9px;">100☀️</span>
-                </div>
-                <div class="seed-card" onclick="selectPlant('snowpea')" id="btn-snowpea">
-                    <div class="cooldown-overlay" id="cd-snowpea"></div>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='45' cy='55' r='30' fill='%2363b3ed'/><ellipse cx='75' cy='50' rx='18' ry='14' fill='%233182ce'/><ellipse cx='78' cy='50' rx='10' ry='7' fill='%231a202c'/><circle cx='38' cy='48' r='5' fill='%23fff'/><circle cx='38' cy='48' r='2' fill='%23000'/></svg>" alt="Snow Pea">
-                    <span>Đậu Băng</span><span style="color:#ffeb3b; font-size:9px;">175☀️</span>
-                </div>
-                <div class="seed-card" onclick="selectPlant('torchwood')" id="btn-torchwood">
-                    <div class="cooldown-overlay" id="cd-torchwood"></div>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='30' y='45' width='40' height='45' rx='8' fill='%23795548'/><polygon points='50,5 30,45 70,45' fill='%23ff5722'/><polygon points='50,15 38,45 62,45' fill='%23ffeb3b'/><circle cx='42' cy='60' r='4' fill='%23fff'/><circle cx='42' cy='60' r='2' fill='%23000'/><circle cx='58' cy='60' r='4' fill='%23fff'/><circle cx='58' cy='60' r='2' fill='%23000'/></svg>" alt="Torchwood">
-                    <span>Đuốc</span><span style="color:#ffeb3b; font-size:9px;">175☀️</span>
-                </div>
-                <div class="seed-card" onclick="selectPlant('chomper')" id="btn-chomper">
-                    <div class="cooldown-overlay" id="cd-chomper"></div>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='45' r='30' fill='%239c27b0'/><path d='M35 40 Q75 42 74 72 Q50 78 30 62 Z' fill='%233b003b'/><polygon points='42,42 46,48 50,42' fill='%23fff'/><polygon points='52,43 57,50 62,43' fill='%23fff'/></svg>" alt="Chomper">
-                    <span>Ăn Thịt</span><span style="color:#ffeb3b; font-size:9px;">150☀️</span>
-                </div>
-                <div class="seed-card" onclick="selectPlant('bonkchoy')" id="btn-bonkchoy">
-                    <div class="cooldown-overlay" id="cd-bonkchoy"></div>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='55' r='25' fill='%2348bb78'/><ellipse cx='26' cy='45' rx='14' ry='18' fill='%2338a169'/><ellipse cx='74' cy='45' rx='14' ry='18' fill='%2338a169'/><circle cx='42' cy='50' r='4' fill='%23fff'/><circle cx='42' cy='50' r='2' fill='%23000'/><circle cx='58' cy='50' r='4' fill='%23fff'/><circle cx='58' cy='50' r='2' fill='%23000'/><path d='M45 62 Q50 66 55 62' fill='none' stroke='%231a202c' stroke-width='2.5'/><circle cx='18' cy='35' r='12' fill='%23276749'/><circle cx='82' cy='35' r='12' fill='%23276749'/></svg>" alt="Bonk Choy">
-                    <span>Cải Đấm</span><span style="color:#ffeb3b; font-size:9px;">150☀️</span>
-                </div>
-                <div class="seed-card" onclick="selectPlant('sunflower')" id="btn-sunflower">
-                    <div class="cooldown-overlay" id="cd-sunflower"></div>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23ecc94b'><circle cx='50' cy='20' r='12'/><circle cx='80' cy='32' r='12'/><circle cx='92' cy='60' r='12'/><circle cx='75' cy='85' r='12'/><circle cx='45' cy='90' r='12'/><circle cx='20' cy='80' r='12'/><circle cx='8' cy='55' r='12'/><circle cx='20' cy='30' r='12'/></g><circle cx='50' cy='55' r='28' fill='%23d69e2e'/><circle cx='40' cy='48' r='6' fill='%23fff'/><circle cx='40' cy='48' r='3' fill='%23000'/><circle cx='60' cy='48' r='6' fill='%23fff'/><circle cx='60' cy='48' r='3' fill='%23000'/></svg>" alt="Sunflower">
-                    <span>Hoa</span><span style="color:#ffeb3b; font-size:9px;">50☀️</span>
-                </div>
-                <div class="seed-card" onclick="selectPlant('wallnut')" id="btn-wallnut">
-                    <div class="cooldown-overlay" id="cd-wallnut"></div>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='52' rx='32' ry='38' fill='%23d69e2e'/><ellipse cx='50' cy='52' rx='27' ry='33' fill='%23b7791f'/><ellipse cx='42' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='42' cy='46' r='4' fill='%23000'/><ellipse cx='62' cy='46' rx='9' ry='12' fill='%23fff'/><circle cx='62' cy='46' r='4' fill='%23000'/></svg>" alt="Wallnut">
-                    <span>Khoai</span><span style="color:#ffeb3b; font-size:9px;">50☀️</span>
-                </div>
-                <div class="seed-card" onclick="selectPlant('potatomine')" id="btn-potatomine">
-                    <div class="cooldown-overlay" id="cd-potatomine"></div>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><ellipse cx='50' cy='80' rx='16' ry='6' fill='%2354381e'/><path d='M47 80 L47 55 Q47 42 50 36 Q53 42 53 55 L53 80 Z' fill='%2348bb78'/><circle cx='50' cy='35' r='6' fill='%23e53e3e'/><path d='M50 45 Q42 43 44 52 Z' fill='%2338a169'/></svg>" alt="Potato Mine">
-                    <span>Mìn</span><span style="color:#ffeb3b; font-size:9px;">25☀️</span>
-                </div>
-                <div class="seed-card" onclick="selectPlant('cherry')" id="btn-cherry">
-                    <div class="cooldown-overlay" id="cd-cherry"></div>
-                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M35 65 Q45 25 65 30' fill='none' stroke='%2338a169' stroke-width='5'/><circle cx='32' cy='68' r='22' fill='%23e53e3e'/><circle cx='68' cy='68' r='22' fill='%23e53e3e'/></svg>" alt="Cherry">
-                    <span>Bom</span><span style="color:#ffeb3b; font-size:9px;">150☀️</span>
-                </div>
-                <div class="seed-card" onclick="selectPlant('shovel')" id="btn-shovel" style="background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;">
-                    <span style="font-size: 1.3em;">⛏️</span>
-                    <span>Xẻng</span>
-                </div>
+                <!-- Thẻ bài cây sẽ được tạo động tại đây dựa trên lựa chọn của người chơi -->
             </div>
         </div>
 
@@ -587,7 +519,7 @@
                 </div>
 
                 <div class="title-menu-box hidden" id="title-menu-buttons">
-                    <button class="title-btn" onclick="playCurrentLevel()">
+                    <button class="title-btn" onclick="openSeedSelectForCurrentLevel()">
                         <span>🌻</span> CHƠI NGAY (<span id="title-play-level">Màn 1</span>)
                     </button>
                     <button class="title-btn secondary" onclick="openLevelSelect()">
@@ -602,6 +534,28 @@
                     <button class="title-btn secondary" onclick="openResetModal()" style="background: linear-gradient(to bottom, #b91c1c, #991b1b); border-color: #7f1d1d;">
                         <span>🔄</span> CHƠI LẠI TỪ ĐẦU
                     </button>
+                </div>
+            </div>
+
+            <!-- MÀN HÌNH CHỌN CÂY TRƯỚC TRẬN -->
+            <div id="seed-select-screen" class="screen-overlay hidden">
+                <div class="seed-select-board">
+                    <h1 style="color: #ffeb3b; margin-bottom: 4px; font-size: 1.4em; text-shadow: 2px 2px #000;">CHỌN CÂY CHO TRẬN ĐẤU</h1>
+                    <p style="color: #ddd; font-size: 0.85em; margin-bottom: 6px;">Chọn tối đa 7 loại cây mang vào trận đấu (Click để chọn/bỏ chọn)</p>
+                    
+                    <div class="selected-slots-grid" id="selected-slots-container"></div>
+
+                    <div style="font-size: 0.85em; color: #a3e635; margin-bottom: 4px; font-weight: bold;">TẤT CẢ CÁC LOẠI CÂY:</div>
+                    <div class="pool-grid" id="pool-grid-container"></div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 10px; flex: 1; margin:0;">
+                            <span>🏠 VỀ TRANG CHỦ</span>
+                        </div>
+                        <div class="pvz-menu-btn" onclick="confirmStartGame()" style="background: linear-gradient(to bottom, #16a34a, #15803d); padding: 10px; flex: 2; margin:0;">
+                            <span>🌻 BẮT ĐẦU CHIẾN! (LET'S ROCK!)</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -752,16 +706,16 @@
             cherry: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 25 Q35 10 25 35" fill="none" stroke="%2338a169" stroke-width="4" stroke-linecap="round"/><path d="M50 25 Q65 10 75 35" fill="none" stroke="%2338a169" stroke-width="4" stroke-linecap="round"/><path d="M45 18 Q55 5 60 20 Q50 25 45 18 Z" fill="%2348bb78"/><circle cx="30" cy="65" r="22" fill="%23e53e3e"/><circle cx="30" cy="65" r="18" fill="%23fc8181"/><path d="M20 58 L30 62 L20 66" fill="none" stroke="%239b2c2c" stroke-width="3" stroke-linecap="round"/><circle cx="70" cy="65" r="22" fill="%23e53e3e"/><circle cx="70" cy="65" r="18" fill="%23fc8181"/><path d="M80 58 L70 62 L80 66" fill="none" stroke="%239b2c2c" stroke-width="3" stroke-linecap="round"/></svg>'
         };
 
-        const PLANT_DATA = {
-            peashooter: { cost: 100, cooldown: 5000, lastUsed: 0 },
-            snowpea: { cost: 175, cooldown: 6000, lastUsed: 0 },
-            torchwood: { cost: 175, cooldown: 7500, lastUsed: 0 },
-            chomper: { cost: 150, cooldown: 7500, lastUsed: 0 },
-            bonkchoy: { cost: 150, cooldown: 6000, lastUsed: 0 },
-            sunflower: { cost: 50, cooldown: 5000, lastUsed: 0 },
-            wallnut: { cost: 50, cooldown: 15000, lastUsed: 0 },
-            potatomine: { cost: 25, cooldown: 12000, lastUsed: 0 },
-            cherry: { cost: 150, cooldown: 25000, lastUsed: 0 }
+        const PLANT_META = {
+            peashooter: { name: 'Đậu', cost: 100, cooldown: 5000, img: PLANT_IMAGES.peashooter },
+            snowpea: { name: 'Đậu Băng', cost: 175, cooldown: 6000, img: PLANT_IMAGES.snowpea },
+            torchwood: { name: 'Đuốc', cost: 175, cooldown: 7500, img: PLANT_IMAGES.torchwood },
+            chomper: { name: 'Ăn Thịt', cost: 150, cooldown: 7500, img: PLANT_IMAGES.chomper },
+            bonkchoy: { name: 'Cải Đấm', cost: 150, cooldown: 6000, img: PLANT_IMAGES.bonkchoy },
+            sunflower: { name: 'Hoa', cost: 50, cooldown: 5000, img: PLANT_IMAGES.sunflower },
+            wallnut: { name: 'Khoai', cost: 50, cooldown: 15000, img: PLANT_IMAGES.wallnut },
+            potatomine: { name: 'Mìn', cost: 25, cooldown: 12000, img: PLANT_IMAGES.potatomine },
+            cherry: { name: 'Bom', cost: 150, cooldown: 25000, img: PLANT_IMAGES.cherry }
         };
 
         const ZOMBIE_IMAGES = {
@@ -779,6 +733,10 @@
         const LAWNMOWER_SVG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="45" width="55" height="25" rx="6" fill="%23e53e3e"/><rect x="25" y="35" width="25" height="15" rx="3" fill="%23cbd5e0"/><circle cx="20" cy="70" r="12" fill="%232d3748"/><circle cx="20" cy="70" r="5" fill="%23cbd5e0"/><circle cx="65" cy="70" r="12" fill="%232d3748"/><circle cx="65" cy="70" r="5" fill="%23cbd5e0"/><path d="M75 50 L90 35 L95 38" fill="none" stroke="%23718096" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
         let maxUnlockedLevel = parseInt(localStorage.getItem('pvz2_unlocked_level')) || 1;
+        let pendingLevel = 1;
+        let selectedPlantTypes = ['sunflower', 'peashooter', 'wallnut', 'cherry']; // Cây mặc định ban đầu
+        const MAX_SLOTS = 7;
+        const ALL_PLANTS = Object.keys(PLANT_META);
         
         let menuBGM = new Audio('plantvszombie.mp3');
         menuBGM.loop = true;
@@ -879,6 +837,7 @@
             gameoverScreen.classList.add('hidden');
             winScreen.classList.add('hidden');
             menuScreen.classList.add('hidden');
+            document.getElementById('seed-select-screen').classList.add('hidden');
             document.getElementById('settings-overlay').classList.add('hidden');
             
             let titleScreen = document.getElementById('title-screen');
@@ -894,10 +853,72 @@
             if(sunSpawner) clearInterval(sunSpawner);
         }
 
-        function playCurrentLevel() {
-            document.getElementById('title-screen').classList.add('hidden');
+        function openSeedSelectForCurrentLevel() {
             maxUnlockedLevel = parseInt(localStorage.getItem('pvz2_unlocked_level')) || 1;
-            startGame(maxUnlockedLevel);
+            openSeedSelect(maxUnlockedLevel);
+        }
+
+        function openSeedSelect(level) {
+            ensureMenuBGMPlay();
+            pendingLevel = level;
+            document.getElementById('title-screen').classList.add('hidden');
+            menuScreen.classList.add('hidden');
+            renderSeedSelectScreen();
+            document.getElementById('seed-select-screen').classList.remove('hidden');
+        }
+
+        function renderSeedSelectScreen() {
+            let slotsContainer = document.getElementById('selected-slots-container');
+            slotsContainer.innerHTML = '';
+            for(let i=0; i<MAX_SLOTS; i++) {
+                let plantType = selectedPlantTypes[i];
+                let box = document.createElement('div');
+                box.className = 'slot-box' + (plantType ? ' filled' : '');
+                if(plantType) {
+                    let info = PLANT_META[plantType];
+                    box.innerHTML = `<img src="${info.img}" style="width:26px;height:26px;object-fit:contain;"><span>${info.name}</span>`;
+                    box.onclick = () => {
+                        selectedPlantTypes.splice(i, 1);
+                        renderSeedSelectScreen();
+                    };
+                } else {
+                    box.innerHTML = `<span>+</span>`;
+                }
+                slotsContainer.appendChild(box);
+            }
+
+            let poolContainer = document.getElementById('pool-grid-container');
+            poolContainer.innerHTML = '';
+            ALL_PLANTS.forEach(type => {
+                let info = PLANT_META[type];
+                let isSelected = selectedPlantTypes.includes(type);
+                let card = document.createElement('div');
+                card.className = 'pool-card' + (isSelected ? ' selected' : '');
+                card.innerHTML = `<img src="${info.img}" style="width:32px;height:32px;object-fit:contain;"><span>${info.name}</span><span style="color:#744210;font-size:9px;">${info.cost}☀️</span>`;
+                card.onclick = () => {
+                    if(!isSelected) {
+                        if(selectedPlantTypes.length < MAX_SLOTS) {
+                            selectedPlantTypes.push(type);
+                            renderSeedSelectScreen();
+                        } else {
+                            triggerRedFlash();
+                        }
+                    } else {
+                        selectedPlantTypes = selectedPlantTypes.filter(t => t !== type);
+                        renderSeedSelectScreen();
+                    }
+                };
+                poolContainer.appendChild(card);
+            });
+        }
+
+        function confirmStartGame() {
+            if(selectedPlantTypes.length === 0) {
+                triggerRedFlash();
+                return;
+            }
+            document.getElementById('seed-select-screen').classList.add('hidden');
+            startGame(pendingLevel);
         }
 
         function openLevelSelect() {
@@ -925,7 +946,7 @@
                 card.onclick = () => {
                     if(i <= maxUnlockedLevel) {
                         menuScreen.classList.add('hidden');
-                        startGame(i);
+                        openSeedSelect(i);
                     } else {
                         triggerRedFlash();
                     }
@@ -1217,6 +1238,32 @@
             if(bar) bar.style.width = pct + '%';
         }
 
+        function buildInGameSeedCards() {
+            let wrapper = document.querySelector('.seed-card-wrapper');
+            wrapper.innerHTML = '';
+            selectedPlantTypes.forEach(type => {
+                let meta = PLANT_META[type];
+                let card = document.createElement('div');
+                card.className = 'seed-card';
+                card.id = 'btn-' + type;
+                card.onclick = () => selectPlant(type);
+                card.innerHTML = `
+                    <div class="cooldown-overlay" id="cd-${type}"></div>
+                    <img src="${meta.img}" alt="${meta.name}">
+                    <span>${meta.name}</span><span style="color:#ffeb3b; font-size:9px;">${meta.cost}☀️</span>
+                `;
+                wrapper.appendChild(card);
+            });
+
+            let shovelCard = document.createElement('div');
+            shovelCard.className = 'seed-card';
+            shovelCard.id = 'btn-shovel';
+            shovelCard.style.cssText = 'background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;';
+            shovelCard.onclick = () => selectPlant('shovel');
+            shovelCard.innerHTML = `<span style="font-size: 1.3em;">⛏️</span><span>Xẻng</span>`;
+            wrapper.appendChild(shovelCard);
+        }
+
         function startGame(level) {
             updateCachedDimensions();
             initAudio(); 
@@ -1232,6 +1279,8 @@
             plantFoodCount = 3;
             document.getElementById('plantfood-count').innerText = plantFoodCount;
             
+            buildInGameSeedCards();
+
             if(gameUI) gameUI.classList.remove('hidden');
             pauseOverlay.classList.add('hidden');
             document.getElementById('level-display').innerText = currentLevel;
@@ -1239,6 +1288,7 @@
 
             document.getElementById('title-screen').classList.add('hidden');
             menuScreen.classList.add('hidden');
+            document.getElementById('seed-select-screen').classList.add('hidden');
             gameoverScreen.classList.add('hidden');
             winScreen.classList.add('hidden');
             
@@ -1264,9 +1314,9 @@
                 }
             }
             
-            for(let k in PLANT_DATA) {
-                PLANT_DATA[k].lastUsed = 0;
-            }
+            selectedPlantTypes.forEach(t => {
+                if(PLANT_META[t]) PLANT_META[t].lastUsed = 0;
+            });
             updateButtonStyles();
 
             document.getElementById('sun-count').innerText = suns;
@@ -1530,7 +1580,7 @@
 
         function nextLevelOrMenu() {
             if(currentLevel < 50) {
-                startGame(currentLevel + 1);
+                openSeedSelect(currentLevel + 1);
             } else {
                 showTitleScreen();
             }
@@ -1546,7 +1596,7 @@
                     return;
                 }
             } else if(type !== 'shovel') {
-                let data = PLANT_DATA[type];
+                let data = PLANT_META[type];
                 let now = performance.now();
                 if(now - data.lastUsed < data.cooldown) {
                     triggerRedFlash();
@@ -1559,13 +1609,18 @@
         }
 
         function updateButtonStyles() {
-            ['peashooter', 'snowpea', 'torchwood', 'chomper', 'bonkchoy', 'sunflower', 'wallnut', 'potatomine', 'cherry', 'shovel'].forEach(t => {
+            selectedPlantTypes.forEach(t => {
                 let btn = document.getElementById('btn-' + t);
                 if(btn) {
                     if(selectedType === t) btn.classList.add('active-btn');
                     else btn.classList.remove('active-btn');
                 }
             });
+            let shovelBtn = document.getElementById('btn-shovel');
+            if(shovelBtn) {
+                if(selectedType === 'shovel') shovelBtn.classList.add('active-btn');
+                else shovelBtn.classList.remove('active-btn');
+            }
 
             let pfBtn = document.getElementById('btn-plantfood');
             if(pfBtn) {
@@ -1746,7 +1801,7 @@
 
                 let exists = plants.some(p => p.row === row && p.col === plantCol);
                 if(!exists) {
-                    let plantInfo = PLANT_DATA[selectedType];
+                    let plantInfo = PLANT_META[selectedType];
                     if(now - plantInfo.lastUsed < plantInfo.cooldown) {
                         triggerRedFlash();
                         return;
@@ -1805,8 +1860,8 @@
             lastTime = timestamp;
 
             let now = performance.now();
-            for(let t in PLANT_DATA) {
-                let data = PLANT_DATA[t];
+            selectedPlantTypes.forEach(t => {
+                let data = PLANT_META[t];
                 let cdOverlay = document.getElementById('cd-' + t);
                 if(cdOverlay) {
                     let elapsed = now - data.lastUsed;
@@ -1818,7 +1873,7 @@
                         cdOverlay.style.display = 'none';
                     }
                 }
-            }
+            });
 
             let cellW = cachedWidth / gridCols;
             let cellH = cachedHeight / gridRows;
