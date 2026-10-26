@@ -18,7 +18,7 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: flex-start;
+            justify-content: center;
         }
 
         #game-wrapper { 
@@ -28,20 +28,20 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
         }
 
         #game-container { 
             position: relative; 
             width: 100vw; 
-            flex-grow: 1;
-            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 11 / 5;
             background: #2e7d32; 
-            margin: 0 auto; 
+            margin: auto; 
             border: 2px solid #1b5e20; 
             overflow: hidden; 
             touch-action: manipulation; 
-            border-radius: 0; 
+            border-radius: 4px; 
             box-shadow: inset 0 0 35px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.8); 
         }
 
@@ -55,6 +55,7 @@
         #title-screen {
             background: radial-gradient(circle, #2e7d32 0%, #0d3811 100%);
             z-index: 50;
+            justify-content: center;
         }
 
         .pvz-logo-container {
@@ -177,7 +178,7 @@
             white-space: nowrap;
         }
 
-        /* MÀN HÌNH CHỌN CÂY - NHỎ GỌN CHUẨN PVZ GỐC */
+        /* MÀN HÌNH CHỌN CÂY */
         .seed-select-board {
             background: linear-gradient(to bottom, rgba(74, 38, 15, 0.98), rgba(45, 20, 6, 0.98));
             border: 4px solid #6b421d; 
@@ -265,14 +266,13 @@
 
         .ui { 
             margin: 0; font-weight: bold; background: linear-gradient(to bottom, #1e1e1e, #111); border-bottom: 2px solid #333; 
-            width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10;
+            width: 100%; max-width: 1100px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10;
         }
 
         .seed-card-wrapper {
             display: flex; gap: 4px; overflow-x: auto; max-width: 100vw; padding: 2px 4px;
         }
 
-        /* Ô THẺ BÀI IN-GAME GỌN GÀNG, CHUẨN HÌNH CHỮ NHẬT ĐỨNG PVZ */
         .seed-card { 
             position: relative; 
             background: linear-gradient(to bottom, #fff385, #e0a800); 
@@ -434,13 +434,16 @@
         }
         .plant-food-burst { animation: plantFoodBurst 0.4s ease-out; }
 
+        /* MẶT TRỜI VÀ LÁ THẦN TO HƠN, RẤT DỄ BẤM TRÊN MÁY TÍNH & ĐIỆN THOẠI */
         .sun-drop { 
             position: absolute; cursor: pointer; z-index: 10; transform: translate(-50%, -50%);
+            font-size: 50px; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
             animation: bounce 0.6s infinite alternate; filter: drop-shadow(0 3px 8px rgba(255, 235, 59, 0.9)); will-change: left, top;
         }
 
         .plantfood-drop {
             position: absolute; cursor: pointer; z-index: 11; transform: translate(-50%, -50%);
+            font-size: 2.8em; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
             animation: bounce 0.5s infinite alternate; filter: drop-shadow(0 0 10px #00ff87); will-change: left, top;
         }
         
@@ -510,9 +513,6 @@
             .seed-card { width: 50px; height: 60px; font-size: 10px; padding: 2px; }
             .seed-card img { width: 28px; height: 28px; }
             .bullet { width: 12px; height: 12px; }
-            .sun-drop { font-size: 50px; }
-            .plantfood-drop { font-size: 2.5em; }
-            .plantfood-container { padding: 4px 12px; }
             .control-btn, .menu-btn-game { padding: 6px 14px; font-size: 13px; }
             .pvz-menu-board { max-width: 580px; padding: 24px; }
             .pvz-menu-btn { padding: 12px; font-size: 16px; margin-top: 10px; }
@@ -810,8 +810,8 @@
         const container = document.getElementById('game-container');
 
         function updateCachedDimensions() {
-            cachedWidth = container.clientWidth || window.innerWidth;
-            cachedHeight = container.clientHeight || window.innerHeight;
+            cachedWidth = container.clientWidth || 800;
+            cachedHeight = container.clientHeight || 400;
         }
         window.addEventListener('resize', updateCachedDimensions);
 
@@ -1375,8 +1375,9 @@
             scheduleNextZombie();
 
             sunSpawner = setInterval(() => {
+                updateCachedDimensions();
                 if(!gameStarted || gameOver || gameWon || isPaused) return;
-                let randomX = Math.random() * (cachedWidth - 100) + 50;
+                let randomX = Math.random() * (cachedWidth - 120) + 60;
                 let targetY = Math.random() * (cachedHeight * 0.5) + (cachedHeight * 0.25);
                 
                 let sDiv = document.createElement('div');
@@ -1411,6 +1412,7 @@
         }
 
         function createZombieElement(type, hasPlantFood) {
+            updateCachedDimensions();
             let cellW = cachedWidth / gridCols;
             let cellH = cachedHeight / gridRows;
 
@@ -1438,6 +1440,7 @@
         }
 
         function spawnPlantFoodDrop(x, y) {
+            updateCachedDimensions();
             let minY = 20;
             let maxY = cachedHeight - 20;
             if (y < minY) y = minY;
@@ -1478,6 +1481,10 @@
             banner.style.background = 'rgba(180, 0, 0, 0.4)';
             banner.innerHTML = `<h1 style="color: #ffeb3b; text-shadow: 2px 2px #000; font-size: 1.5em;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 1.1em;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
             container.appendChild(banner);
+
+            updateCachedDimensions();
+            let cellW = cachedWidth / gridCols;
+            let cellH = cachedHeight / gridRows;
 
             for (let r = 0; r < gridRows; r++) {
                 let type = 'normal';
@@ -1679,6 +1686,7 @@
         function processInteraction(clientX, clientY) {
             initAudio();
             if(!gameStarted || gameOver || gameWon || isPaused) return;
+            updateCachedDimensions();
             let rect = container.getBoundingClientRect();
             let x = clientX - rect.left;
             let y = clientY - rect.top;
@@ -1905,6 +1913,8 @@
             let dt = (timestamp - lastTime) / 16.67;
             if(dt > 3) dt = 3;
             lastTime = timestamp;
+
+            updateCachedDimensions();
 
             let now = performance.now();
             selectedPlantTypes.forEach(t => {
@@ -2383,6 +2393,7 @@
         function renderStaticElements() {
             container.querySelectorAll('.static-entity, .lawnmower').forEach(el => el.remove());
 
+            updateCachedDimensions();
             let cellW = cachedWidth / gridCols;
             let cellH = cachedHeight / gridRows;
 
