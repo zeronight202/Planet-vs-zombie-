@@ -183,8 +183,8 @@
             border: 4px solid #6b421d; 
             border-radius: 12px; 
             box-shadow: 0 8px 24px rgba(0,0,0,0.9);
-            width: 90%; 
-            max-width: 420px; 
+            width: 92%; 
+            max-width: 480px; 
             padding: 8px 12px; 
             text-align: center; 
             max-height: 94vh; 
@@ -206,8 +206,8 @@
         }
 
         .slot-box {
-            width: 34px; 
-            height: 40px; 
+            width: 32px; 
+            height: 38px; 
             background: #2a1808; 
             border: 2px dashed #7a5230; 
             border-radius: 4px;
@@ -231,7 +231,7 @@
             display: grid; 
             grid-template-columns: repeat(5, 1fr); 
             gap: 4px; 
-            max-height: 32vh;
+            max-height: 30vh;
             overflow-y: auto; 
             padding: 6px; 
             background: rgba(20, 10, 2, 0.6); 
@@ -269,7 +269,7 @@
         }
 
         .seed-card-wrapper {
-            display: flex; gap: 4px; overflow-x: auto; max-width: 100vw; padding: 2px 4px;
+            display: flex; gap: 3px; overflow-x: auto; max-width: 100vw; padding: 2px 4px;
         }
 
         .seed-card { 
@@ -439,6 +439,12 @@
             animation: bounce 0.6s infinite alternate; filter: drop-shadow(0 3px 8px rgba(255, 235, 59, 0.9)); will-change: left, top;
         }
 
+        .coin-drop {
+            position: absolute; cursor: pointer; z-index: 12; transform: translate(-50%, -50%);
+            font-size: 32px; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            animation: bounce 0.4s infinite alternate; filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9)); will-change: left, top;
+        }
+
         .plantfood-drop {
             position: absolute; cursor: pointer; z-index: 11; transform: translate(-50%, -50%);
             font-size: 2.8em; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
@@ -495,8 +501,8 @@
             .title-menu-box { max-width: 270px; gap: 6px; width: 90%; }
             .title-btn { padding: 6px 10px; font-size: 0.9em; }
             .ui { padding: 3px 6px; }
-            .seed-card { width: 38px; height: 48px; font-size: 8px; padding: 1px; }
-            .seed-card img { width: 22px; height: 22px; }
+            .seed-card { width: 34px; height: 44px; font-size: 7.5px; padding: 1px; }
+            .seed-card img { width: 20px; height: 20px; }
             .pvz-menu-board { max-width: 360px; padding: 14px; }
             .pvz-menu-btn { padding: 8px; font-size: 13px; margin-top: 6px; }
             .level-card { font-size: 0.95em; padding: 10px 2px; }
@@ -508,8 +514,8 @@
             .title-menu-box { max-width: 440px; gap: 14px; width: 100%; }
             .title-btn { padding: 14px 24px; font-size: 1.25em; }
             .ui { padding: 6px 14px; }
-            .seed-card { width: 50px; height: 60px; font-size: 10px; padding: 2px; }
-            .seed-card img { width: 28px; height: 28px; }
+            .seed-card { width: 44px; height: 56px; font-size: 9px; padding: 2px; }
+            .seed-card img { width: 24px; height: 24px; }
             .bullet { width: 12px; height: 12px; }
             .control-btn, .menu-btn-game { padding: 6px 14px; font-size: 13px; }
             .pvz-menu-board { max-width: 580px; padding: 24px; }
@@ -522,15 +528,18 @@
     <div id="game-wrapper">
         <div class="ui hidden" id="game-ui">
             <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 2px 8px;">
-                <span style="font-size: 1.1em;">☀️ <span id="sun-count" style="color: #ffeb3b; font-size: 1.2em;">50</span></span>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.05em;">☀️ <span id="sun-count" style="color: #ffeb3b; font-size: 1.1em;">50</span></span>
+                    <span style="font-size: 1.05em;">🪙 <span id="coin-count" style="color: #ffeb3b; font-size: 1.1em;">0</span></span>
+                </div>
                 
                 <div class="plantfood-container" id="btn-plantfood" onclick="selectPlant('plantfood')">
                     <span style="font-size: 1.2em; margin-right: 4px;">🌿</span>
                     <span style="color: #fff; font-size: 0.9em; font-weight: bold;">x<span id="plantfood-count">3</span></span>
                 </div>
 
-                <span style="font-size: 1em;">Màn: <span id="level-display" style="color: #00ffff; font-size: 1.1em;">1</span></span>
-                <div style="display: flex; align-items: center; gap: 6px; width: 22%;">
+                <span style="font-size: 0.95em;">Màn: <span id="level-display" style="color: #00ffff; font-size: 1em;">1</span></span>
+                <div style="display: flex; align-items: center; gap: 6px; width: 18%;">
                     <div style="flex-grow: 1; background: #222; height: 10px; border-radius: 5px; position: relative; overflow: hidden; border: 1.5px solid #555;">
                         <div id="progress-bar-fill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #48bb78, #38a169); transition: width 0.3s;"></div>
                     </div>
@@ -555,6 +564,8 @@
                     <div class="pvz-title-sub">PC & MOBILE EDITION</div>
                 </div>
 
+                <div style="color: #ffeb3b; font-weight: bold; margin-bottom: 6px; font-size: 1.1em;">🪙 Tiền xu: <span id="title-coin-count">0</span></div>
+
                 <div class="loading-wrapper" id="title-loading-box">
                     <div class="dirt-spinner"></div>
                     <div class="loading-container">
@@ -569,6 +580,9 @@
                     </button>
                     <button class="title-btn secondary" onclick="openLevelSelect()">
                         <span>📜</span> CHỌN MÀN CHƠI
+                    </button>
+                    <button class="title-btn secondary" onclick="openShop()">
+                        <span>🛒</span> CỬA HÀNG NÔNG TRẠI
                     </button>
                     <button class="title-btn secondary" onclick="toggleFullScreen()" style="background: linear-gradient(to bottom, #0284c7, #0369a1); border-color: #03588a;">
                         <span>🛜</span> TOÀN MÀN HÌNH
@@ -586,7 +600,7 @@
             <div id="seed-select-screen" class="screen-overlay hidden">
                 <div class="seed-select-board">
                     <h1 style="color: #ffeb3b; margin-bottom: 2px; font-size: 1.2em; text-shadow: 2px 2px #000;">CHỌN CÂY CHO TRẬN ĐẤU</h1>
-                    <p style="color: #ddd; font-size: 0.78em; margin-bottom: 4px;">Chọn tối đa 7 loại cây mang vào trận đấu (Click để chọn/bỏ chọn)</p>
+                    <p style="color: #ddd; font-size: 0.78em; margin-bottom: 4px;">Chọn tối đa <span id="max-slots-label">7</span> loại cây mang vào trận đấu (Click để chọn/bỏ chọn)</p>
                     
                     <div class="selected-slots-grid" id="selected-slots-container"></div>
 
@@ -604,6 +618,47 @@
                 </div>
             </div>
 
+            <!-- CỬA HÀNG (SHOP SCREEN) -->
+            <div id="shop-screen" class="screen-overlay hidden">
+                <div class="pvz-menu-board" style="max-width: 440px; padding: 20px;">
+                    <h1 style="color: #ffeb3b; margin-bottom: 4px; font-size: 1.4em; text-shadow: 2px 2px #000;">🛒 CỬA HÀNG NÔNG TRẠI</h1>
+                    <p style="color: #4ade80; font-size: 1em; margin-bottom: 10px; font-weight: bold;">🪙 Tiền xu của bạn: <span id="shop-coin-display" style="color: #ffeb3b;">0</span></p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 8px; max-height: 52vh; overflow-y: auto; padding: 4px;">
+                        <!-- Item 1: Slot Expansion -->
+                        <div style="background: rgba(0,0,0,0.4); border: 2px solid #523014; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: space-between; text-align: left;">
+                            <div>
+                                <div style="color: #ffb74d; font-weight: bold; font-size: 0.95em;">📦 Mở rộng ô chọn cây</div>
+                                <div style="color: #ccc; font-size: 0.78em;" id="shop-slot-desc">Hiện tại: 7/10 ô</div>
+                            </div>
+                            <button class="pvz-menu-btn" id="buy-slot-btn" onclick="buySlot()" style="width: auto; padding: 6px 12px; font-size: 12px; margin: 0; background: linear-gradient(to bottom, #16a34a, #15803d);">Mua (200 🪙)</button>
+                        </div>
+
+                        <!-- Item 2: Extra Starting Plant Food -->
+                        <div style="background: rgba(0,0,0,0.4); border: 2px solid #523014; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: space-between; text-align: left;">
+                            <div>
+                                <div style="color: #4ade80; font-weight: bold; font-size: 0.95em;">🌿 Thêm Plant Food khởi đầu</div>
+                                <div style="color: #ccc; font-size: 0.78em;" id="shop-pf-desc">+0 Plant Food thêm mỗi trận (Max: +3)</div>
+                            </div>
+                            <button class="pvz-menu-btn" id="buy-pf-btn" onclick="buyExtraPlantFood()" style="width: auto; padding: 6px 12px; font-size: 12px; margin: 0; background: linear-gradient(to bottom, #16a34a, #15803d);">Mua (150 🪙)</button>
+                        </div>
+
+                        <!-- Item 3: Plant Damage Boost -->
+                        <div style="background: rgba(0,0,0,0.4); border: 2px solid #523014; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: space-between; text-align: left;">
+                            <div>
+                                <div style="color: #60a5fa; font-weight: bold; font-size: 0.95em;">⚡ Nâng cấp sát thương cây</div>
+                                <div style="color: #ccc; font-size: 0.78em;" id="shop-dmg-desc">Cộng dồn +15% sát thương (Cấp: 0/5)</div>
+                            </div>
+                            <button class="pvz-menu-btn" id="buy-dmg-btn" onclick="buyDamageBoost()" style="width: auto; padding: 6px 12px; font-size: 12px; margin: 0; background: linear-gradient(to bottom, #16a34a, #15803d);">Mua (250 🪙)</button>
+                        </div>
+                    </div>
+
+                    <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 10px; margin-top: 12px;">
+                        <span>🏠 VỀ TRANG CHỦ</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- MENU CHỌN MÀN CHƠI -->
             <div id="menu-screen" class="screen-overlay hidden">
                 <div class="pvz-menu-board">
@@ -616,8 +671,8 @@
                         <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #0284c7, #0369a1); padding: 10px; flex: 1; margin:0;">
                             <span>🏠 VỀ TRANG CHỦ</span>
                         </div>
-                        <div class="pvz-menu-btn" onclick="openSettings()" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 10px; flex: 1; margin:0;">
-                            <span>⚙️ ÂM LƯỢNG</span>
+                        <div class="pvz-menu-btn" onclick="openShop()" style="background: linear-gradient(to bottom, #d97706, #b45309); padding: 10px; flex: 1; margin:0;">
+                            <span>🛒 CỬA HÀNG</span>
                         </div>
                     </div>
                 </div>
@@ -627,7 +682,7 @@
             <div id="reset-modal-overlay" class="screen-overlay hidden" style="background: rgba(0,0,0,0.8); z-index: 60;">
                 <div class="pvz-menu-board" style="max-width: 380px; border-color: #ef4444; padding: 20px;">
                     <h2 style="color: #ff5252; margin-bottom: 10px; font-size: 1.3em; text-shadow: 2px 2px #000;">⚠️ XÁC NHẬN CHƠI LẠI?</h2>
-                    <p style="color: #eee; margin-bottom: 16px; font-size: 1em; line-height: 1.4;">Bạn có chắc chắn muốn xóa toàn bộ tiến trình và quay về Màn 1 không?</p>
+                    <p style="color: #eee; margin-bottom: 16px; font-size: 1em; line-height: 1.4;">Bạn có chắc chắn muốn xóa toàn bộ tiến trình, tiền xu và quay về Màn 1 không?</p>
                     <div style="display: flex; gap: 12px;">
                         <div class="pvz-menu-btn" onclick="confirmResetProgress()" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 10px; margin:0;">
                             <span>ĐỒNG Ý</span>
@@ -778,9 +833,13 @@
         const LAWNMOWER_SVG = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="45" width="55" height="25" rx="6" fill="%23e53e3e"/><rect x="25" y="35" width="25" height="15" rx="3" fill="%23cbd5e0"/><circle cx="20" cy="70" r="12" fill="%232d3748"/><circle cx="20" cy="70" r="5" fill="%23cbd5e0"/><circle cx="65" cy="70" r="12" fill="%232d3748"/><circle cx="65" cy="70" r="5" fill="%23cbd5e0"/><path d="M75 50 L90 35 L95 38" fill="none" stroke="%23718096" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
         let maxUnlockedLevel = parseInt(localStorage.getItem('pvz2_unlocked_level')) || 1;
+        let playerCoins = parseInt(localStorage.getItem('pvz2_coins')) || 100;
+        let maxUnlockedSlots = parseInt(localStorage.getItem('pvz2_unlocked_slots')) || 7;
+        let extraPlantFood = parseInt(localStorage.getItem('pvz2_extra_plantfood')) || 0;
+        let damageUpgradeLevel = parseInt(localStorage.getItem('pvz2_damage_level')) || 0;
+
         let pendingLevel = 1;
         let selectedPlantTypes = ['sunflower', 'peashooter', 'wallnut', 'cherry'];
-        const MAX_SLOTS = 7;
         const ALL_PLANTS = Object.keys(PLANT_META);
         
         let menuBGM = new Audio('plantvszombie.mp3');
@@ -801,6 +860,7 @@
         let sfxVolume = 0.5;
         let plantFoodCount = 3;
         let plantFoodDrops = []; 
+        let coinDrops = [];
         let isDraggingPlantFood = false;
 
         let cachedWidth = 800;
@@ -813,7 +873,6 @@
         }
         window.addEventListener('resize', updateCachedDimensions);
 
-        // Quản lý BGM thông minh: Không restart nếu nhạc menu đã đang phát
         function playMenuBGM() {
             gameBGM.pause();
             gameBGM.currentTime = 0;
@@ -844,8 +903,11 @@
 
         function updatePlayButtonText() {
             maxUnlockedLevel = parseInt(localStorage.getItem('pvz2_unlocked_level')) || 1;
+            playerCoins = parseInt(localStorage.getItem('pvz2_coins')) || 0;
             let playLevelText = document.getElementById('title-play-level');
             if (playLevelText) playLevelText.innerText = 'Màn ' + maxUnlockedLevel;
+            let coinDisplay = document.getElementById('title-coin-count');
+            if (coinDisplay) coinDisplay.innerText = playerCoins;
         }
 
         function initTitleScreen() {
@@ -885,6 +947,7 @@
             menuScreen.classList.add('hidden');
             document.getElementById('seed-select-screen').classList.add('hidden');
             document.getElementById('settings-overlay').classList.add('hidden');
+            document.getElementById('shop-screen').classList.add('hidden');
             
             let titleScreen = document.getElementById('title-screen');
             titleScreen.classList.remove('hidden');
@@ -909,20 +972,25 @@
             pendingLevel = level;
             document.getElementById('title-screen').classList.add('hidden');
             menuScreen.classList.add('hidden');
+            document.getElementById('shop-screen').classList.add('hidden');
             renderSeedSelectScreen();
             document.getElementById('seed-select-screen').classList.remove('hidden');
         }
 
         function renderSeedSelectScreen() {
+            maxUnlockedSlots = parseInt(localStorage.getItem('pvz2_unlocked_slots')) || 7;
+            let maxSlotsLabel = document.getElementById('max-slots-label');
+            if(maxSlotsLabel) maxSlotsLabel.innerText = maxUnlockedSlots;
+
             let slotsContainer = document.getElementById('selected-slots-container');
             slotsContainer.innerHTML = '';
-            for(let i=0; i<MAX_SLOTS; i++) {
+            for(let i=0; i<maxUnlockedSlots; i++) {
                 let plantType = selectedPlantTypes[i];
                 let box = document.createElement('div');
                 box.className = 'slot-box' + (plantType ? ' filled' : '');
                 if(plantType) {
                     let info = PLANT_META[plantType];
-                    box.innerHTML = `<img src='${info.img}' style='width:18px;height:18px;object-fit:contain;'><span>${info.name}</span>`;
+                    box.innerHTML = `<img src='${info.img}' style='width:16px;height:16px;object-fit:contain;'><span>${info.name}</span>`;
                     box.onclick = () => {
                         selectedPlantTypes.splice(i, 1);
                         renderSeedSelectScreen();
@@ -940,10 +1008,10 @@
                 let isSelected = selectedPlantTypes.includes(type);
                 let card = document.createElement('div');
                 card.className = 'pool-card' + (isSelected ? ' selected' : '');
-                card.innerHTML = `<img src='${info.img}' style='width:22px;height:22px;object-fit:contain;'><span>${info.name}</span><span style='color:#744210;font-size:7.5px;'>${info.cost}☀️</span>`;
+                card.innerHTML = `<img src='${info.img}' style='width:20px;height:20px;object-fit:contain;'><span>${info.name}</span><span style='color:#744210;font-size:7.5px;'>${info.cost}☀️</span>`;
                 card.onclick = () => {
                     if(!isSelected) {
-                        if(selectedPlantTypes.length < MAX_SLOTS) {
+                        if(selectedPlantTypes.length < maxUnlockedSlots) {
                             selectedPlantTypes.push(type);
                             renderSeedSelectScreen();
                         } else {
@@ -965,6 +1033,119 @@
             }
             document.getElementById('seed-select-screen').classList.add('hidden');
             startGame(pendingLevel);
+        }
+
+        function openShop() {
+            playMenuBGM();
+            document.getElementById('title-screen').classList.add('hidden');
+            menuScreen.classList.add('hidden');
+            updateShopUI();
+            document.getElementById('shop-screen').classList.remove('hidden');
+        }
+
+        function updateShopUI() {
+            playerCoins = parseInt(localStorage.getItem('pvz2_coins')) || 0;
+            maxUnlockedSlots = parseInt(localStorage.getItem('pvz2_unlocked_slots')) || 7;
+            extraPlantFood = parseInt(localStorage.getItem('pvz2_extra_plantfood')) || 0;
+            damageUpgradeLevel = parseInt(localStorage.getItem('pvz2_damage_level')) || 0;
+
+            document.getElementById('shop-coin-display').innerText = playerCoins;
+
+            let slotDesc = document.getElementById('shop-slot-desc');
+            let slotBtn = document.getElementById('buy-slot-btn');
+            if(maxUnlockedSlots < 10) {
+                let nextCost = maxUnlockedSlots === 7 ? 200 : (maxUnlockedSlots === 8 ? 500 : 1000);
+                slotDesc.innerText = `Hiện tại: ${maxUnlockedSlots}/10 ô (Mở rộng ô tiếp theo)`;
+                slotBtn.innerText = `Mua (${nextCost} 🪙)`;
+                slotBtn.disabled = false;
+                slotBtn.style.opacity = '1';
+            } else {
+                slotDesc.innerText = `Đã đạt tối đa 10/10 ô chọn cây!`;
+                slotBtn.innerText = `ĐÃ MUA`;
+                slotBtn.disabled = true;
+                slotBtn.style.opacity = '0.5';
+            }
+
+            let pfDesc = document.getElementById('shop-pf-desc');
+            let pfBtn = document.getElementById('buy-pf-btn');
+            if(extraPlantFood < 3) {
+                let pfCost = 150 * (extraPlantFood + 1);
+                pfDesc.innerText = `+${extraPlantFood} Plant Food thêm mỗi trận (Max: +3)`;
+                pfBtn.innerText = `Mua (${pfCost} 🪙)`;
+                pfBtn.disabled = false;
+                pfBtn.style.opacity = '1';
+            } else {
+                pfDesc.innerText = `Đã đạt tối đa +3 Plant Food khởi đầu!`;
+                pfBtn.innerText = `ĐÃ MUA`;
+                pfBtn.disabled = true;
+                pfBtn.style.opacity = '0.5';
+            }
+
+            let dmgDesc = document.getElementById('shop-dmg-desc');
+            let dmgBtn = document.getElementById('buy-dmg-btn');
+            if(damageUpgradeLevel < 5) {
+                let dmgCost = 250 * (damageUpgradeLevel + 1);
+                dmgDesc.innerText = `Cộng dồn +${damageUpgradeLevel * 15}% sát thương (Cấp: ${damageUpgradeLevel}/5)`;
+                dmgBtn.innerText = `Mua (${dmgCost} 🪙)`;
+                dmgBtn.disabled = false;
+                dmgBtn.style.opacity = '1';
+            } else {
+                dmgDesc.innerText = `Đã nâng cấp tối đa +75% sát thương!`;
+                dmgBtn.innerText = `ĐÃ MUA`;
+                dmgBtn.disabled = true;
+                dmgBtn.style.opacity = '0.5';
+            }
+        }
+
+        function buySlot() {
+            maxUnlockedSlots = parseInt(localStorage.getItem('pvz2_unlocked_slots')) || 7;
+            playerCoins = parseInt(localStorage.getItem('pvz2_coins')) || 0;
+            let cost = maxUnlockedSlots === 7 ? 200 : (maxUnlockedSlots === 8 ? 500 : 1000);
+
+            if(playerCoins >= cost && maxUnlockedSlots < 10) {
+                playerCoins -= cost;
+                maxUnlockedSlots++;
+                localStorage.setItem('pvz2_coins', playerCoins);
+                localStorage.setItem('pvz2_unlocked_slots', maxUnlockedSlots);
+                playSound('collect');
+                updateShopUI();
+            } else {
+                triggerRedFlash();
+            }
+        }
+
+        function buyExtraPlantFood() {
+            extraPlantFood = parseInt(localStorage.getItem('pvz2_extra_plantfood')) || 0;
+            playerCoins = parseInt(localStorage.getItem('pvz2_coins')) || 0;
+            let cost = 150 * (extraPlantFood + 1);
+
+            if(playerCoins >= cost && extraPlantFood < 3) {
+                playerCoins -= cost;
+                extraPlantFood++;
+                localStorage.setItem('pvz2_coins', playerCoins);
+                localStorage.setItem('pvz2_extra_plantfood', extraPlantFood);
+                playSound('collect');
+                updateShopUI();
+            } else {
+                triggerRedFlash();
+            }
+        }
+
+        function buyDamageBoost() {
+            damageUpgradeLevel = parseInt(localStorage.getItem('pvz2_damage_level')) || 0;
+            playerCoins = parseInt(localStorage.getItem('pvz2_coins')) || 0;
+            let cost = 250 * (damageUpgradeLevel + 1);
+
+            if(playerCoins >= cost && damageUpgradeLevel < 5) {
+                playerCoins -= cost;
+                damageUpgradeLevel++;
+                localStorage.setItem('pvz2_coins', playerCoins);
+                localStorage.setItem('pvz2_damage_level', damageUpgradeLevel);
+                playSound('collect');
+                updateShopUI();
+            } else {
+                triggerRedFlash();
+            }
         }
 
         function openLevelSelect() {
@@ -1012,7 +1193,17 @@
 
         function confirmResetProgress() {
             localStorage.setItem('pvz2_unlocked_level', 1);
+            localStorage.setItem('pvz2_coins', 100);
+            localStorage.setItem('pvz2_unlocked_slots', 7);
+            localStorage.setItem('pvz2_extra_plantfood', 0);
+            localStorage.setItem('pvz2_damage_level', 0);
+
             maxUnlockedLevel = 1;
+            playerCoins = 100;
+            maxUnlockedSlots = 7;
+            extraPlantFood = 0;
+            damageUpgradeLevel = 0;
+
             renderLevelGrid();
             closeResetModal();
             showTitleScreen();
@@ -1269,11 +1460,13 @@
             zombies.forEach(z => { if(z.el) z.el.remove(); });
             bullets.forEach(b => { if(b.el) b.el.remove(); });
             sunDrops.forEach(s => { if(s.el) s.el.remove(); });
+            coinDrops.forEach(c => { if(c.el) c.el.remove(); });
             plantFoodDrops.forEach(p => { if(p.el) p.el.remove(); });
             activeMowers.forEach(m => { if(m.el) m.el.remove(); });
             zombies = [];
             bullets = [];
             sunDrops = [];
+            coinDrops = [];
             plantFoodDrops = [];
             activeMowers = [];
         }
@@ -1296,7 +1489,7 @@
                 card.innerHTML = `
                     <div class="cooldown-overlay" id="cd-${type}"></div>
                     <img src='${meta.img}' alt='${meta.name}'>
-                    <span>${meta.name}</span><span style="color:#ffeb3b; font-size:8.5px;">${meta.cost}☀️</span>
+                    <span>${meta.name}</span><span style="color:#ffeb3b; font-size:8px;">${meta.cost}☀️</span>
                 `;
                 wrapper.appendChild(card);
             });
@@ -1306,8 +1499,41 @@
             shovelCard.id = 'btn-shovel';
             shovelCard.style.cssText = 'background: linear-gradient(to bottom, #d7ccc8, #8d6e63); color: white;';
             shovelCard.onclick = () => selectPlant('shovel');
-            shovelCard.innerHTML = `<span style="font-size: 1.2em;">⛏️</span><span>Xẻng</span>`;
+            shovelCard.innerHTML = `<span style="font-size: 1.1em;">⛏️</span><span>Xẻng</span>`;
             wrapper.appendChild(shovelCard);
+        }
+
+        function spawnCoinDrop(x, y, isGold) {
+            updateCachedDimensions();
+            let cDiv = document.createElement('div');
+            cDiv.className = 'coin-drop';
+            cDiv.innerText = isGold ? '🪙' : '🪙';
+            cDiv.style.left = x + 'px';
+            cDiv.style.top = y + 'px';
+            container.appendChild(cDiv);
+
+            let coinVal = isGold ? 50 : 10;
+            let cObj = {
+                x: x,
+                y: y,
+                value: coinVal,
+                life: 600,
+                el: cDiv
+            };
+
+            cDiv.onmousedown = (e) => {
+                e.stopPropagation();
+                let idx = coinDrops.indexOf(cObj);
+                if(idx !== -1) {
+                    coinDrops.splice(idx, 1);
+                    cObj.el.remove();
+                    playerCoins += coinVal;
+                    localStorage.setItem('pvz2_coins', playerCoins);
+                    document.getElementById('coin-count').innerText = playerCoins;
+                    playSound('collect');
+                }
+            };
+            coinDrops.push(cObj);
         }
 
         function startGame(level) {
@@ -1322,9 +1548,14 @@
             zombiesSpawnedCount = 0;
             finalWaveTriggered = false;
             isPaused = false;
-            plantFoodCount = 3;
+
+            extraPlantFood = parseInt(localStorage.getItem('pvz2_extra_plantfood')) || 0;
+            plantFoodCount = 3 + extraPlantFood;
             document.getElementById('plantfood-count').innerText = plantFoodCount;
             
+            playerCoins = parseInt(localStorage.getItem('pvz2_coins')) || 0;
+            document.getElementById('coin-count').innerText = playerCoins;
+
             buildInGameSeedCards();
 
             if(gameUI) gameUI.classList.remove('hidden');
@@ -1623,7 +1854,12 @@
                 localStorage.setItem('pvz2_unlocked_level', maxUnlockedLevel);
             }
 
-            document.getElementById('win-message').innerText = currentLevel === 50 ? `🎉 CHÚC MỪNG BẠN ĐÃ PHÁ ĐẢO GAME! 🎉` : `Bạn đã hoàn thành Màn ${currentLevel}!`;
+            let coinReward = currentLevel * 30 + (currentLevelConfig.isBoss ? 250 : 60);
+            playerCoins = parseInt(localStorage.getItem('pvz2_coins')) || 0;
+            playerCoins += coinReward;
+            localStorage.setItem('pvz2_coins', playerCoins);
+
+            document.getElementById('win-message').innerText = currentLevel === 50 ? `🎉 PHÁ ĐẢO GAME! Thưởng: +${coinReward} 🪙` : `Hoàn thành Màn ${currentLevel}! Thưởng: +${coinReward} 🪙`;
             document.getElementById('win-btn-text').innerText = (currentLevel < 50) ? `MÀN TIẾP THEO (${currentLevel + 1}) ▶️` : `VỀ MÀN HÌNH CHÍNH 🏠`;
 
             playWinBGM(); 
@@ -1943,6 +2179,9 @@
                         if(z.hasPlantFood) {
                             spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
                         }
+                        if(Math.random() < 0.5) {
+                            spawnCoinDrop(z.col * cellW, z.row * cellH + cellH * 0.5, z.type === 'gargantuar' || z.type === 'zomboss');
+                        }
                         if(z.el) z.el.remove();
                     }
                     return !hit;
@@ -2018,6 +2257,14 @@
             });
             sunDrops = sunDrops.filter(s => s.life > 0);
 
+            coinDrops.forEach(c => {
+                c.life -= dt;
+            });
+            coinDrops.forEach(c => {
+                if(c.life <= 0) c.el.remove();
+            });
+            coinDrops = coinDrops.filter(c => c.life > 0);
+
             plantFoodDrops.forEach(pf => {
                 pf.life -= dt;
             });
@@ -2056,6 +2303,7 @@
                         if (targetZombie) {
                             playSound('chomper');
                             if (targetZombie.hasPlantFood) spawnPlantFoodDrop(targetZombie.col * cellW, targetZombie.row * cellH + cellH * 0.5);
+                            if(Math.random() < 0.4) spawnCoinDrop(targetZombie.col * cellW, targetZombie.row * cellH + cellH * 0.5, false);
                             if (targetZombie.el) targetZombie.el.remove();
                             targetZombie.hp = -1;
                             p.isChewing = true;
@@ -2082,6 +2330,7 @@
                         let inRange = (z.row >= cherry.row - 1 && z.row <= cherry.row + 1 && Math.abs(z.col - (cherry.col + 1)) <= 1.8);
                         if(inRange) {
                             if(z.hasPlantFood) spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
+                            if(Math.random() < 0.4) spawnCoinDrop(z.col * cellW, z.row * cellH + cellH * 0.5, false);
                             if(z.el) z.el.remove();
                         }
                         return !inRange;
@@ -2173,8 +2422,11 @@
 
             zombies.forEach(z => {
                 if(z.hp <= 0 || z.col <= -1) {
-                    if(z.hp <= 0 && z.hasPlantFood) {
-                        spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
+                    if(z.hp <= 0) {
+                        if(z.hasPlantFood) spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
+                        if(Math.random() < 0.35) {
+                            spawnCoinDrop(z.col * cellW, z.row * cellH + cellH * 0.5, z.type === 'gargantuar' || z.type === 'zomboss');
+                        }
                     }
                     if(z.el) z.el.remove();
                 }
@@ -2223,6 +2475,9 @@
                         }
                     }
                 } else if(p.type === 'bonkchoy') {
+                    damageUpgradeLevel = parseInt(localStorage.getItem('pvz2_damage_level')) || 0;
+                    let dmgMult = 1.0 + damageUpgradeLevel * 0.15;
+
                     if(p.ultTimer > 0) { 
                         p.ultTimer -= dt;
                         p.isPunching = true;
@@ -2243,7 +2498,7 @@
 
                         zombies.forEach(z => {
                             if(Math.abs(z.row - p.row) <= 1 && Math.abs(z.col - (p.col + 1)) <= 1.8) {
-                                z.hp -= 3.5 * dt;
+                                z.hp -= (3.5 * dmgMult) * dt;
                                 z.hitFlash = 2;
                                 playSound('punch');
                             }
@@ -2260,7 +2515,7 @@
                             p.isPunching = true;
                             p.punchTimer += dt;
                             if(p.punchTimer > 10) {
-                                targetZombie.hp -= 16;
+                                targetZombie.hp -= (16 * dmgMult);
                                 targetZombie.hitFlash = 4;
                                 playSound('punch');
                                 p.punchTimer = 0;
@@ -2330,15 +2585,18 @@
                 renderStaticElements();
             }
 
+            damageUpgradeLevel = parseInt(localStorage.getItem('pvz2_damage_level')) || 0;
+            let dmgMultiplier = 1.0 + damageUpgradeLevel * 0.15;
+
             bullets.forEach(b => {
                 if(b.hitDone) return;
                 zombies.forEach(z => {
                     if(!b.hitDone && b.row === z.row && Math.abs(b.col - z.col) < 0.45) {
-                        let damage = 12;
+                        let damage = 12 * dmgMultiplier;
                         if (b.isChomperSpit) {
-                            damage = 250; 
+                            damage = 250 * dmgMultiplier; 
                         } else if (b.isFire) {
-                            damage = b.isBlue ? 36 : 24; 
+                            damage = (b.isBlue ? 36 : 24) * dmgMultiplier; 
                             z.slowTimer = 0; 
                         } else if (b.isIce) {
                             z.slowTimer = 220;
@@ -2376,6 +2634,7 @@
                         activeMowers.push({row: z.row, col: 0, el: mDiv});
                         playSound('mower');
                         if(z.hasPlantFood) spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
+                        if(Math.random() < 0.5) spawnCoinDrop(z.col * cellW, z.row * cellH + cellH * 0.5, true);
                         if(z.el) z.el.remove();
                         z.col = -99;
                         renderStaticElements();
