@@ -2165,20 +2165,42 @@
                         else if(targetPlant.type === 'magnetshroom') {
                             playSound('boom');
                             zombies.forEach(z => {
-                                if(z.type === 'buckethead' || z.type === 'conehead' || z.type === 'football') {
+                                if(z.type === 'buckethead' || z.type === 'conehead' || z.type === 'football' || z.type === 'digger') {
                                     z.type = 'normal';
-                                    z.hp = Math.min(z.hp, 180);
-                                    z.maxHp = 180;
                                     let imgEl = z.el.querySelector('img');
                                     if(imgEl) imgEl.src = ZOMBIE_IMAGES.normal;
                                 }
-                                z.hp -= 600;
+                                z.hp -= 120; // Cân bằng lại sát thương vừa phải, không còn one-shot vô lý
                                 z.hitFlash = 12;
                                 if(z.el && z.hp <= 0) z.el.remove();
                             });
+
+                            // Bắn ra 3 viên đạn kim loại nặng về phía trước từ nấm nam châm
+                            for(let i=0; i<3; i++) {
+                                let targetRow = Math.max(0, Math.min(gridRows - 1, targetPlant.row + (i === 0 ? 0 : (i === 1 ? -1 : 1))));
+                                let spitDiv = document.createElement('div');
+                                spitDiv.className = 'bullet';
+                                spitDiv.style.width = '24px';
+                                spitDiv.style.height = '24px';
+                                spitDiv.style.background = 'radial-gradient(circle at 35% 35%, #cbd5e0 0%, #718096 50%, #2d3748 100%)';
+                                spitDiv.style.border = '1px solid #1a202c';
+                                spitDiv.style.boxShadow = '0 0 10px rgba(203, 213, 224, 0.9)';
+                                spitDiv.style.left = ((targetPlant.col + 1.2) * cellW) + 'px';
+                                spitDiv.style.top = (targetRow * cellH + cellH * 0.35) + 'px';
+                                container.appendChild(spitDiv);
+
+                                bullets.push({
+                                    row: targetRow,
+                                    col: targetPlant.col + 1.2,
+                                    isFire: false,
+                                    isMetalSpit: true,
+                                    el: spitDiv
+                                });
+                            }
+
                             let fx = document.createElement('div');
                             fx.className = 'explosion-fx';
-                            fx.innerText = '⚡🧲';
+                            fx.innerText = '🧲⚡';
                             fx.style.left = (cachedWidth / 2) + 'px';
                             fx.style.top = (cachedHeight / 2) + 'px';
                             container.appendChild(fx);
@@ -2324,10 +2346,10 @@
             activeMowers = activeMowers.filter(m => m.col < gridCols);
 
             bullets.forEach(b => {
-                b.col += (b.isChomperSpit ? 0.25 : 0.14) * dt;
+                b.col += (b.isChomperSpit || b.isMetalSpit ? 0.25 : 0.14) * dt;
 
                 let torchwood = plants.find(p => p.type === 'torchwood' && p.row === b.row && Math.abs((p.col + 1) - b.col) < 0.3);
-                if (torchwood && !b.isChomperSpit) {
+                if (torchwood && !b.isChomperSpit && !b.isMetalSpit) {
                     if (torchwood.isBlueFlame) {
                         b.isFire = true;
                         b.isBlue = true;
@@ -2475,7 +2497,7 @@
                             p.state = 'idle';
                             p.animCol = p.col;
                             p.actionTimer = 0;
-                            p.cooldownTimer = 180; // Hồi chiêu ngắn trước khi đè tiếp
+                            p.cooldownTimer = 180; 
                         }
                         plantsChanged = true;
                     }
@@ -2850,6 +2872,8 @@
                         let damage = 12 * dmgMultiplier;
                         if (b.isChomperSpit) {
                             damage = 250 * dmgMultiplier; 
+                        } else if (b.isMetalSpit) {
+                            damage = 180 * dmgMultiplier;
                         } else if (b.isFire) {
                             damage = (b.isBlue ? 36 : 24) * dmgMultiplier; 
                             z.slowTimer = 0; 
@@ -2860,7 +2884,7 @@
                         z.hp -= damage;
                         z.hitFlash = 6;
                         playSound('hit');
-                        if (!b.isChomperSpit) {
+                        if (!b.isChomperSpit && !b.isMetalSpit) {
                             b.hitDone = true;
                         }
                     }
