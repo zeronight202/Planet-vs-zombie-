@@ -76,7 +76,7 @@
         .pvz-title-sub {
             font-weight: 900;
             color: #ffb74d;
-            text-shadow: 2px 2px 0 #e65100, -1px -1px 0 #000, 1px -1px 0 #000;
+            text-shadow: 2px 2px 0 #e65100, -1px -1px 0 #000, 1px 1px 0 #000;
             margin-top: -2px;
         }
 
@@ -312,7 +312,7 @@
         .menu-btn-game { background: linear-gradient(to bottom, #a0522d, #6b3012); border: 1.5px solid #3d1c07; border-radius: 5px; color: #fff; font-weight: bold; cursor: pointer; text-shadow: 1px 1px #000; }
 
         .entity { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; will-change: left, top; }
-        .entity img { width: 85%; height: 85%; object-fit: contain; pointer-events: none; }
+        .entity img { width: 95%; height: 95%; object-fit: contain; pointer-events: none; }
 
         @keyframes redAuraGlow {
             0% { filter: drop-shadow(0 0 4px #ff0033) brightness(1.1); }
@@ -435,7 +435,7 @@
 
         .sun-drop { 
             position: absolute; cursor: pointer; z-index: 10; transform: translate(-50%, -50%);
-            font-size: 50px; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            font-size: 38px; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
             animation: bounce 0.6s infinite alternate; filter: drop-shadow(0 3px 8px rgba(255, 235, 59, 0.9)); will-change: left, top;
         }
 
@@ -785,9 +785,9 @@
         });
 
         const PLANT_IMAGES = {
-            peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%2338a169"/><path d="M45 75 L50 60 L55 75" fill="%2338a169"/><circle cx="45" cy="45" r="25" fill="%2348bb78"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%2338a169"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2338a169"/></svg>',
+            peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M25 90 Q50 100 75 90 Q50 80 25 90" fill="%2338a169"/><path d="M45 85 L50 55 L55 85" fill="%2338a169"/><circle cx="45" cy="42" r="30" fill="%2348bb78"/><ellipse cx="74" cy="38" rx="16" ry="13" fill="%2338a169"/><ellipse cx="77" cy="38" rx="9" ry="7" fill="%231a202c"/><circle cx="36" cy="32" r="6" fill="%23fff"/><circle cx="37" cy="32" r="2.5" fill="%23000"/><circle cx="50" cy="28" r="5" fill="%23fff"/><circle cx="51" cy="28" r="2" fill="%23000"/><path d="M25 30 Q12 18 24 12 Q30 22 25 30" fill="%2338a169"/></svg>',
             gatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%2338a169"/><circle cx="45" cy="45" r="26" fill="%23276749"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%232f855a"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/></svg>',
-            snowpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85 Q50 75 30 85" fill="%233182ce"/><path d="M45 75 L50 60 L55 75" fill="%233182ce"/><circle cx="45" cy="45" r="25" fill="%2363b3ed"/><ellipse cx="70" cy="42" rx="14" ry="11" fill="%233182ce"/><ellipse cx="73" cy="42" rx="8" ry="6" fill="%231a202c"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/><circle cx="50" cy="35" r="4" fill="%23fff"/><circle cx="50" cy="35" r="1.5" fill="%23000"/><path d="M25 35 Q15 25 25 20 Q30 30 25 35" fill="%2363b3ed"/></svg>',
+            snowpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M25 90 Q50 100 75 90 Q50 80 25 90" fill="%233182ce"/><path d="M45 85 L50 55 L55 85" fill="%233182ce"/><circle cx="45" cy="42" r="30" fill="%2363b3ed"/><ellipse cx="74" cy="38" rx="16" ry="13" fill="%233182ce"/><ellipse cx="77" cy="38" rx="9" ry="7" fill="%231a202c"/><circle cx="36" cy="32" r="6" fill="%23fff"/><circle cx="37" cy="32" r="2.5" fill="%23000"/><circle cx="50" cy="28" r="5" fill="%23fff"/><circle cx="51" cy="28" r="2" fill="%23000"/><path d="M25 30 Q12 18 24 12 Q30 22 25 30" fill="%2363b3ed"/></svg>',
             snowgatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%233182ce"/><circle cx="45" cy="45" r="26" fill="%232b6cb0"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%234299e1"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="38" cy="38" r="2" fill="%23000"/></svg>',
             
             torchwood: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="45" width="40" height="45" rx="8" fill="%23795548"/><polygon points="50,5 30,45 70,45" fill="%23ff5722"/><polygon points="50,15 38,45 62,45" fill="%23ffeb3b"/><circle cx="42" cy="60" r="4" fill="%23fff"/><circle cx="42" cy="60" r="2" fill="%23000"/><circle cx="58" cy="60" r="4" fill="%23fff"/><circle cx="58" cy="60" r="2" fill="%23000"/></svg>',
