@@ -329,7 +329,6 @@
         }
         .newspaper-angry { animation: angryShake 0.15s infinite linear !important; filter: drop-shadow(0 0 8px #ff0000) !important; }
 
-        /* ĐẠN ĐÃ ĐƯỢC LÀM TO VÀ SẮC NÉT HƠN */
         .bullet { 
             position: absolute; 
             z-index: 3; 
@@ -398,6 +397,20 @@
             100% { transform: scale(1); filter: brightness(1); }
         }
         .cherry-fuse { animation: cherryPulse 0.35s infinite ease-in-out; }
+
+        @keyframes squashJump {
+            0% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.3) translateY(-18px); filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6)); }
+            100% { transform: scale(1) translateY(0); }
+        }
+        .squash-jumping { animation: squashJump 0.3s ease-in-out; }
+
+        @keyframes magnetPulse {
+            0% { filter: drop-shadow(0 0 4px #3b82f6); }
+            50% { filter: drop-shadow(0 0 12px #93c5fd); }
+            100% { filter: drop-shadow(0 0 4px #3b82f6); }
+        }
+        .magnet-active { animation: magnetPulse 0.8s infinite ease-in-out; }
 
         @keyframes bonkPunchAnim {
             0% { transform: scale(1) translateX(0) rotate(0deg); }
@@ -657,7 +670,6 @@
                     <p style="color: #4ade80; font-size: 1em; margin-bottom: 10px; font-weight: bold;">🪙 Tiền xu của bạn: <span id="shop-coin-display" style="color: #ffeb3b;">0</span></p>
                     
                     <div style="display: flex; flex-direction: column; gap: 8px; max-height: 52vh; overflow-y: auto; padding: 4px;">
-                        <!-- Item 1: Slot Expansion -->
                         <div style="background: rgba(0,0,0,0.4); border: 2px solid #523014; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: space-between; text-align: left;">
                             <div>
                                 <div style="color: #ffb74d; font-weight: bold; font-size: 0.95em;">📦 Mở rộng ô chọn cây</div>
@@ -666,7 +678,6 @@
                             <button class="pvz-menu-btn" id="buy-slot-btn" onclick="buySlot()" style="width: auto; padding: 6px 12px; font-size: 12px; margin: 0; background: linear-gradient(to bottom, #16a34a, #15803d);">Mua (200 🪙)</button>
                         </div>
 
-                        <!-- Item 2: Extra Starting Plant Food -->
                         <div style="background: rgba(0,0,0,0.4); border: 2px solid #523014; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: space-between; text-align: left;">
                             <div>
                                 <div style="color: #4ade80; font-weight: bold; font-size: 0.95em;">🌿 Thêm Plant Food khởi đầu</div>
@@ -675,7 +686,6 @@
                             <button class="pvz-menu-btn" id="buy-pf-btn" onclick="buyExtraPlantFood()" style="width: auto; padding: 6px 12px; font-size: 12px; margin: 0; background: linear-gradient(to bottom, #16a34a, #15803d);">Mua (150 🪙)</button>
                         </div>
 
-                        <!-- Item 3: Plant Damage Boost -->
                         <div style="background: rgba(0,0,0,0.4); border: 2px solid #523014; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: space-between; text-align: left;">
                             <div>
                                 <div style="color: #60a5fa; font-weight: bold; font-size: 0.95em;">⚡ Nâng cấp sát thương cây</div>
@@ -802,14 +812,17 @@
                 level: levelNum,
                 isBoss: isBoss,
                 isFinalBoss: isFinalBoss,
-                totalZombies: isFinalBoss ? 35 : (isBoss ? (22 + levelNum * 1.2) : (8 + levelNum * 1.2)),
-                spawnDelay: isBoss ? 3200 : Math.max(3000, 8500 - levelNum * 100),
+                totalZombies: isFinalBoss ? 40 : (isBoss ? (22 + levelNum * 1.2) : (8 + levelNum * 1.2)),
+                spawnDelay: isBoss ? 3000 : Math.max(2800, 8500 - levelNum * 100),
                 zombieRatio: {
-                    normal: isBoss ? 0.25 : Math.max(0.15, 1 - levelNum * 0.02),
-                    conehead: isBoss ? 0.3 : Math.min(0.3, levelNum * 0.012),
-                    buckethead: isBoss ? 0.3 : Math.min(0.25, Math.max(0, (levelNum - 3) * 0.01)),
-                    newspaper: (levelNum >= 5) ? (isBoss ? 0.2 : Math.min(0.2, Math.max(0, (levelNum - 4) * 0.012))) : 0,
-                    polevaulting: (levelNum >= 11) ? (isBoss ? 0.25 : Math.min(0.15, Math.max(0, (levelNum - 10) * 0.01))) : 0
+                    normal: isBoss ? 0.2 : Math.max(0.1, 1 - levelNum * 0.02),
+                    conehead: isBoss ? 0.2 : Math.min(0.25, levelNum * 0.01),
+                    buckethead: (levelNum >= 3) ? (isBoss ? 0.2 : Math.min(0.2, Math.max(0, (levelNum - 2) * 0.008))) : 0,
+                    newspaper: (levelNum >= 5) ? (isBoss ? 0.15 : Math.min(0.15, Math.max(0, (levelNum - 4) * 0.01))) : 0,
+                    polevaulting: (levelNum >= 8) ? (isBoss ? 0.15 : Math.min(0.12, Math.max(0, (levelNum - 7) * 0.008))) : 0,
+                    football: (levelNum >= 10) ? (isBoss ? 0.15 : Math.min(0.15, Math.max(0, (levelNum - 9) * 0.01))) : 0,
+                    balloon: (levelNum >= 14) ? (isBoss ? 0.15 : Math.min(0.12, Math.max(0, (levelNum - 13) * 0.008))) : 0,
+                    digger: (levelNum >= 18) ? (isBoss ? 0.15 : Math.min(0.12, Math.max(0, (levelNum - 17) * 0.008))) : 0
                 },
                 plantFoodRatio: 0.1,
                 hasPresetMines: isBoss && !isFinalBoss
@@ -818,16 +831,16 @@
 
         const PLANT_IMAGES = {
             peashooter: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M25 90 Q50 100 75 90 Q50 80 25 90" fill="%2338a169"/><path d="M45 85 L50 55 L55 85" fill="%2338a169"/><circle cx="45" cy="42" r="30" fill="%2348bb78"/><ellipse cx="74" cy="38" rx="16" ry="13" fill="%2338a169"/><ellipse cx="77" cy="38" rx="9" ry="7" fill="%231a202c"/><circle cx="36" cy="32" r="6" fill="%23fff"/><circle cx="37" cy="32" r="2.5" fill="%23000"/><circle cx="50" cy="28" r="5" fill="%23fff"/><circle cx="51" cy="28" r="2" fill="%23000"/><path d="M25 30 Q12 18 24 12 Q30 22 25 30" fill="%2338a169"/></svg>',
+            repeater: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M25 90 Q50 100 75 90 Q50 80 25 90" fill="%23276749"/><path d="M45 85 L50 55 L55 85" fill="%23276749"/><circle cx="45" cy="42" r="30" fill="%232f855a"/><ellipse cx="74" cy="32" rx="15" ry="11" fill="%23276749"/><ellipse cx="77" cy="32" rx="8" ry="6" fill="%231a202c"/><ellipse cx="74" cy="50" rx="15" ry="11" fill="%23276749"/><ellipse cx="77" cy="50" rx="8" ry="6" fill="%231a202c"/><circle cx="36" cy="32" r="6" fill="%23fff"/><circle cx="37" cy="32" r="2.5" fill="%23000"/><path d="M25 30 Q12 18 24 12 Q30 22 25 30" fill="%232f855a"/></svg>',
+            squash: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 15 Q75 15 80 50 Q85 85 50 90 Q15 85 20 50 Q25 15 50 15 Z" fill="%23c05621"/><path d="M38 12 Q50 2 62 12" fill="none" stroke="%23276749" stroke-width="6" stroke-linecap="round"/><circle cx="38" cy="42" r="7" fill="%23fff"/><circle cx="38" cy="42" r="3" fill="%23000"/><circle cx="62" cy="42" r="7" fill="%23fff"/><circle cx="62" cy="42" r="3" fill="%23000"/><path d="M35 34 L45 38" stroke="%23000" stroke-width="3"/><path d="M65 34 L55 38" stroke="%23000" stroke-width="3"/><path d="M42 62 Q50 72 58 62" fill="none" stroke="%237b341e" stroke-width="4" stroke-linecap="round"/></svg>',
+            magnetshroom: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="42" y="60" width="16" height="30" rx="4" fill="%23cbd5e0"/><path d="M25 50 Q50 10 75 50 Q75 30 50 25 Q25 30 25 50 Z" fill="%234a5568"/><rect x="25" y="45" width="10" height="15" fill="%23e53e3e"/><rect x="65" y="45" width="10" height="15" fill="%233182ce"/><circle cx="45" cy="42" r="3" fill="%23fff"/><circle cx="55" cy="42" r="3" fill="%23fff"/></svg>',
             gatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%2338a169"/><circle cx="45" cy="45" r="26" fill="%23276749"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%232f855a"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="39" cy="38" r="2" fill="%23000"/></svg>',
             snowpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M25 90 Q50 100 75 90 Q50 80 25 90" fill="%233182ce"/><path d="M45 85 L50 55 L55 85" fill="%233182ce"/><circle cx="45" cy="42" r="30" fill="%2363b3ed"/><ellipse cx="74" cy="38" rx="16" ry="13" fill="%233182ce"/><ellipse cx="77" cy="38" rx="9" ry="7" fill="%231a202c"/><circle cx="36" cy="32" r="6" fill="%23fff"/><circle cx="37" cy="32" r="2.5" fill="%23000"/><circle cx="50" cy="28" r="5" fill="%23fff"/><circle cx="51" cy="28" r="2" fill="%23000"/><path d="M25 30 Q12 18 24 12 Q30 22 25 30" fill="%2363b3ed"/></svg>',
             snowgatlingpea: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 85 Q50 95 70 85" fill="%233182ce"/><circle cx="45" cy="45" r="26" fill="%232b6cb0"/><rect x="65" y="32" width="22" height="6" fill="%231a202c"/><rect x="65" y="42" width="22" height="6" fill="%231a202c"/><rect x="65" y="52" width="22" height="6" fill="%231a202c"/><path d="M20 20 L45 30 L30 50 Z" fill="%234299e1"/><circle cx="38" cy="38" r="5" fill="%23fff"/><circle cx="38" cy="38" r="2" fill="%23000"/></svg>',
-            
             torchwood: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="45" width="40" height="45" rx="8" fill="%23795548"/><polygon points="50,5 30,45 70,45" fill="%23ff5722"/><polygon points="50,15 38,45 62,45" fill="%23ffeb3b"/><circle cx="42" cy="60" r="4" fill="%23fff"/><circle cx="42" cy="60" r="2" fill="%23000"/><circle cx="58" cy="60" r="4" fill="%23fff"/><circle cx="58" cy="60" r="2" fill="%23000"/></svg>',
             torchwood_blue: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="45" width="40" height="45" rx="8" fill="%23795548"/><polygon points="50,2 26,45 74,45" fill="%2300e5ff"/><polygon points="50,10 34,45 66,45" fill="%23e0f7fa"/><circle cx="42" cy="60" r="4" fill="%23fff"/><circle cx="42" cy="60" r="2" fill="%23000"/><circle cx="58" cy="60" r="4" fill="%23fff"/><circle cx="58" cy="60" r="2" fill="%23000"/></svg>',
-
             chomper: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M35 90 Q20 85 30 75 Q40 85 45 90 Z" fill="%234caf50"/><path d="M65 90 Q80 85 70 75 Q60 85 55 90 Z" fill="%234caf50"/><path d="M42 85 Q35 70 48 55" fill="none" stroke="%236a1b9a" stroke-width="8" stroke-linecap="round"/><circle cx="52" cy="45" r="32" fill="%239c27b0"/><circle cx="45" cy="32" r="5" fill="%237b1fa2" opacity="0.7"/><circle cx="62" cy="58" r="4" fill="%237b1fa2" opacity="0.7"/><polygon points="45,16 48,25 52,18" fill="%23c8e6c9" stroke="%23388e3c" stroke-width="1.5"/><polygon points="58,15 61,24 65,17" fill="%23c8e6c9" stroke="%23388e3c" stroke-width="1.5"/><polygon points="70,22 72,30 77,25" fill="%23c8e6c9" stroke="%23388e3c" stroke-width="1.5"/><circle cx="38" cy="32" r="6" fill="%23fff"/><circle cx="38" cy="32" r="3" fill="%23000"/><path d="M36 40 Q75 42 74 72 Q50 78 30 62 Z" fill="%233b003b"/><path d="M55 65 Q62 60 68 66" fill="none" stroke="%23f48fb1" stroke-width="5" stroke-linecap="round"/><path d="M33 40 Q55 35 74 42 Q65 48 50 45 Q38 45 33 40 Z" fill="%2366bb6a" stroke="%232e7d32" stroke-width="1.5"/><path d="M30 62 Q50 82 74 72 Q65 65 50 68 Q38 65 30 62 Z" fill="%2366bb6a" stroke="%232e7d32" stroke-width="1.5"/><polygon points="38,42 42,50 46,42" fill="%23fff"/><polygon points="48,43 53,52 58,43" fill="%23fff"/><polygon points="60,43 65,51 70,43" fill="%23fff"/><polygon points="38,62 42,54 46,62" fill="%23fff"/><polygon points="48,61 53,53 58,61" fill="%23fff"/><polygon points="60,60 65,52 70,60" fill="%23fff"/></svg>',
             chomper_chewing: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M35 90 Q20 85 30 75 Q40 85 45 90 Z" fill="%234caf50"/><path d="M65 90 Q80 85 70 75 Q60 85 55 90 Z" fill="%234caf50"/><ellipse cx="50" cy="50" rx="30" ry="25" fill="%239c27b0"/><circle cx="38" cy="42" r="5" fill="%23fff"/><circle cx="38" cy="42" r="2" fill="%23000"/><circle cx="62" cy="42" r="5" fill="%23fff"/><circle cx="62" cy="42" r="2" fill="%23000"/><path d="M42 60 Q50 66 58 60" fill="none" stroke="%23fff" stroke-width="3" stroke-linecap="round"/></svg>',
-            
             bonkchoy: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="55" r="25" fill="%2348bb78"/><ellipse cx="26" cy="45" rx="14" ry="18" fill="%2338a169"/><ellipse cx="74" cy="45" rx="14" ry="18" fill="%2338a169"/><circle cx="42" cy="50" r="4" fill="%23fff"/><circle cx="42" cy="50" r="2" fill="%23000"/><circle cx="58" cy="50" r="4" fill="%23fff"/><circle cx="58" cy="50" r="2" fill="%23000"/><path d="M45 62 Q50 66 55 62" fill="none" stroke="%231a202c" stroke-width="2.5"/><circle cx="18" cy="35" r="12" fill="%23276749"/><circle cx="82" cy="35" r="12" fill="%23276749"/></svg>',
             bonkchoy_punching: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="55" r="25" fill="%2348bb78"/><ellipse cx="26" cy="45" rx="14" ry="18" fill="%2338a169"/><ellipse cx="74" cy="45" rx="14" ry="18" fill="%2338a169"/><circle cx="42" cy="50" r="4" fill="%23fff"/><circle cx="42" cy="50" r="2" fill="%23000"/><circle cx="58" cy="50" r="4" fill="%23fff"/><circle cx="58" cy="50" r="2" fill="%23000"/><path d="M45 62 Q50 66 55 62" fill="none" stroke="%231a202c" stroke-width="2.5"/><circle cx="95" cy="30" r="15" fill="%23276749"/><circle cx="5" cy="40" r="12" fill="%23276749"/></svg>',
             sunflower: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M47 65 Q47 80 50 90" fill="none" stroke="%2338a169" stroke-width="6" stroke-linecap="round"/><path d="M35 80 Q25 75 35 70 Z" fill="%2338a169"/><path d="M65 80 Q75 75 65 70 Z" fill="%2338a169"/><g fill="%23ecc94b"><circle cx="50" cy="20" r="12"/><circle cx="80" cy="32" r="12"/><circle cx="92" cy="60" r="12"/><circle cx="75" cy="85" r="12"/><circle cx="45" cy="90" r="12"/><circle cx="20" cy="80" r="12"/><circle cx="8" cy="55" r="12"/><circle cx="20" cy="30" r="12"/></g><circle cx="50" cy="52" r="24" fill="%23b7791f"/><circle cx="50" cy="52" r="20" fill="%23d69e2e"/><circle cx="42" cy="48" r="4.5" fill="%23fff"/><circle cx="42" cy="48" r="2" fill="%23000"/><circle cx="58" cy="48" r="4.5" fill="%23fff"/><circle cx="58" cy="48" r="2" fill="%23000"/><path d="M44 58 Q50 64 56 58" fill="none" stroke="%23000" stroke-width="2.5" stroke-linecap="round"/></svg>',
@@ -840,6 +853,9 @@
 
         const PLANT_META = {
             peashooter: { name: 'Đậu', cost: 100, cooldown: 5000, img: PLANT_IMAGES.peashooter },
+            repeater: { name: 'Đậu Kép', cost: 200, cooldown: 6000, img: PLANT_IMAGES.repeater },
+            squash: { name: 'Bí Nhảy', cost: 50, cooldown: 25000, img: PLANT_IMAGES.squash },
+            magnetshroom: { name: 'Nấm Hút', cost: 100, cooldown: 20000, img: PLANT_IMAGES.magnetshroom },
             snowpea: { name: 'Đậu Băng', cost: 175, cooldown: 6000, img: PLANT_IMAGES.snowpea },
             torchwood: { name: 'Đuốc', cost: 175, cooldown: 7500, img: PLANT_IMAGES.torchwood },
             chomper: { name: 'Ăn Thịt', cost: 150, cooldown: 7500, img: PLANT_IMAGES.chomper },
@@ -854,6 +870,9 @@
             normal: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><path d="M30 35 Q40 20 55 25" fill="none" stroke="%234a5568" stroke-width="4" stroke-linecap="round"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/><path d="M44 52 Q50 58 56 52 Z" fill="%231a202c"/></svg>',
             conehead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="45" r="22" fill="%23cbd5e0"/><polygon points="50,2 28,38 72,38" fill="%23dd6b20"/><path d="M34 26 L66 26" stroke="%23cbd5e0" stroke-width="4"/><circle cx="42" cy="43" r="5" fill="%23fff"/><circle cx="42" cy="43" r="2" fill="%23e53e3e"/><circle cx="56" cy="41" r="4" fill="%23fff"/><circle cx="56" cy="41" r="1.5" fill="%23e53e3e"/><path d="M44 55 Q50 60 56 55 Z" fill="%231a202c"/></svg>',
             buckethead: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="45" r="22" fill="%23cbd5e0"/><polygon points="28,34 72,34 62,4 38,4" fill="%23a0aec0"/><ellipse cx="50" cy="4" rx="12" ry="2.5" fill="%23cbd5e0"/><path d="M24 20 Q50 -5 76 20" fill="none" stroke="%23718096" stroke-width="4"/><circle cx="42" cy="43" r="5" fill="%23fff"/><circle cx="42" cy="43" r="2" fill="%23e53e3e"/><circle cx="56" cy="41" r="4" fill="%23fff"/><circle cx="56" cy="41" r="1.5" fill="%23e53e3e"/><path d="M44 55 Q50 60 56 55 Z" fill="%231a202c"/></svg>',
+            football: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="34" y="62" width="32" height="30" rx="4" fill="%23e53e3e"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><path d="M24 25 Q50 -10 76 25" fill="%23805ad5"/><rect x="28" y="25" width="44" height="8" rx="3" fill="%236b46c1"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/></svg>',
+            balloon: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="22" rx="18" ry="22" fill="%23e53e3e"/><path d="M50 44 L50 60" stroke="%23a0aec0" stroke-width="2"/><rect x="38" y="60" width="24" height="28" rx="4" fill="%233182ce"/><circle cx="50" cy="50" r="15" fill="%23cbd5e0"/><circle cx="45" cy="48" r="3" fill="%23fff"/><circle cx="55" cy="48" r="3" fill="%23fff"/></svg>',
+            digger: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%23744210"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><ellipse cx="50" cy="22" rx="16" ry="6" fill="%23d69e2e"/><rect x="65" y="35" width="25" height="6" fill="%23718096" transform="rotate(-30 65 35)"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="56" cy="38" r="4" fill="%23fff"/></svg>',
             newspaper_paper: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%234a5568"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><rect x="20" y="38" width="40" height="30" rx="3" fill="%23e2e8f0" stroke="%23a0aec0" stroke-width="2"/><line x1="25" y1="45" x2="55" y2="45" stroke="%23718096" stroke-width="2"/><line x1="25" y1="52" x2="55" y2="52" stroke="%23718096" stroke-width="2"/><circle cx="58" cy="38" r="4" fill="%23fff"/><circle cx="58" cy="38" r="1.5" fill="%23000"/></svg>',
             newspaper_angry: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%23742a2a"/><circle cx="50" cy="42" r="22" fill="%23feb2b2"/><circle cx="42" cy="40" r="6" fill="%23fff"/><circle cx="42" cy="40" r="3" fill="%23e53e3e"/><circle cx="56" cy="38" r="6" fill="%23fff"/><circle cx="56" cy="38" r="3" fill="%23e53e3e"/><path d="M38 32 L48 36" stroke="%23742a2a" stroke-width="3"/><path d="M60 32 L50 36" stroke="%23742a2a" stroke-width="3"/><path d="M42 54 Q50 48 58 54" fill="none" stroke="%231a202c" stroke-width="3"/></svg>',
             polevaulting_pole: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="38" y="65" width="24" height="28" rx="4" fill="%232b6cb0"/><circle cx="50" cy="42" r="22" fill="%23cbd5e0"/><line x1="10" y1="90" x2="85" y2="15" stroke="%23d69e2e" stroke-width="5" stroke-linecap="round"/><circle cx="42" cy="40" r="5" fill="%23fff"/><circle cx="42" cy="40" r="2" fill="%23e53e3e"/><circle cx="56" cy="38" r="4" fill="%23fff"/><circle cx="56" cy="38" r="1.5" fill="%23e53e3e"/></svg>',
@@ -1539,7 +1558,7 @@
             updateCachedDimensions();
             let cDiv = document.createElement('div');
             cDiv.className = 'coin-drop';
-            cDiv.innerText = isGold ? '🪙' : '🪙';
+            cDiv.innerText = '🪙';
             cDiv.style.left = x + 'px';
             cDiv.style.top = y + 'px';
             container.appendChild(cDiv);
@@ -1690,6 +1709,9 @@
             let zImg = document.createElement('img');
             if(type === 'buckethead') zImg.src = ZOMBIE_IMAGES.buckethead;
             else if(type === 'conehead') zImg.src = ZOMBIE_IMAGES.conehead;
+            else if(type === 'football') zImg.src = ZOMBIE_IMAGES.football;
+            else if(type === 'balloon') zImg.src = ZOMBIE_IMAGES.balloon;
+            else if(type === 'digger') zImg.src = ZOMBIE_IMAGES.digger;
             else if(type === 'newspaper') zImg.src = ZOMBIE_IMAGES.newspaper_paper;
             else if(type === 'polevaulting') zImg.src = ZOMBIE_IMAGES.polevaulting_pole;
             else if(type === 'gargantuar') zImg.src = ZOMBIE_IMAGES.gargantuar;
@@ -1753,7 +1775,7 @@
                 if(currentLevelConfig.isFinalBoss) {
                     type = (r % 2 === 0) ? 'zomboss' : 'gargantuar';
                 } else if(currentLevelConfig.isBoss) {
-                    type = (r === 1 || r === 3) ? 'gargantuar' : 'buckethead';
+                    type = (r === 1 || r === 3) ? 'gargantuar' : 'football';
                 } else {
                     type = getRandomZombieType(currentLevelConfig);
                 }
@@ -1761,6 +1783,9 @@
                 let hp = 180;
                 if(type === 'buckethead') hp = 1100;
                 else if(type === 'conehead') hp = 420;
+                else if(type === 'football') hp = 1500;
+                else if(type === 'balloon') hp = 250;
+                else if(type === 'digger') hp = 500;
                 else if(type === 'newspaper') hp = 340;
                 else if(type === 'polevaulting') hp = 320;
                 else if(type === 'gargantuar') hp = 3200;
@@ -1779,6 +1804,9 @@
                     hitFlash: 0,
                     slowTimer: 0,
                     hasPole: (type === 'polevaulting'),
+                    hasBalloon: (type === 'balloon'),
+                    isDigging: (type === 'digger'),
+                    movingRight: false,
                     isAngry: false,
                     el: zDiv
                 });
@@ -1792,6 +1820,15 @@
         function getRandomZombieType(config) {
             let rand = Math.random();
             let cum = 0;
+
+            cum += config.zombieRatio.digger;
+            if (rand < cum) return 'digger';
+
+            cum += config.zombieRatio.balloon;
+            if (rand < cum) return 'balloon';
+
+            cum += config.zombieRatio.football;
+            if (rand < cum) return 'football';
 
             cum += config.zombieRatio.polevaulting;
             if (rand < cum) return 'polevaulting';
@@ -1821,7 +1858,7 @@
                     let type = 'normal';
 
                     if(currentLevelConfig.isFinalBoss) {
-                        type = (Math.random() < 0.25) ? 'zomboss' : (Math.random() < 0.6 ? 'buckethead' : 'gargantuar');
+                        type = (Math.random() < 0.25) ? 'zomboss' : (Math.random() < 0.6 ? 'football' : 'gargantuar');
                     } else {
                         type = getRandomZombieType(currentLevelConfig);
                     }
@@ -1829,6 +1866,9 @@
                     let hp = 180;
                     if(type === 'buckethead') hp = 1100;
                     else if(type === 'conehead') hp = 420;
+                    else if(type === 'football') hp = 1500;
+                    else if(type === 'balloon') hp = 250;
+                    else if(type === 'digger') hp = 500;
                     else if(type === 'newspaper') hp = 340;
                     else if(type === 'polevaulting') hp = 320;
                     else if(type === 'gargantuar') hp = 3200;
@@ -1847,6 +1887,9 @@
                         hitFlash: 0,
                         slowTimer: 0,
                         hasPole: (type === 'polevaulting'),
+                        hasBalloon: (type === 'balloon'),
+                        isDigging: (type === 'digger'),
+                        movingRight: false,
                         isAngry: false,
                         el: zDiv
                     });
@@ -1991,7 +2034,7 @@
                         container.appendChild(burstDiv);
                         setTimeout(() => burstDiv.remove(), 400);
 
-                        if(targetPlant.type === 'peashooter' || targetPlant.type === 'snowpea') {
+                        if(targetPlant.type === 'peashooter' || targetPlant.type === 'snowpea' || targetPlant.type === 'repeater') {
                             let wasIce = (targetPlant.type === 'snowpea');
                             targetPlant.type = wasIce ? 'snowgatlingpea' : 'gatlingpea';
                             targetPlant.isIce = wasIce;
@@ -2138,8 +2181,14 @@
                             plants.push({type: 'cherry', row: row, col: plantCol, hp: 999, fuseTimer: 0});
                         } else if(selectedType === 'peashooter') {
                             plants.push({type: 'peashooter', row: row, col: plantCol, hp: 100, shootTimer: 0});
+                        } else if(selectedType === 'repeater') {
+                            plants.push({type: 'repeater', row: row, col: plantCol, hp: 100, shootTimer: 0});
                         } else if(selectedType === 'snowpea') {
                             plants.push({type: 'snowpea', row: row, col: plantCol, hp: 100, shootTimer: 0});
+                        } else if(selectedType === 'squash') {
+                            plants.push({type: 'squash', row: row, col: plantCol, hp: 150, hasJumped: false});
+                        } else if(selectedType === 'magnetshroom') {
+                            plants.push({type: 'magnetshroom', row: row, col: plantCol, hp: 100, magnetTimer: 0});
                         } else if(selectedType === 'torchwood') {
                             plants.push({type: 'torchwood', row: row, col: plantCol, hp: 300, isBlueFlame: false, blueFlameTimer: 0});
                         } else if(selectedType === 'chomper') {
@@ -2308,6 +2357,7 @@
             let plantsChanged = false;
             let explodedMines = [];
             let explodedCherries = [];
+            let squashedPlants = [];
 
             plants.forEach(p => {
                 if (p.type === 'potatomine' && !p.armed) {
@@ -2321,6 +2371,38 @@
                     if (p.fuseTimer > 60) {
                         explodedCherries.push(p);
                     }
+                } else if (p.type === 'squash' && !p.hasJumped) {
+                    let targetZ = zombies.find(z => z.row === p.row && Math.abs(z.col - (p.col + 1)) <= 1.2);
+                    if (targetZ) {
+                        p.hasJumped = true;
+                        playSound('boom');
+                        targetZ.hp -= 1800;
+                        targetZ.hitFlash = 10;
+                        
+                        let fx = document.createElement('div');
+                        fx.className = 'explosion-fx';
+                        fx.innerText = '💥';
+                        fx.style.left = ((targetZ.col + 0.5) * cellW) + 'px';
+                        fx.style.top = ((p.row + 0.5) * cellH) + 'px';
+                        container.appendChild(fx);
+                        setTimeout(() => fx.remove(), 500);
+
+                        squashedPlants.push(p);
+                    }
+                } else if (p.type === 'magnetshroom') {
+                    p.magnetTimer += dt;
+                    if (p.magnetTimer > 400) {
+                        let targetZ = zombies.find(z => z.row === p.row && z.type === 'buckethead' && z.col - (p.col + 1) <= 3.5);
+                        if (targetZ) {
+                            targetZ.type = 'normal';
+                            targetZ.hp = 180;
+                            targetZ.maxHp = 180;
+                            let imgEl = targetZ.el.querySelector('img');
+                            if(imgEl) imgEl.src = ZOMBIE_IMAGES.normal;
+                            playSound('collect');
+                            p.magnetTimer = 0;
+                        }
+                    }
                 } else if (p.type === 'chomper') {
                     if (p.isChewing) {
                         p.chewTimer += dt;
@@ -2331,7 +2413,7 @@
                         }
                     } else {
                         let pCol = p.col + 1;
-                        let targetZombie = zombies.find(z => z.row === p.row && z.col >= pCol && (z.col - pCol) <= 1.2);
+                        let targetZombie = zombies.find(z => z.row === p.row && z.col >= pCol && (z.col - pCol) <= 1.2 && !z.hasBalloon);
                         if (targetZombie) {
                             playSound('chomper');
                             if (targetZombie.hasPlantFood) spawnPlantFoodDrop(targetZombie.col * cellW, targetZombie.row * cellH + cellH * 0.5);
@@ -2345,6 +2427,11 @@
                     }
                 }
             });
+
+            if (squashedPlants.length > 0) {
+                plants = plants.filter(p => !squashedPlants.includes(p));
+                plantsChanged = true;
+            }
 
             if (explodedCherries.length > 0) {
                 explodedCherries.forEach(cherry => {
@@ -2376,9 +2463,12 @@
                 if(z.hitFlash > 0) z.hitFlash--;
                 if(z.slowTimer > 0) z.slowTimer -= dt;
 
-                let hitPlant = plants.find(p => p.row === z.row && Math.abs((p.col + 1) - z.col) < 0.45);
-                
-                if(hitPlant) {
+                let hitPlant = null;
+                if (!z.isDigging) {
+                    hitPlant = plants.find(p => p.row === z.row && Math.abs((p.col + 1) - z.col) < 0.45);
+                }
+
+                if(hitPlant && !z.hasBalloon) {
                     if (z.type === 'polevaulting' && z.hasPole) {
                         z.hasPole = false;
                         z.col -= 1.35; 
@@ -2415,12 +2505,37 @@
                     let baseSpeed = 0.0034;
                     if(z.type === 'buckethead') baseSpeed = 0.002;
                     else if(z.type === 'conehead') baseSpeed = 0.0024;
+                    else if(z.type === 'football') baseSpeed = 0.0062;
+                    else if(z.type === 'balloon') baseSpeed = 0.0045;
+                    else if(z.type === 'digger' && z.isDigging) baseSpeed = 0.0075;
                     else if(z.type === 'polevaulting') baseSpeed = z.hasPole ? 0.0068 : 0.0032;
                     else if(z.type === 'newspaper') baseSpeed = z.isAngry ? 0.0085 : 0.0022;
                     else if(z.type === 'gargantuar' || z.type === 'zomboss') baseSpeed = 0.0014;
 
                     let actualSpeed = z.slowTimer > 0 ? baseSpeed * 0.5 : baseSpeed;
-                    z.col -= actualSpeed * dt;
+
+                    if (z.type === 'digger' && z.isDigging) {
+                        z.col -= actualSpeed * dt;
+                        if (z.col <= 0.5) {
+                            z.isDigging = false;
+                            z.movingRight = true;
+                            let imgEl = z.el.querySelector('img');
+                            if(imgEl) imgEl.src = ZOMBIE_IMAGES.digger;
+                        }
+                    } else if (z.movingRight) {
+                        z.col += actualSpeed * dt;
+                        let frontPlant = plants.find(p => p.row === z.row && Math.abs(z.col - (p.col + 1)) < 0.45);
+                        if (frontPlant) {
+                            frontPlant.hp -= 0.8 * dt;
+                            playSound('bite');
+                            if(frontPlant.hp <= 0) {
+                                plants = plants.filter(p => p !== frontPlant);
+                                plantsChanged = true;
+                            }
+                        }
+                    } else {
+                        z.col -= actualSpeed * dt;
+                    }
                 }
 
                 if (z.type === 'newspaper' && !z.isAngry && z.hp < 150) {
@@ -2436,7 +2551,7 @@
                 z.el.style.width = zWidthW + 'px';
                 z.el.style.height = zHeightH + 'px';
                 z.el.style.left = (z.col * cellW) + 'px';
-                z.el.style.top = (z.row * cellH - (z.type === 'zomboss' ? cellH * 0.25 : 0)) + 'px';
+                z.el.style.top = (z.row * cellH - (z.type === 'zomboss' ? cellH * 0.25 : (z.hasBalloon ? cellH * 0.3 : 0))) + 'px';
 
                 if(z.hitFlash > 0) {
                     z.el.style.filter = 'brightness(3) sepia(1) hue-rotate(-50deg)';
@@ -2453,7 +2568,7 @@
             }
 
             zombies.forEach(z => {
-                if(z.hp <= 0 || z.col <= -1) {
+                if(z.hp <= 0 || z.col <= -1 || (z.movingRight && z.col >= gridCols)) {
                     if(z.hp <= 0) {
                         if(z.hasPlantFood) spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
                         if(Math.random() < 0.35) {
@@ -2463,7 +2578,7 @@
                     if(z.el) z.el.remove();
                 }
             });
-            zombies = zombies.filter(z => z.col > -1 && z.hp > 0);
+            zombies = zombies.filter(z => z.col > -1 && z.hp > 0 && !(z.movingRight && z.col >= gridCols));
 
             let plantStateChanged = false;
             plants.forEach(p => {
@@ -2485,11 +2600,12 @@
                         p.type = p.isIce ? 'snowpea' : 'peashooter';
                         plantStateChanged = true;
                     }
-                } else if(p.type === 'peashooter' || p.type === 'snowpea') {
+                } else if(p.type === 'peashooter' || p.type === 'snowpea' || p.type === 'repeater') {
                     let hasZombie = zombies.some(z => z.row === p.row && z.col > (p.col + 1));
                     if(hasZombie) {
                         p.shootTimer += dt;
-                        if(p.shootTimer > 45) {
+                        let interval = (p.type === 'repeater') ? 35 : 45;
+                        if(p.shootTimer > interval) {
                             let bDiv = document.createElement('div');
                             bDiv.className = (p.type === 'snowpea') ? 'bullet ice-bullet' : 'bullet';
                             bDiv.style.left = ((p.col + 1.1) * cellW) + 'px';
@@ -2502,6 +2618,19 @@
                                 isIce: (p.type === 'snowpea'),
                                 el: bDiv
                             });
+
+                            if(p.type === 'repeater') {
+                                setTimeout(() => {
+                                    if(!gameStarted || gameOver || gameWon) return;
+                                    let bDiv2 = document.createElement('div');
+                                    bDiv2.className = 'bullet';
+                                    bDiv2.style.left = ((p.col + 1.1) * cellW) + 'px';
+                                    bDiv2.style.top = (p.row * cellH + cellH * 0.4) + 'px';
+                                    container.appendChild(bDiv2);
+                                    bullets.push({ row: p.row, col: p.col + 1.1, isIce: false, el: bDiv2 });
+                                }, 120);
+                            }
+
                             playSound('shoot');
                             p.shootTimer = 0;
                         }
@@ -2541,7 +2670,7 @@
                         }
                     } else {
                         let pCol = p.col + 1;
-                        let targetZombie = zombies.find(z => z.row === p.row && Math.abs(z.col - pCol) <= 1.25);
+                        let targetZombie = zombies.find(z => z.row === p.row && Math.abs(z.col - pCol) <= 1.25 && !z.hasBalloon);
                         let wasPunching = p.isPunching;
                         if(targetZombie) {
                             p.isPunching = true;
@@ -2624,6 +2753,15 @@
                 if(b.hitDone) return;
                 zombies.forEach(z => {
                     if(!b.hitDone && b.row === z.row && Math.abs(b.col - z.col) < 0.45) {
+                        if (z.hasBalloon) {
+                            z.hasBalloon = false;
+                            let imgEl = z.el.querySelector('img');
+                            if(imgEl) imgEl.src = ZOMBIE_IMAGES.normal;
+                            playSound('boom');
+                            b.hitDone = true;
+                            return;
+                        }
+
                         let damage = 12 * dmgMultiplier;
                         if (b.isChomperSpit) {
                             damage = 250 * dmgMultiplier; 
@@ -2650,7 +2788,7 @@
             }
 
             zombies.forEach(z => {
-                if(z.col <= 0.6) {
+                if(z.col <= 0.6 && !z.movingRight) {
                     if(lawnmowers[z.row]) {
                         lawnmowers[z.row] = false;
                         let mDiv = document.createElement('div');
@@ -2675,7 +2813,7 @@
                     }
                 }
             });
-            zombies = zombies.filter(z => z.col > 0);
+            zombies = zombies.filter(z => z.col > 0 || z.movingRight);
 
             animationFrameId = requestAnimationFrame(gameLoop);
         }
@@ -2717,6 +2855,10 @@
                     if(p.isChewing) div.classList.add('chomper-chewing');
                 } else if(p.type === 'cherry') {
                     div.classList.add('cherry-fuse');
+                } else if(p.type === 'squash' && p.hasJumped) {
+                    div.classList.add('squash-jumping');
+                } else if(p.type === 'magnetshroom') {
+                    div.classList.add('magnet-active');
                 } else if(p.type === 'gatlingpea') {
                     div.classList.add('gatling-firing');
                 } else if(p.type === 'snowgatlingpea') {
