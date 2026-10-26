@@ -178,7 +178,6 @@
             white-space: nowrap;
         }
 
-        /* MÀN HÌNH CHỌN CÂY */
         .seed-select-board {
             background: linear-gradient(to bottom, rgba(74, 38, 15, 0.98), rgba(45, 20, 6, 0.98));
             border: 4px solid #6b421d; 
@@ -434,7 +433,6 @@
         }
         .plant-food-burst { animation: plantFoodBurst 0.4s ease-out; }
 
-        /* MẶT TRỜI VÀ LÁ THẦN TO HƠN, RẤT DỄ BẤM TRÊN MÁY TÍNH & ĐIỆN THOẠI */
         .sun-drop { 
             position: absolute; cursor: pointer; z-index: 10; transform: translate(-50%, -50%);
             font-size: 50px; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
@@ -815,31 +813,32 @@
         }
         window.addEventListener('resize', updateCachedDimensions);
 
-        function stopAllBGM() {
-            menuBGM.pause();
-            menuBGM.currentTime = 0;
+        // Quản lý BGM thông minh: Không restart nếu nhạc menu đã đang phát
+        function playMenuBGM() {
             gameBGM.pause();
             gameBGM.currentTime = 0;
             winBGM.pause();
             winBGM.currentTime = 0;
-        }
-
-        function ensureMenuBGMPlay() {
-            stopAllBGM();
             if (menuBGM.paused) {
                 menuBGM.play().catch(e => {});
             }
         }
 
-        function ensureGameBGMPlay() {
-            stopAllBGM();
+        function playGameBGM() {
+            menuBGM.pause();
+            menuBGM.currentTime = 0;
+            winBGM.pause();
+            winBGM.currentTime = 0;
             if (gameBGM.paused) {
                 gameBGM.play().catch(e => {});
             }
         }
 
         function playWinBGM() {
-            stopAllBGM();
+            menuBGM.pause();
+            menuBGM.currentTime = 0;
+            gameBGM.pause();
+            gameBGM.currentTime = 0;
             winBGM.play().catch(e => {});
         }
 
@@ -851,7 +850,7 @@
 
         function initTitleScreen() {
             updateCachedDimensions();
-            ensureMenuBGMPlay();
+            playMenuBGM();
             updatePlayButtonText();
 
             let fill = document.getElementById('title-loading-fill');
@@ -876,7 +875,7 @@
         }
 
         function showTitleScreen() {
-            ensureMenuBGMPlay(); 
+            playMenuBGM(); 
             isPaused = false;
             clearAllDynamicElements();
             if(gameUI) gameUI.classList.add('hidden');
@@ -906,7 +905,7 @@
         }
 
         function openSeedSelect(level) {
-            ensureMenuBGMPlay();
+            playMenuBGM();
             pendingLevel = level;
             document.getElementById('title-screen').classList.add('hidden');
             menuScreen.classList.add('hidden');
@@ -969,7 +968,7 @@
         }
 
         function openLevelSelect() {
-            ensureMenuBGMPlay();
+            playMenuBGM();
             document.getElementById('title-screen').classList.add('hidden');
             renderLevelGrid();
             menuScreen.classList.remove('hidden');
@@ -1003,7 +1002,7 @@
         }
 
         function openResetModal() {
-            ensureMenuBGMPlay();
+            playMenuBGM();
             document.getElementById('reset-modal-overlay').classList.remove('hidden');
         }
 
@@ -1058,7 +1057,7 @@
                 if(gameBGM) gameBGM.pause();
             } else {
                 if(pauseOverlay) pauseOverlay.classList.add('hidden');
-                ensureGameBGMPlay();
+                playGameBGM();
                 lastTime = performance.now();
             }
         }
@@ -1314,7 +1313,7 @@
         function startGame(level) {
             updateCachedDimensions();
             initAudio(); 
-            ensureGameBGMPlay();
+            playGameBGM();
             
             currentLevel = level;
             currentLevelConfig = LEVEL_CONFIGS[currentLevel - 1];
@@ -2513,12 +2512,12 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             initTitleScreen();
-            menuBGM.play().catch(e => {});
+            playMenuBGM();
         });
 
         window.addEventListener('click', () => {
             if (!gameStarted && menuBGM.paused && winBGM.paused && gameBGM.paused) {
-                menuBGM.play().catch(e => {});
+                playMenuBGM();
             }
         }, { once: true });
     </script>
