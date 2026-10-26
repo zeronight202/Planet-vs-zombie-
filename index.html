@@ -398,12 +398,12 @@
         }
         .cherry-fuse { animation: cherryPulse 0.35s infinite ease-in-out; }
 
-        @keyframes squashJump {
+        @keyframes squashJumpAnim {
             0% { transform: scale(1) translateY(0); }
-            50% { transform: scale(1.3) translateY(-18px); filter: drop-shadow(0 8px 12px rgba(0,0,0,0.6)); }
+            50% { transform: scale(1.3) translateY(-25px); filter: drop-shadow(0 12px 16px rgba(0,0,0,0.7)); }
             100% { transform: scale(1) translateY(0); }
         }
-        .squash-jumping { animation: squashJump 0.3s ease-in-out; }
+        .squash-action { animation: squashJumpAnim 0.35s ease-in-out; }
 
         @keyframes magnetPulse {
             0% { filter: drop-shadow(0 0 4px #3b82f6); }
@@ -2144,6 +2144,46 @@
                                 });
                             }
                         }
+                        else if(targetPlant.type === 'squash') {
+                            playSound('boom');
+                            zombies.forEach(z => {
+                                if(Math.abs(z.row - targetPlant.row) <= 1) {
+                                    z.hp -= 2500;
+                                    z.hitFlash = 15;
+                                    if(z.hasPlantFood) spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
+                                    if(z.el && z.hp <= 0) z.el.remove();
+                                }
+                            });
+                            let fx = document.createElement('div');
+                            fx.className = 'explosion-fx';
+                            fx.innerText = '💥💥';
+                            fx.style.left = ((targetPlant.col + 1) * cellW) + 'px';
+                            fx.style.top = (targetPlant.row * cellH) + 'px';
+                            container.appendChild(fx);
+                            setTimeout(() => fx.remove(), 600);
+                        }
+                        else if(targetPlant.type === 'magnetshroom') {
+                            playSound('boom');
+                            zombies.forEach(z => {
+                                if(z.type === 'buckethead' || z.type === 'conehead' || z.type === 'football') {
+                                    z.type = 'normal';
+                                    z.hp = Math.min(z.hp, 180);
+                                    z.maxHp = 180;
+                                    let imgEl = z.el.querySelector('img');
+                                    if(imgEl) imgEl.src = ZOMBIE_IMAGES.normal;
+                                }
+                                z.hp -= 600;
+                                z.hitFlash = 12;
+                                if(z.el && z.hp <= 0) z.el.remove();
+                            });
+                            let fx = document.createElement('div');
+                            fx.className = 'explosion-fx';
+                            fx.innerText = '⚡🧲';
+                            fx.style.left = (cachedWidth / 2) + 'px';
+                            fx.style.top = (cachedHeight / 2) + 'px';
+                            container.appendChild(fx);
+                            setTimeout(() => fx.remove(), 600);
+                        }
 
                         renderStaticElements();
                         selectedType = null;
@@ -2186,7 +2226,17 @@
                         } else if(selectedType === 'snowpea') {
                             plants.push({type: 'snowpea', row: row, col: plantCol, hp: 100, shootTimer: 0});
                         } else if(selectedType === 'squash') {
-                            plants.push({type: 'squash', row: row, col: plantCol, hp: 150, hasJumped: false});
+                            plants.push({
+                                type: 'squash', 
+                                row: row, 
+                                col: plantCol, 
+                                hp: 200, 
+                                state: 'idle', 
+                                animCol: plantCol, 
+                                targetCol: plantCol, 
+                                actionTimer: 0,
+                                cooldownTimer: 0
+                            });
                         } else if(selectedType === 'magnetshroom') {
                             plants.push({type: 'magnetshroom', row: row, col: plantCol, hp: 100, magnetTimer: 0});
                         } else if(selectedType === 'torchwood') {
@@ -2357,7 +2407,6 @@
             let plantsChanged = false;
             let explodedMines = [];
             let explodedCherries = [];
-            let squashedPlants = [];
 
             plants.forEach(p => {
                 if (p.type === 'potatomine' && !p.armed) {
@@ -2371,23 +2420,64 @@
                     if (p.fuseTimer > 60) {
                         explodedCherries.push(p);
                     }
-                } else if (p.type === 'squash' && !p.hasJumped) {
-                    let targetZ = zombies.find(z => z.row === p.row && Math.abs(z.col - (p.col + 1)) <= 1.2);
-                    if (targetZ) {
-                        p.hasJumped = true;
-                        playSound('boom');
-                        targetZ.hp -= 1800;
-                        targetZ.hitFlash = 10;
-                        
-                        let fx = document.createElement('div');
-                        fx.className = 'explosion-fx';
-                        fx.innerText = '💥';
-                        fx.style.left = ((targetZ.col + 0.5) * cellW) + 'px';
-                        fx.style.top = ((p.row + 0.5) * cellH) + 'px';
-                        container.appendChild(fx);
-                        setTimeout(() => fx.remove(), 500);
+                } else if (p.type === 'squash') {
+                    if (p.cooldownTimer > 0) {
+                        p.cooldownTimer -= dt;
+                    }
+                    
+                    if (p.state === 'idle' && p.cooldownTimer <= 0) {
+                        let targetZ = zombies.find(z => z.row === p.row && Math.abs(z.col - (p.col + 1)) <= 1.5);
+                        if (targetZ) {
+                            p.state = 'jump_forward';
+                            p.targetCol = targetZ.col - 1; 
+                            p.actionTimer = 0;
+                            plantsChanged = true;
+                        }
+                    } else if (p.state === 'jump_forward') {
+                        p.actionTimer += dt;
+                        let progress = Math.min(1, p.actionTimer / 12);
+                        p.animCol = p.col + (p.targetCol - p.col) * progress;
+                        if (progress >= 1) {
+                            p.state = 'smash';
+                            p.actionTimer = 0;
+                            playSound('boom');
+                            
+                            zombies.forEach(z => {
+                                if (z.row === p.row && Math.abs(z.col - (p.targetCol + 1)) <= 0.9) {
+                                    z.hp -= 1800;
+                                    z.hitFlash = 12;
+                                    if(z.hasPlantFood) spawnPlantFoodDrop(z.col * cellW, z.row * cellH + cellH * 0.5);
+                                    if(z.el && z.hp <= 0) z.el.remove();
+                                }
+                            });
 
-                        squashedPlants.push(p);
+                            let fx = document.createElement('div');
+                            fx.className = 'explosion-fx';
+                            fx.innerText = '💥';
+                            fx.style.left = ((p.targetCol + 1) * cellW) + 'px';
+                            fx.style.top = ((p.row + 0.5) * cellH) + 'px';
+                            container.appendChild(fx);
+                            setTimeout(() => fx.remove(), 400);
+                        }
+                        plantsChanged = true;
+                    } else if (p.state === 'smash') {
+                        p.actionTimer += dt;
+                        if (p.actionTimer > 15) {
+                            p.state = 'jump_back';
+                            p.actionTimer = 0;
+                        }
+                        plantsChanged = true;
+                    } else if (p.state === 'jump_back') {
+                        p.actionTimer += dt;
+                        let progress = Math.min(1, p.actionTimer / 15);
+                        p.animCol = p.targetCol + (p.col - p.targetCol) * progress;
+                        if (progress >= 1) {
+                            p.state = 'idle';
+                            p.animCol = p.col;
+                            p.actionTimer = 0;
+                            p.cooldownTimer = 180; // Hồi chiêu ngắn trước khi đè tiếp
+                        }
+                        plantsChanged = true;
                     }
                 } else if (p.type === 'magnetshroom') {
                     p.magnetTimer += dt;
@@ -2427,11 +2517,6 @@
                     }
                 }
             });
-
-            if (squashedPlants.length > 0) {
-                plants = plants.filter(p => !squashedPlants.includes(p));
-                plantsChanged = true;
-            }
 
             if (explodedCherries.length > 0) {
                 explodedCherries.forEach(cherry => {
@@ -2855,8 +2940,8 @@
                     if(p.isChewing) div.classList.add('chomper-chewing');
                 } else if(p.type === 'cherry') {
                     div.classList.add('cherry-fuse');
-                } else if(p.type === 'squash' && p.hasJumped) {
-                    div.classList.add('squash-jumping');
+                } else if(p.type === 'squash' && p.state !== 'idle') {
+                    div.classList.add('squash-action');
                 } else if(p.type === 'magnetshroom') {
                     div.classList.add('magnet-active');
                 } else if(p.type === 'gatlingpea') {
@@ -2870,8 +2955,8 @@
                     div.classList.add('wallnut-armored-fx');
                 }
 
-                let screenCol = p.col + 1;
-                div.style.left = (screenCol * cellW) + 'px';
+                let renderCol = (p.animCol !== undefined ? p.animCol : p.col) + 1;
+                div.style.left = (renderCol * cellW) + 'px';
                 div.style.top = (p.row * cellH) + 'px';
                 div.style.width = cellW + 'px';
                 div.style.height = cellH + 'px';
@@ -2904,7 +2989,7 @@
             canvas.height = 400;
         }
 
-        function startFireworks() {
+        let startFireworks = () => {
             const canvas = document.getElementById('fireworks-canvas');
             if(!canvas) return;
             const ctx = canvas.getContext('2d');
@@ -2932,7 +3017,7 @@
                     if(p.alpha <= 0) particles.splice(index, 1);
                 });
             }, 30);
-        }
+        };
 
         function stopFireworks() {
             if(fwInterval) clearInterval(fwInterval);
