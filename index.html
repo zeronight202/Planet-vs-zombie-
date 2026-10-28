@@ -1017,7 +1017,6 @@
             let coinDisplay = document.getElementById('title-coin-count');
             if (coinDisplay) coinDisplay.innerText = playerCoins;
 
-            // Kiểm tra xem có ván đấu nào đang lưu không
             let savedGame = localStorage.getItem('pvz2_saved_game');
             let resumeBtn = document.getElementById('btn-resume-game');
             if (savedGame && resumeBtn) {
@@ -1161,7 +1160,6 @@
                 triggerRedFlash();
                 return;
             }
-            // Xóa save cũ khi bắt đầu màn mới
             localStorage.removeItem('pvz2_saved_game');
             document.getElementById('seed-select-screen').classList.add('hidden');
             startGame(pendingLevel);
@@ -1684,6 +1682,8 @@
 
         function spawnCoinDrop(x, y, isGold) {
             updateCachedDimensions();
+            // Đảm bảo xu không bị tràn sát mép trái màn hình
+            if (x < 60) x = 60;
             let cDiv = document.createElement('div');
             cDiv.className = 'coin-drop';
             cDiv.innerText = '🪙';
@@ -1700,7 +1700,7 @@
                 el: cDiv
             };
 
-            cDiv.onmousedown = (e) => {
+            let collectCoin = (e) => {
                 e.stopPropagation();
                 let idx = coinDrops.indexOf(cObj);
                 if(idx !== -1) {
@@ -1712,6 +1712,10 @@
                     playSound('collect');
                 }
             };
+
+            cDiv.addEventListener('mousedown', collectCoin);
+            cDiv.addEventListener('touchstart', collectCoin, {passive: true});
+
             coinDrops.push(cObj);
         }
 
@@ -1828,7 +1832,8 @@
                     life: 500,
                     el: sDiv
                 };
-                sDiv.onmousedown = (e) => {
+
+                let collectSun = (e) => {
                     e.stopPropagation();
                     let idx = sunDrops.indexOf(sObj);
                     if(idx !== -1) {
@@ -1839,6 +1844,10 @@
                         playSound('collect');
                     }
                 };
+
+                sDiv.addEventListener('mousedown', collectSun);
+                sDiv.addEventListener('touchstart', collectSun, {passive: true});
+
                 sunDrops.push(sObj);
             }, 6000);
 
@@ -1880,6 +1889,7 @@
 
         function spawnPlantFoodDrop(x, y) {
             updateCachedDimensions();
+            if (x < 60) x = 60;
             let minY = 20;
             let maxY = cachedHeight - 20;
             if (y < minY) y = minY;
@@ -1899,7 +1909,7 @@
                 el: pfDiv
             };
 
-            pfDiv.onmousedown = (e) => {
+            let collectPF = (e) => {
                 e.stopPropagation();
                 let idx = plantFoodDrops.indexOf(pfObj);
                 if(idx !== -1) {
@@ -1910,13 +1920,16 @@
                     playSound('plantfood');
                 }
             };
+
+            pfDiv.addEventListener('mousedown', collectPF);
+            pfDiv.addEventListener('touchstart', collectPF, {passive: true});
+
             plantFoodDrops.push(pfObj);
         }
 
         function triggerFinalWaveBanner() {
             playSound('boom');
             
-            // Kích hoạt hiệu ứng rung lắc màn hình (Screen Shake)
             container.classList.add('screen-shake-fx');
             setTimeout(() => {
                 container.classList.remove('screen-shake-fx');
@@ -2288,7 +2301,8 @@
                                     life: 500,
                                     el: sDiv
                                 };
-                                sDiv.onmousedown = (e) => {
+
+                                let collectSun = (e) => {
                                     e.stopPropagation();
                                     let idx = sunDrops.indexOf(sObj);
                                     if(idx !== -1) {
@@ -2299,6 +2313,9 @@
                                         playSound('collect');
                                     }
                                 };
+                                sDiv.addEventListener('mousedown', collectSun);
+                                sDiv.addEventListener('touchstart', collectSun, {passive: true});
+
                                 sunDrops.push(sObj);
                             }
                         } 
@@ -3015,7 +3032,8 @@
                             life: 500,
                             el: sDiv
                         };
-                        sDiv.onmousedown = (e) => {
+
+                        let collectSun = (e) => {
                             e.stopPropagation();
                             let idx = sunDrops.indexOf(sObj);
                             if(idx !== -1) {
@@ -3026,6 +3044,9 @@
                                 playSound('collect');
                             }
                         };
+                        sDiv.addEventListener('mousedown', collectSun);
+                        sDiv.addEventListener('touchstart', collectSun, {passive: true});
+
                         sunDrops.push(sObj);
                         p.sunTimer = 0;
                     }
