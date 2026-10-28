@@ -45,19 +45,6 @@
             box-shadow: inset 0 0 35px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.8); 
         }
 
-        /* Hiệu ứng rung lắc màn hình (Screen Shake) */
-        @keyframes screenShake {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            20% { transform: translate(-8px, 6px) rotate(-1deg); }
-            40% { transform: translate(8px, -6px) rotate(1deg); }
-            60% { transform: translate(-6px, -4px) rotate(0deg); }
-            80% { transform: translate(6px, 4px) rotate(-0.5deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        }
-        .screen-shake-fx {
-            animation: screenShake 0.4s ease-in-out infinite !important;
-        }
-
         .screen-overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             background: radial-gradient(circle, #2e7d32 0%, #0d2810 100%); 
@@ -637,9 +624,6 @@
                     <button class="title-btn" onclick="openSeedSelectForCurrentLevel()">
                         <span>🌻</span> CHƠI NGAY (<span id="title-play-level">Màn 1</span>)
                     </button>
-                    <button class="title-btn secondary hidden" id="btn-resume-game" onclick="resumeSavedGame()" style="background: linear-gradient(to bottom, #15803d, #166534); border-color: #22c55e;">
-                        <span>▶️</span> TIẾP TỤC VÁN ĐẤU DỞ DANG
-                    </button>
                     <button class="title-btn secondary" onclick="openLevelSelect()">
                         <span>📜</span> CHỌN MÀN CHƠI
                     </button>
@@ -785,11 +769,8 @@
                     <div class="pvz-menu-btn" onclick="openSettings()" style="background: linear-gradient(to bottom, #4b5563, #374151); padding: 10px; margin-top: 8px;">
                         <span>⚙️ CÀI ĐẶT ÂM LƯỢNG</span>
                     </div>
-                    <div class="pvz-menu-btn" onclick="saveGameAndExit()" style="background: linear-gradient(to bottom, #d97706, #b45309); padding: 10px; margin-top: 8px;">
-                        <span>💾 LƯU & THOÁT VỀ MENU</span>
-                    </div>
                     <div class="pvz-menu-btn" onclick="showTitleScreen()" style="background: linear-gradient(to bottom, #dc2626, #991b1b); padding: 10px; margin-top: 8px;">
-                        <span>🏠 VỀ MÀN HÌNH CHÍNH (KHÔNG LƯU)</span>
+                        <span>🏠 VỀ MÀN HÌNH CHÍNH</span>
                     </div>
                 </div>
             </div>
@@ -907,6 +888,7 @@
             squash: { name: 'Bí Nhảy', cost: 50, cooldown: 25000, img: PLANT_IMAGES.squash }
         };
 
+        // Thứ tự cây mở khóa sau khi hoàn thành từng màn (Màn 1 -> Mở khóa wallnut, v.v.)
         const PLANT_UNLOCK_REWARDS = {
             1: { type: 'wallnut', name: 'Khoai Tây (Wall-nut)' },
             2: { type: 'cherry', name: 'Bom Cherry (Cherry Bomb)' },
@@ -1016,14 +998,6 @@
             if (playLevelText) playLevelText.innerText = 'Màn ' + maxUnlockedLevel;
             let coinDisplay = document.getElementById('title-coin-count');
             if (coinDisplay) coinDisplay.innerText = playerCoins;
-
-            let savedGame = localStorage.getItem('pvz2_saved_game');
-            let resumeBtn = document.getElementById('btn-resume-game');
-            if (savedGame && resumeBtn) {
-                resumeBtn.classList.remove('hidden');
-            } else if (resumeBtn) {
-                resumeBtn.classList.add('hidden');
-            }
         }
 
         function initTitleScreen() {
@@ -1090,6 +1064,7 @@
             menuScreen.classList.add('hidden');
             document.getElementById('shop-screen').classList.add('hidden');
             
+            // Lọc các cây đã được chọn sao cho chỉ chứa các cây đã mở khóa
             unlockedPlants = JSON.parse(localStorage.getItem('pvz2_unlocked_plants')) || defaultUnlockedPlants;
             selectedPlantTypes = selectedPlantTypes.filter(t => unlockedPlants.includes(t));
             if(selectedPlantTypes.length === 0) selectedPlantTypes = ['sunflower'];
@@ -1160,7 +1135,6 @@
                 triggerRedFlash();
                 return;
             }
-            localStorage.removeItem('pvz2_saved_game');
             document.getElementById('seed-select-screen').classList.add('hidden');
             startGame(pendingLevel);
         }
@@ -1328,7 +1302,6 @@
             localStorage.setItem('pvz2_extra_plantfood', 0);
             localStorage.setItem('pvz2_damage_level', 0);
             localStorage.setItem('pvz2_unlocked_plants', JSON.stringify(['sunflower', 'peashooter']));
-            localStorage.removeItem('pvz2_saved_game');
 
             maxUnlockedLevel = 1;
             playerCoins = 100;
@@ -1384,49 +1357,6 @@
                 if(pauseOverlay) pauseOverlay.classList.add('hidden');
                 playGameBGM();
                 lastTime = performance.now();
-            }
-        }
-
-        function saveGameAndExit() {
-            saveCurrentGame();
-            pauseOverlay.classList.add('hidden');
-            showTitleScreen();
-        }
-
-        function saveCurrentGame() {
-            if(!gameStarted || gameOver || gameWon) return;
-            let gameState = {
-                currentLevel: currentLevel,
-                suns: suns,
-                plantFoodCount: plantFoodCount,
-                zombiesSpawnedCount: zombiesSpawnedCount,
-                finalWaveTriggered: finalWaveTriggered,
-                selectedPlantTypes: selectedPlantTypes,
-                lawnmowers: lawnmowers,
-                plants: plants.map(p => ({
-                    type: p.type, row: p.row, col: p.col, hp: p.hp,
-                    armed: p.armed, armTimer: p.armTimer, isBlueFlame: p.isBlueFlame,
-                    blueFlameTimer: p.blueFlameTimer, armored: p.armored
-                })),
-                zombies: zombies.map(z => ({
-                    row: z.row, col: z.col, hp: z.hp, maxHp: z.maxHp,
-                    type: z.type, hasPlantFood: z.hasPlantFood, slowTimer: z.slowTimer,
-                    hasPole: z.hasPole, hasBalloon: z.hasBalloon, isDigging: z.isDigging,
-                    movingRight: z.movingRight, isAngry: z.isAngry
-                }))
-            };
-            localStorage.setItem('pvz2_saved_game', JSON.stringify(gameState));
-        }
-
-        function resumeSavedGame() {
-            let savedStr = localStorage.getItem('pvz2_saved_game');
-            if(!savedStr) return;
-            try {
-                let state = JSON.parse(savedStr);
-                startGame(state.currentLevel, state);
-            } catch(e) {
-                localStorage.removeItem('pvz2_saved_game');
-                showTitleScreen();
             }
         }
 
@@ -1682,8 +1612,6 @@
 
         function spawnCoinDrop(x, y, isGold) {
             updateCachedDimensions();
-            // Đảm bảo xu không bị tràn sát mép trái màn hình
-            if (x < 60) x = 60;
             let cDiv = document.createElement('div');
             cDiv.className = 'coin-drop';
             cDiv.innerText = '🪙';
@@ -1700,7 +1628,7 @@
                 el: cDiv
             };
 
-            let collectCoin = (e) => {
+            cDiv.onmousedown = (e) => {
                 e.stopPropagation();
                 let idx = coinDrops.indexOf(cObj);
                 if(idx !== -1) {
@@ -1712,14 +1640,10 @@
                     playSound('collect');
                 }
             };
-
-            cDiv.addEventListener('mousedown', collectCoin);
-            cDiv.addEventListener('touchstart', collectCoin, {passive: true});
-
             coinDrops.push(cObj);
         }
 
-        function startGame(level, savedState = null) {
+        function startGame(level) {
             updateCachedDimensions();
             initAudio(); 
             playGameBGM();
@@ -1732,21 +1656,10 @@
             finalWaveTriggered = false;
             isPaused = false;
 
-            if(savedState) {
-                suns = savedState.suns;
-                plantFoodCount = savedState.plantFoodCount;
-                zombiesSpawnedCount = savedState.zombiesSpawnedCount;
-                finalWaveTriggered = savedState.finalWaveTriggered;
-                selectedPlantTypes = savedState.selectedPlantTypes;
-                lawnmowers = savedState.lawnmowers;
-            } else {
-                extraPlantFood = parseInt(localStorage.getItem('pvz2_extra_plantfood')) || 0;
-                plantFoodCount = 3 + extraPlantFood;
-                suns = 50;
-                lawnmowers = [true, true, true, true, true];
-            }
-
+            extraPlantFood = parseInt(localStorage.getItem('pvz2_extra_plantfood')) || 0;
+            plantFoodCount = 3 + extraPlantFood;
             document.getElementById('plantfood-count').innerText = plantFoodCount;
+            
             playerCoins = parseInt(localStorage.getItem('pvz2_coins')) || 0;
             document.getElementById('coin-count').innerText = playerCoins;
 
@@ -1766,37 +1679,22 @@
             gameStarted = true;
             gameOver = false;
             gameWon = false;
+            suns = 50;
             clearAllDynamicElements();
             plants = [];
+            lawnmowers = [true, true, true, true, true];
             selectedType = null;
 
-            if(savedState) {
-                plants = savedState.plants;
-                plants.forEach(p => renderStaticElements());
-                
-                savedState.zombies.forEach(zData => {
-                    let zDiv = createZombieElement(zData.type, zData.hasPlantFood);
-                    let zObj = {
-                        row: zData.row, col: zData.col, hp: zData.hp, maxHp: zData.maxHp,
-                        type: zData.type, hasPlantFood: zData.hasPlantFood, hitFlash: 0,
-                        slowTimer: zData.slowTimer, hasPole: zData.hasPole, hasBalloon: zData.hasBalloon,
-                        isDigging: zData.isDigging, movingRight: zData.movingRight, isAngry: zData.isAngry,
-                        el: zDiv
-                    };
-                    zombies.push(zObj);
-                });
-            } else {
-                if(currentLevelConfig.hasPresetMines) {
-                    for(let r=0; r<gridRows; r++) {
-                        plants.push({
-                            type: 'potatomine',
-                            row: r,
-                            col: 1,
-                            hp: 80,
-                            armed: true,
-                            armTimer: 700
-                        });
-                    }
+            if(currentLevelConfig.hasPresetMines) {
+                for(let r=0; r<gridRows; r++) {
+                    plants.push({
+                        type: 'potatomine',
+                        row: r,
+                        col: 1,
+                        hp: 80,
+                        armed: true,
+                        armTimer: 700
+                    });
                 }
             }
             
@@ -1804,15 +1702,14 @@
                 if(PLANT_META[t]) PLANT_META[t].lastUsed = 0;
             });
             updateButtonStyles();
+
             document.getElementById('sun-count').innerText = suns;
 
             if(animationFrameId) cancelAnimationFrame(animationFrameId);
             if(zombieTimeout) clearTimeout(zombieTimeout);
             if(sunSpawner) clearInterval(sunSpawner);
 
-            if(!finalWaveTriggered) {
-                scheduleNextZombie();
-            }
+            scheduleNextZombie();
 
             sunSpawner = setInterval(() => {
                 updateCachedDimensions();
@@ -1832,8 +1729,7 @@
                     life: 500,
                     el: sDiv
                 };
-
-                let collectSun = (e) => {
+                sDiv.onmousedown = (e) => {
                     e.stopPropagation();
                     let idx = sunDrops.indexOf(sObj);
                     if(idx !== -1) {
@@ -1844,10 +1740,6 @@
                         playSound('collect');
                     }
                 };
-
-                sDiv.addEventListener('mousedown', collectSun);
-                sDiv.addEventListener('touchstart', collectSun, {passive: true});
-
                 sunDrops.push(sObj);
             }, 6000);
 
@@ -1889,7 +1781,6 @@
 
         function spawnPlantFoodDrop(x, y) {
             updateCachedDimensions();
-            if (x < 60) x = 60;
             let minY = 20;
             let maxY = cachedHeight - 20;
             if (y < minY) y = minY;
@@ -1909,7 +1800,7 @@
                 el: pfDiv
             };
 
-            let collectPF = (e) => {
+            pfDiv.onmousedown = (e) => {
                 e.stopPropagation();
                 let idx = plantFoodDrops.indexOf(pfObj);
                 if(idx !== -1) {
@@ -1920,30 +1811,15 @@
                     playSound('plantfood');
                 }
             };
-
-            pfDiv.addEventListener('mousedown', collectPF);
-            pfDiv.addEventListener('touchstart', collectPF, {passive: true});
-
             plantFoodDrops.push(pfObj);
         }
 
         function triggerFinalWaveBanner() {
             playSound('boom');
-            
-            container.classList.add('screen-shake-fx');
-            setTimeout(() => {
-                container.classList.remove('screen-shake-fx');
-            }, 1200);
-
             let banner = document.createElement('div');
             banner.className = 'screen-overlay';
-            banner.style.background = 'rgba(180, 0, 0, 0.55)';
-            banner.innerHTML = `
-                <div style="margin: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
-                    <h1 style="color: #ffeb3b; text-shadow: 3px 3px #000; font-size: 2.2em; font-family: Impact, sans-serif; letter-spacing: 2px;">⚠️ A HUGE WAVE OF ZOMBIES IS APPROACHING! ⚠️</h1>
-                    <p style="color: #fff; font-size: 1.2em; font-weight: bold; text-shadow: 1px 1px #000;">Lũ zombie đông đảo đang ồ ạt tấn công trang trại của bạn!</p>
-                </div>
-            `;
+            banner.style.background = 'rgba(180, 0, 0, 0.4)';
+            banner.innerHTML = `<h1 style="color: #ffeb3b; text-shadow: 2px 2px #000; font-size: 1.5em;">⚠️ ĐỢT ZOMBIE CUỐI CÙNG! ⚠️</h1><p style="color: #fff; font-size: 1.1em;">Lũ zombie đông đảo đang ồ ạt tấn công!</p>`;
             container.appendChild(banner);
 
             updateCachedDimensions();
@@ -2090,7 +1966,6 @@
         function triggerGameOver() {
             gameOver = true;
             gameStarted = false;
-            localStorage.removeItem('pvz2_saved_game');
             cancelAnimationFrame(animationFrameId);
             if(zombieTimeout) clearTimeout(zombieTimeout);
             clearInterval(sunSpawner);
@@ -2100,7 +1975,6 @@
         function triggerWin() {
             gameWon = true;
             gameStarted = false;
-            localStorage.removeItem('pvz2_saved_game');
             cancelAnimationFrame(animationFrameId);
             if(zombieTimeout) clearTimeout(zombieTimeout);
             clearInterval(sunSpawner);
@@ -2111,6 +1985,7 @@
                 localStorage.setItem('pvz2_unlocked_level', maxUnlockedLevel);
             }
 
+            // Mở khóa cây mới tương ứng với màn chơi vừa thắng
             let unlockReward = PLANT_UNLOCK_REWARDS[currentLevel];
             let unlockedBox = document.getElementById('win-plant-unlock-box');
             let unlockedText = document.getElementById('win-plant-unlock-text');
@@ -2301,8 +2176,7 @@
                                     life: 500,
                                     el: sDiv
                                 };
-
-                                let collectSun = (e) => {
+                                sDiv.onmousedown = (e) => {
                                     e.stopPropagation();
                                     let idx = sunDrops.indexOf(sObj);
                                     if(idx !== -1) {
@@ -2313,9 +2187,6 @@
                                         playSound('collect');
                                     }
                                 };
-                                sDiv.addEventListener('mousedown', collectSun);
-                                sDiv.addEventListener('touchstart', collectSun, {passive: true});
-
                                 sunDrops.push(sObj);
                             }
                         } 
@@ -3032,8 +2903,7 @@
                             life: 500,
                             el: sDiv
                         };
-
-                        let collectSun = (e) => {
+                        sDiv.onmousedown = (e) => {
                             e.stopPropagation();
                             let idx = sunDrops.indexOf(sObj);
                             if(idx !== -1) {
@@ -3044,9 +2914,6 @@
                                 playSound('collect');
                             }
                         };
-                        sDiv.addEventListener('mousedown', collectSun);
-                        sDiv.addEventListener('touchstart', collectSun, {passive: true});
-
                         sunDrops.push(sObj);
                         p.sunTimer = 0;
                     }
